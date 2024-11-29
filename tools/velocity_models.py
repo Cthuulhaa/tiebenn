@@ -1,0 +1,144 @@
+import numpy as np
+from math import floor
+
+def velmods(model, ev_lon, ev_lat):
+    """
+    
+    Produces a 1D seismic velocity model to be included in the NonLinLoc control file for hypocentre location. When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm^3. The density is, however, a carry over in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.
+    IMPORTANT: This functions is programmed so that each column will be separated by 3 blank spaces from the next one. This becomes of relevance during the phase association and must not be modified
+
+    Args:
+         model (int): The P- and S-wave velocity models to be exported. The velocity models are read from files in the directory utils/velocity_models/. New velocity models can be added following the NLL structure. Currently, the following models are available: 
+           0 = IASP91
+           1 = AK135 (for continental structure)
+           2 = BGR velocity model (by J. Schlittenhardt)
+           3 = WET, velocity model for Germany and adjacent regions
+           4 = VOG, velocity model for Vogtland
+           5 = DEU, 3-layer model for Germany with a Moho depth of 28.5 km. It seems to be more appropriate for southern Germany. A vp/vs ratio of 1.68 was used to generate S-wave velocities
+           6 = Crust1.0, for each latitude and longitude pair it produces up to 9 layers. Crust1.0 contains the topography at the epicenter
+           7 = Crust1.0 + AK135, the Crust1.0 model is used for the crustal structure and the lower continental structure from AK135 is merged immediately below
+           8 = Crustal model for Insheim (DMT model, Kueperkoch)
+           9 = Regional model for LI (J. Borns)
+          10 = Crustal velocity model from Küperkoch et al. (2018) for Insheim
+          11 = 1D model for Central Alps (Diehl et al. 2021)
+          12 = (P+S) 3D model for Central Alps (Diehl et al. 2021)
+          14 = AlpsLocPS (Brazsus et al., 2024). 1D velocity models for the Greater Alpine Region
+          15 = BENS (Reamer & Hinzen 2004): 1D velocity model of the Northern Rhine Area
+         ev_lon (float): Event longitude. This parameter will be used if model = 6 or 7
+         ev_lat (float): Event latitude. This parameter will be used if model = 6 or 7
+
+    Returns:
+         velmod (list): List of 1D velocity/density models in NonLinLoc format. The elements of the list are strings containing the information of each layer: LAYER, depth [km], p-wave velocity and velocity gradient, s-wave velocity and velocity gradient [km/s], density and density gradient in any convenient numerical value (see above)
+    """
+
+    try:
+        if model != 6 and model != 7 and model != 12 and model != 13:
+           velmod = []
+           with open('utils/velocity_models/v' + str(int(model)), 'r') as v:
+                for line in v:
+                    velmod.append(line.replace('\n', ''))
+
+        if model == 6:
+           crust1 = crustModel()
+           velmod = []
+           for i in crust1.get_point(ev_lat, ev_lon):
+               velmod.append('LAYER   ' + str(-crust1.get_point(ev_lat, ev_lon)[i][4]) + '   ' + str(crust1.get_point(ev_lat, ev_lon)[i][0]) +  '   0.0   ' +  str(crust1.get_point(ev_lat, ev_lon)[i][1]) + '   0.0   ' + str(crust1.get_point(ev_lat, ev_lon)[i][2]) + '   0.0')
+
+        if model == 7:
+           crust1 = crustModel()
+           velmod = []
+           for i in crust1.get_point(ev_lat, ev_lon):
+               velmod.append('LAYER   ' + str(-crust1.get_point(ev_lat, ev_lon)[i][4]) + '   ' + str(crust1.get_point(ev_lat, ev_lon)[i][0]) +  '   0.0   ' +  str(crust1.get_point(ev_lat, ev_lon)[i][1]) + '   0.0   ' + str(crust1.get_point(ev_lat, ev_lon)[i][2]) + '   0.0')
+           velmod.append('LAYER   35.0   8.04   0.0   4.48   0.0   3.38   0.0')
+           velmod.append('LAYER   77.5   8.045   0.0   4.49   0.0   3.38   0.0')
+           velmod.append('LAYER   120.0   8.05   0.0   4.5   0.0   3.36   0.0')
+
+    except:
+           class WrongVelocityModelError(Exception):
+                 pass
+                 
+           raise WrongVelocityModelError('Incorrect/undefined velocity model!')
+
+    return velmod
+
+
+class crustModel:
+    """
+    
+    Top level model object to retreive information from the LLNL Crust 1.0 model. Created by J. Leeman and C. Ammon (https://github.com/jrleeman/Crust1.0).
+
+    Args:
+         vp (ndarray) P-wave velocity model
+         vs (ndarray) S-wave velocity model
+         rho (ndarray) Density model
+         bnds (ndarray) Elevation of the top of the given layer with respect to sea level model
+         layer_names (list) Names of the nine possible layers in the model
+    """
+
+    def __init__(self):
+        self.vp = np.loadtxt('utils/crust1/crust1.vp')
+        self.vs = np.loadtxt('utils/crust1/crust1.vs')
+        self.rho = np.loadtxt('utils/crust1/crust1.rho')
+        self.bnds = np.loadtxt('utils/crust1/crust1.bnds')
+
+        self.vp = self.vp.reshape((180, 360, 9))
+        self.vs = self.vs.reshape((180, 360, 9))
+        self.rho = self.rho.reshape((180, 360, 9))
+        self.bnds = self.bnds.reshape((180, 360, 9))
+
+        self.layer_names = ['water', 'ice', 'upper_sediments', 'middle_sediments', 'lower_sediments', 'upper_crust', 'middle_crust', 'lower_crust', 'mantle']
+
+    def _get_index(self, lat, lon):
+        """
+        
+        Returns in index values used to query the model for a given lat lon.
+
+        Args:
+             lat (float): Latitude of interest
+             lat (float): Longitude of interest
+
+        Returns:
+             ilat (int) Index for given latitude
+             ilon (int) Index for given longitude
+        """
+
+        if lon > 180:
+            lon -= 360
+        if lon < -180:
+            lon += 360
+
+        ilat = floor(90. - lat)
+        ilon = floor(180 + lon)
+
+        return int(ilat), int(ilon)
+
+    def get_point(self, lat, lon):
+        """
+        
+        Returns a model for a given latitude and longitude. Note that the model is only defined on a 1 degree grid starting at 89.5 and -179.5.
+
+        Args:
+        lat (float) Latitude of interest
+        lon (float) Longitude of interest
+
+        Returns:
+        model_layers (dict): Dictionary of layers with the keys as layer names and the values as a list of vp, vs, density, layer thickness, and the top of the layer with respect to sea level
+        """
+
+        ilat, ilon = self._get_index(lat, lon)
+
+        thickness = np.abs(np.ediff1d(self.bnds[ilat, ilon], to_end=[0]))
+
+        model_layers = dict()
+
+        for i, layer in enumerate(self.layer_names):
+            vp = self.vp[ilat, ilon][i]
+            vs = self.vs[ilat, ilon][i]
+            rho = self.rho[ilat, ilon][i]
+            bnd = self.bnds[ilat, ilon][i]
+            layer_thickness = thickness[i]
+
+            if layer_thickness >= 0.01 or layer == 'mantle':
+                model_layers[layer] = [vp, vs, rho, layer_thickness, bnd]
+
+        return model_layers

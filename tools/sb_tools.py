@@ -1,0 +1,854 @@
+import os, glob, torch
+from .nicetools import chan_comma, generate_csv, create_input_for_phassoc, get_snr
+from .visualization import plotpicks_sb as plot
+from .visualization import plotpicks_sb_mw as plot_mw
+from obspy import Stream, UTCDateTime
+from obspy.geodetics.base import gps2dist_azimuth
+from obspy.clients.fdsn import Client as client_fdsn
+from obspy.clients.filesystem.sds import Client as client_sds
+import seisbench.models as sbm
+import pandas as pd
+import numpy as np
+
+def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, secs_before, phase_assoc, pick_sel, mult_windows, plotpicks, min_detections=3, denoise=True):
+    """
+
+    Produces probability functions and picks for P- and S-wave arrivals using SeisBench.
+
+    Args:
+         ev_time (str): Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss
+         ev_lon (float): Longitude of the located event
+         ev_lat (float): Latitude of the located event
+         data (dict): A dictionary with the nearest stations (ObsPy streams) to the event which contain useful channels for phase-picking
+         max_dist (float): The stations used to seismic detection and P- and S-traveltime picks will be within this radius (in km)
+         client (str): Choose between SDS or FDSN ObsPy client to retrieve waveforms. If SDS, make sure the SDS-directory is correctly defined
+         picker (str): The pretrained model for phase picking: SeisBench_Phasenet or SeisBench_EQTransformer
+         velmod (int): The velocity model used for phase association with PyOcto
+         secs_before (float or list): If the picks will be predicted on multiple windows, this parameter is a list of seconds to be substracted from the event time. Otherwise, it is a constant value to be substracted from the event time
+         phase_assoc (str): Implements a phase associator to the detected phase picks. Options are the GaMMA associator (https://github.com/AI4EPS/GaMMA) and PyOcto (https://github.com/yetinam/pyocto)
+         pick_sel (char): If picks are calculated on multiple time windows, the selected criterion is applied for selecting picks. Options are: max_prob (for a given station, it looks for the pick(s) --P and/or S-- on that station at the time window where the probability was maximal), min_res (for a given station, it selects the pick(s) --P and/or S-- on time windows where the residual has the minimum value. This option is only available for the phase association with PyOcto)
+         mult_windows (bool): If true, it will fetch waveforms for pick prediction with SeisBench starting at different times with respect to the event time
+         plotpicks (bool): If True it will plot for each station with detections the event waveforms on the three components and their P- and S-arrivals. It will also plot the time series of the probabilities of an event, of a P- and a S-arrival
+         min_detections (int): For a given max_dist, it will define the minimum amount of stations on which the event was detected. If this minimum amount of detections is not achieved, the station radius will be increased and the detection process will be repeated. Value must be >= 3. Default = 3
+         denoise (bool): If True it will apply the deep neural network DeepDenoiser (Zhu et al. 2019) as implemented on Seisbench (https://github.com/seisbench/seisbench) to denoise the retrieved waveforms before phase picking. Default is True
+
+    Returns:
+         <station>_<datetime>_prediction_results.csv: .csv files containing, for each station with sucessfully detected arrival times, all the detections and picking results.
+         <station><datetime>.pdf (optional): .pdf files with plots of the waveforms, P- and S- probability functions and picks on each station
+    """
+    if phase_assoc.lower() == 'gamma' and pick_sel == 'min_res':
+       pick_sel = 'max_prob'
+       print('pick_sel set to max_prob')
+
+    starttime = UTCDateTime(ev_time)
+
+    if mult_windows == False:
+       start_t = UTCDateTime(ev_time) - secs_before
+       end_t = start_t + 60.
+
+    data1 = {}
+    data2 = {}
+    data3 = {}
+
+    for i1 in data:
+        if float(data[i1]['epic_distance']) <= max_dist:
+           data1[i1] = data[i1]
+        if float(data[i1]['epic_distance']) <= max_dist + 100 and float(data[i1]['epic_distance']) > max_dist:
+           data2[i1] = data[i1]
+        if float(data[i1]['epic_distance']) <= max_dist + 200 and float(data[i1]['epic_distance']) > max_dist + 100:
+           data3[i1] = data[i1]
+
+    distances_dict = {}
+    for et in data:
+        distances_dict[et] = '{:.2f}'.format(gps2dist_azimuth(data[et]['coords'][0], data[et]['coords'][1], ev_lat, ev_lon)[0] * 0.001)
+
+    detections = 0
+    count = 1
+    switch1 = 0; switch2 = 0; switch3 = 0
+
+    while detections < min_detections:
+         if count == 1:
+            if len(data1) < min_detections:
+               count = 2
+               max_dist = max_dist + 100
+            else:
+                 if switch1 == 0:
+                    if client.lower() in ('sds'):
+                       sds_dir = '/SDS'
+                       streams1 = get_streams_sds(start_time=starttime, data=data1, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
+
+                       to_delete = []
+                       for i in data1.keys():
+                           if i in streams1.keys():
+                              to_delete.append(i)
+                       data1_for_fdsn = data1.copy()
+
+                       for i in to_delete:
+                           data1_for_fdsn.pop(i)
+
+                       print('Trying to include additional stations from FDSN server...')
+                       streams1_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data1_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
+                       streams1.update(streams1_fdsn)
+
+                    else:
+                         streams1 = get_streams_fdsn_bulk(start_time=starttime, data=data1, mult_windows=mult_windows, secs_before=secs_before)
+                    switch1 = 1
+
+         if count == 2:
+            if len(data1) + len(data2) < min_detections:
+               count = 3
+               max_dist = max_dist + 100
+            else:
+                 if switch1 == 0:
+                    if client.lower() in ('sds'):
+                       sds_dir = '/SDS'
+                       streams1 = get_streams_sds(start_time=starttime, data=data1, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
+
+                       to_delete = []
+                       for i in data1.keys():
+                           if i in streams1.keys():
+                              to_delete.append(i)
+                       data1_for_fdsn = data1.copy()
+
+                       for i in to_delete:
+                           data1_for_fdsn.pop(i)
+
+                       print('Trying to include additional stations from FDSN server...')
+                       streams1_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data1_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
+                       streams1.update(streams1_fdsn)
+                    else:
+                         streams1 = get_streams_fdsn_bulk(start_time=starttime, data=data1, mult_windows=mult_windows, secs_before=secs_before)
+                    switch1 = 1
+                 if switch2 == 0:
+                    if client.lower() in ('sds'):
+                       sds_dir = '/SDS'
+                       streams2 = get_streams_sds(start_time=starttime, data=data2, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
+
+                       to_delete = []
+                       for i in data2.keys():
+                           if i in streams2.keys():
+                              to_delete.append(i)
+                       data2_for_fdsn = data2.copy()
+
+                       for i in to_delete:
+                           data2_for_fdsn.pop(i)
+
+                       print('Trying to include additional stations from FDSN server...')
+                       streams2_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data2_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
+                       streams2.update(streams2_fdsn)
+                    else:
+                         streams2 = get_streams_fdsn_bulk(start_time=starttime, data=data2, mult_windows=mult_windows, secs_before=secs_before)
+                    switch2 = 1
+
+         if count == 3:
+            if len(data1) + len(data2) + len(data3) < min_detections:
+               print('STOP: Not enough stations with HH*, EH*, SH* or DN* channels available within ca 200 km...')
+               break
+            else:
+                 if switch1 == 0:
+                    if client.lower() in ('sds'):
+                       sds_dir = '/SDS'
+
+                       streams1 = get_streams_sds(start_time=starttime, data=data1, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
+
+                       to_delete = []
+                       for i in data1.keys():
+                           if i in streams1.keys():
+                              to_delete.append(i)
+                       data1_for_fdsn = data1.copy()
+
+                       for i in to_delete:
+                           data1_for_fdsn.pop(i)
+
+                       print('Trying to include additional stations from FDSN server...')
+
+                       streams1_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data1_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
+                       streams1.update(streams1_fdsn)
+                    else:
+                        streams1 = get_streams_fdsn_bulk(start_time=starttime, data=data1, mult_windows=mult_windows, secs_before=secs_before)
+                    switch1 = 1
+                 if switch2 == 0:
+                    if client.lower() in ('sds'):
+                       sds_dir = '/SDS'
+                       streams2 = get_streams_sds(start_time=starttime, data=data2, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
+
+                       to_delete = []
+                       for i in data2.keys():
+                           if i in streams2.keys():
+                              to_delete.append(i)
+                       data2_for_fdsn = data2.copy()
+
+                       for i in to_delete:
+                           data2_for_fdsn.pop(i)
+
+                       print('Trying to include additional stations from FDSN server...')
+                       streams2_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data2_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
+                       streams2.update(streams2_fdsn)
+                    else:
+                        streams2 = get_streams_fdsn_bulk(start_time=starttime, data=data2, mult_windows=mult_windows, secs_before=secs_before)
+                    switch2 = 1
+                 if switch3 == 0:
+                    if client.lower() in ('sds'):
+                       sds_dir = '/SDS'
+                       streams3 = get_streams_sds(start_time=starttime, data=data3, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
+
+                       to_delete = []
+                       for i in data3.keys():
+                           if i in streams3.keys():
+                              to_delete.append(i)
+                       data3_for_fdsn = data3.copy()
+
+                       for i in to_delete:
+                           data3_for_fdsn.pop(i)
+
+                       print('Trying to include additional stations from FDSN server...')
+                       streams3_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data3_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
+                       streams3.update(streams3_fdsn)
+                    else:
+                        streams3 = get_streams_fdsn_bulk(start_time=starttime, data=data3, mult_windows=mult_windows, secs_before=secs_before)
+                    switch3 = 1
+
+         if 'streams1' in locals() and 'streams2' not in locals() and 'streams3' not in locals():
+           if len(streams1) < min_detections:
+              print('-------------------------------------------------------------------------------------------------------------------------------')
+              print('WARNING: Less than', min_detections, 'stations available for P- and S-wave picking within', max_dist, 'km. Increasing radius...')
+              print('-------------------------------------------------------------------------------------------------------------------------------')
+              count = count + 1
+              max_dist = max_dist + 100
+              if max_dist > 200:
+                 print('200 km epicentral distance limit reached. Stop.')
+                 break
+              else:
+                   continue
+           else:
+                streams = streams1
+         elif 'streams1' in locals() and 'streams2' in locals() and 'streams3' not in locals():
+             if len(streams1) + len(streams2) < min_detections:
+               print('-------------------------------------------------------------------------------------------------------------------------------')
+               print('WARNING: Less than', min_detections, 'stations available for P- and S-wave picking within', max_dist, 'km. Increasing radius...')
+               print('-------------------------------------------------------------------------------------------------------------------------------')
+               if max_dist + 100 < 200:
+                  max_dist = max_dist + 100
+                  count = count + 1
+                  continue
+               elif max_dist < 200 and max_dist + 100 > 200:
+                    max_dist = 200
+                    count = count + 1
+                    continue
+               else:
+                    print('200 km epicentral distance limit reached. Stop.')
+                    break
+             else:
+                  streams = {**streams1, **streams2}
+         elif 'streams1' in locals() and 'streams2' in locals() and 'streams3' in locals():
+             if len(streams1) + len(streams2) + len(streams3) < min_detections:
+                print('-------------------------------------------------------------------------------------------------------------------------------')
+                print('WARNING: Less than', min_detections, 'stations available for P- and S-wave picking within', max_dist, 'km. Stop')
+                print('-------------------------------------------------------------------------------------------------------------------------------')
+                break
+             else:
+                  streams = {**streams1, **streams2, **streams3}
+
+         print('**********************************************************************************************************')
+         print('-#-#-#- Trying detections within', max_dist, 'km from epicenter... -#-#-#-')
+         print('**********************************************************************************************************')
+
+         if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer']:
+            print('SeisBench: Creating EQTransformer picker from pre-trained model...')
+            model = sbm.EQTransformer.from_pretrained('original') #XXX NOTE: Benchmark datasets which were used to train the EQT and PhaseNet models include: original, ethz, instance, scedc, stead, geofon, neic
+         elif picker.lower() in ['sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
+              print('SeisBench: Creating PhaseNet picker from pre-trained model...')
+              model = sbm.PhaseNet.from_pretrained('instance')
+
+         if torch.cuda.is_available():
+            model.cuda()
+
+         denoised = {}
+         predictions = {}
+         outputs = {}
+         number_of_picks = 0
+
+         if mult_windows == True:
+            streams_for_plot = streams.copy()
+
+            if denoise:
+               denoised_for_plot = {}
+
+         for pre in streams:
+             for if0 in streams[pre]:
+                 if len(if0.data) == 0:
+                    streams[pre].remove(if0)
+                    streams_for_plot[pre].remove(if0)
+
+             masked = False
+             for mask in range(len(streams[pre])):
+                 tr = streams[pre][mask].data
+                 if np.ma.is_masked(tr) == True:
+                    masked = True
+             if masked:
+                streams[pre] = streams[pre].split()
+                if mult_windows == True:
+                   streams_for_plot[pre] = streams_for_plot[pre].split()
+
+             streams[pre].detrend().filter('bandpass', freqmin=1, freqmax=25, corners=2, zerophase=True).taper(max_percentage=0.001, type='cosine', max_length=2)
+
+             if mult_windows == False:
+                print('Phase picking for station', pre)
+
+                if denoise:
+                   crit_distance = 100.
+
+                   if float(data[pre]['epic_distance']) <= crit_distance:
+                      denoised[pre] = deepdenoiser(streams[pre])
+                   else:
+                        denoised[pre] = streams[pre].copy()
+
+                   stream = denoised[pre].copy()
+                else:
+                     stream = streams[pre].copy()
+
+                if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer']:
+                   predictions[pre] = model.annotate(stream, overlap=3000, detection_threshold=0.25, P_threshold=0.2, S_threshold=0.15)
+                   outputs[pre] = model.classify(stream, overlap=3000, detection_threshold=0.25, P_threshold=0.2, S_threshold=0.15)
+
+                elif picker.lower() in ['sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
+                     predictions[pre] = model.annotate(stream, overlap=2800, P_threshold=0.2, S_threshold=0.15)
+                     outputs[pre] = model.classify(stream, overlap=2800, P_threshold=0.2, S_threshold=0.15)
+
+                if len(outputs[pre].picks) != 0:
+                   number_of_picks = number_of_picks + 1
+
+             else:
+                  streams_for_plot[pre].detrend().filter('bandpass', freqmin=1, freqmax=25, corners=2, zerophase=True).taper(max_percentage=0.001, type='cosine', max_length=2)
+
+                  if denoise:
+                     crit_distance = 100.
+
+                     if float(data[pre]['epic_distance']) <= crit_distance:
+                        denoised[pre] = deepdenoiser(streams[pre])
+                        denoised_for_plot[pre] = deepdenoiser(streams_for_plot[pre])
+                     else:
+                          denoised[pre] = streams[pre].copy()
+                          denoised_for_plot[pre] = streams[pre].copy()
+
+                  predictions_sta = {}
+                  outputs_sta = {}
+
+                  for start in secs_before:
+                      sta = starttime - start
+                      stream = Stream()
+
+                      if denoise:
+                         dummy = denoised[pre].copy()
+                      else:
+                           dummy = streams[pre].copy()
+
+                      for ch in range(len(streams[pre])):
+                          stream += dummy[ch].trim(starttime=sta, endtime=sta+60)
+
+                      print('Phase picking for station', pre, 'Starttime:', start, 'seconds before event time')
+
+                      if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer']:
+                         predictions_sta[str(start)] = model.annotate(stream, overlap=3000, detection_threshold=0.25, P_threshold=0.2, S_threshold=0.15)
+                         outputs_sta[str(start)] = model.classify(stream, overlap=3000, detection_threshold=0.25, P_threshold=0.2, S_threshold=0.15)
+
+                      elif picker.lower() in ['sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
+                           predictions_sta[str(start)] = model.annotate(stream, overlap=2800, P_threshold=0.2, S_threshold=0.15)
+                           outputs_sta[str(start)] = model.classify(stream, overlap=2800, P_threshold=0.2, S_threshold=0.15)
+
+                      predictions[pre] = predictions_sta
+                      outputs[pre] = outputs_sta
+
+         max_num_stations = 60
+
+         if len(outputs) > max_num_stations:
+            sorted_distances = []
+
+            for st in outputs:
+                sorted_distances.append(float(data[st]['epic_distance']))
+            sorted_distances.sort()
+            sorted_distances = sorted_distances[0:max_num_stations]
+
+            st_to_delete = []
+            for st in outputs:
+                if float(data[st]['epic_distance']) not in sorted_distances:
+                   st_to_delete.append(st)
+
+            for delete in st_to_delete:
+                outputs.pop(delete)
+
+         if phase_assoc.lower() == 'pyocto':
+            from .pyoctools import phase_association
+         else:
+              from .gammaasoc import phase_association
+
+         if mult_windows == False:
+            if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer']:
+               print('EQTransformer: Phase picks predicted on', number_of_picks, 'stations')
+            elif picker.lower() in ['sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
+               print('SeisBench: Phase picks predicted on', number_of_picks, 'stations')
+
+            testing_lenght = 0
+            for test in outputs:
+                testing_lenght = testing_lenght + len(outputs[test].picks)
+
+            if testing_lenght == 0:
+               print('No picks were produced for this event. Skipping...')
+               break
+            else:
+                 print(testing_lenght, 'picks will be used for phase association')
+
+            try:
+                outputs_assoc = phase_association(outputs=outputs, data=data, velmod=velmod, ev_lon=ev_lon, ev_lat=ev_lat, ev_time=starttime, max_dist=max_dist, plot=True, mult_windows=mult_windows, secs_before=secs_before)
+            except:
+                   print('The P- and S-picks were associated to no event. Skipping event...')
+                   break
+
+            if outputs_assoc == {}:
+               print('PyOcto STOP: not enough picks passed the comparison with theoretical arrival times! Skipping event.')
+               break
+
+            if len(outputs_assoc) == 1:
+               outputs_stations_assoc = outputs_assoc[0]['station']
+
+               number_of_picks = len(outputs_stations_assoc.drop_duplicates())
+            else:
+                 # XXX NOTE: In the following step, if the predicted picks were associated to more than one event, the event will be selected which has its event time closest to the original ev_time argument. The picks associated to this event will be used for depth estimation with NonLinLoc. An approach on how to proceed with the rest of events is yet to be decided. As more location/depth estimation examples are tested, it will be easier to figure out how to handle more complex cases, such as multiple events detected by PyOcto.
+                 diff_evtime = 999999999
+                 da_event = 999
+                 outputs_assoc_one = {}
+                 for i in outputs_assoc:
+                     if abs(UTCDateTime(str(outputs_assoc[i]['time'].to_list()[0]).split('+')[0]) - starttime) < diff_evtime:
+                        diff_evtime = abs(UTCDateTime(str(outputs_assoc[i]['time'].to_list()[0]).split('+')[0]) - starttime)
+                        da_event = i
+                 outputs_assoc_one[0] = outputs_assoc[da_event]
+                 outputs_assoc = outputs_assoc_one
+
+                 number_of_picks = len(outputs_assoc[0]['station'].drop_duplicates())
+         else:
+              outputs_for_phassoc = create_input_for_phassoc(outputs, seconds_before=secs_before)
+
+              outputs_assoc = {}
+              for secs_bef in outputs_for_phassoc:
+                  print('Phase association: waveforms were retrieved ', str(secs_bef), 'seconds before event time:')
+
+                  testing_lenght = 0
+                  for test in outputs_for_phassoc[secs_bef]:
+                      testing_lenght = testing_lenght + len(outputs_for_phassoc[secs_bef][test].picks)
+
+                  if testing_lenght == 0:
+                     print('No picks were produced for this event in the current time window. Skipping...')
+                  else:
+                       try:
+                           print(testing_lenght, 'picks will be used for phase association')
+                           outputs_assoc[secs_bef] = phase_association(outputs=outputs_for_phassoc[secs_bef], data=data, velmod=velmod, ev_lon=ev_lon, ev_lat=ev_lat, ev_time=starttime, max_dist=max_dist, plot=True, mult_windows=mult_windows, secs_before=secs_bef)
+                       except:
+                              print('The picks were associated to no event for', str(secs_bef), 'seconds before event time.')
+
+              if len(outputs_assoc) == 0:
+                 print('The predicted P- and S- picks for all the time windows were associated to no event. Skipping to next event in file...')
+                 break
+
+              for assocs in outputs_assoc:
+                  if len(outputs_assoc[assocs]) > 1: # XXX NOTE: See comment above
+                     diff_evtime = 999999999
+                     da_event = 999
+                     outputs_assoc_one = {}
+                     for i in outputs_assoc[assocs]:
+                         if abs(UTCDateTime(str(outputs_assoc[assocs][i]['time'].to_list()[0]).split('+')[0]) - starttime) < diff_evtime:
+                            diff_evtime = abs(UTCDateTime(str(outputs_assoc[assocs][i]['time'].to_list()[0]).split('+')[0]) - starttime)
+                            da_event = i
+                     outputs_assoc_one[0] = outputs_assoc[assocs][da_event]
+                     outputs_assoc[assocs] = outputs_assoc_one
+
+              outputs_final = select_picks(outputs=outputs, outputs_assoc=outputs_assoc, phase_assoc=phase_assoc, mode=pick_sel)
+
+              number_of_picks = len(outputs_final['station'].drop_duplicates())
+
+         if number_of_picks < min_detections:
+            print('-----------------------------------------------------------------------------------------------------------------------')
+            print('WARNING: P-/S-wave picks detected on less than', min_detections, 'stations within', max_dist, 'km. Increasing radius...')
+            print('-----------------------------------------------------------------------------------------------------------------------')
+            count = count + 1
+            max_dist = max_dist + 100
+
+            if max_dist >= 200:
+               print('STOP: The event was not detected on the minimum requested stations...')
+               break
+               return
+
+            continue
+
+         else:
+              detections = number_of_picks
+              print('SeisBench: Event detected on', number_of_picks, 'stations')
+
+         os.mkdir(str(starttime) + '_tiebenn_loc')
+         try:
+             os.mkdir(str(starttime) + '_tiebenn_loc/plot_phase_association')
+             for i in glob.glob('PhAssoc_*.pdf'):
+                 os.rename(i, str(starttime) + '_tiebenn_loc/plot_phase_association/' + i)
+         except:
+                pass
+
+         if mult_windows == True:
+            outputs_assoc = {}
+            outputs_assoc[0] = outputs_final
+
+         phases_snr = {}
+         if denoise:
+            for sn in outputs_assoc[0]['station'].drop_duplicates().tolist():
+
+               if mult_windows == True:
+                  phases_snr[sn] = get_snr(data=denoised_for_plot[sn], picks=outputs_assoc[0][outputs_assoc[0]['station']==sn], wlen=2)
+               else:
+                    phases_snr[sn] = get_snr(data=denoised[sn], picks=outputs_assoc[0][outputs_assoc[0]['station']==sn], wlen=2)
+         else:
+              for sn in outputs_assoc[0]['station'].drop_duplicates().tolist():
+                  phases_snr[sn] = get_snr(data=streams[sn], picks=outputs_assoc[0][outputs_assoc[0]['station']==sn], wlen=2)
+
+         generate_csv(streams=streams, outputs=outputs_assoc, data=data, snr_data=phases_snr, ev_time=ev_time)
+
+         if plotpicks:
+            if mult_windows == False:
+               if denoise:
+                          plot(data=data, streams=denoised, starttime=starttime, predictions=predictions, picks=outputs)
+               else:
+                    plot(data=data, streams=streams, starttime=starttime, predictions=predictions, picks=outputs)
+            else:
+                 if denoise:
+                            plot_mw(data=data, streams=denoised_for_plot, starttime=starttime, predictions=predictions, picks=outputs, picks_final=outputs_final)
+                 else:
+                      plot_mw(data=data, streams=streams_for_plot, starttime=starttime, predictions=predictions, picks=outputs, picks_final=outputs_final)
+
+    if denoise:
+       if mult_windows == True:
+          return denoised_for_plot
+       else:
+            return denoised
+    else:
+         if mult_windows == True:
+            return streams_for_plot
+         else:
+              return streams
+
+
+def deepdenoiser(stream):
+    """
+
+    DeepDenoiser (Zhu et al. 2019) as implemented on Seisbench.
+
+    Args:
+         stream (stream): Obspy stream with the waveforms to be denoised
+
+    Returns:
+            stream_denoise (stream): The stream with denoised waveforms
+    """
+    denoise = sbm.DeepDenoiser.from_pretrained('original')
+#    stream.detrend() # XXX NOTE: This is the recommended procedure, but it is already done before invoking the denoiser, so I commented it out
+#    stream.filter('highpass', freq=1.0)
+    stream_denoised = denoise.annotate(stream)
+
+    for ch in range(len(stream_denoised)):
+        stream_denoised[ch].stats.channel = stream_denoised[ch].stats.channel.split('_')[1]
+
+    return stream_denoised
+
+
+def get_streams_fdsn(start_time, data, mult_windows, secs_before):
+    """
+
+    Uses ObsPy FDSN client to download streams with 60 second long waveforms for a set of stations.
+
+    Args:
+         start_time (str): Start of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss
+         data (dict): A dictionary with information about the stations. Example: {'LANDS': {'network': 'SX', 'channels': ['HHN', 'HHE', 'HHZ'], 'coords': [51.526, 12.163, 115.0], 'client': 'BGR', 'epic_distance': '53.61'}
+         mult_windows (bools): If True, the retrieved streams will be for multiple time windows around the event time
+         secs_before (float or list): If the picks will be predicted on multiple windows, this parameter is a list of seconds to be substracted from the event time. Otherwise, it is a constant value to be substracted from the event time
+
+    Returns:
+            streams (dict): A dictionary with the retrieved station streams
+    """
+    streams = {}
+
+    if mult_windows == False:
+       start_t = start_time - secs_before
+       end_t = start_t + 60
+
+    else:
+         start_t = start_time - 10
+         end_t = start_time + 60
+
+    detect_duplicates = []
+    for st in data:
+        print('Fetching data for station', st)
+        channels = chan_comma(data[st]['channels'])
+        if data[st]['coords'] in detect_duplicates:
+           print('Station duplicate detected. Skipping station...')
+        else:
+             try:
+                 if data[st]['client'] == 'BGR':
+                    stream = client_fdsn('http://192.168.11.220:8080').get_waveforms(data[st]['network'], st, '*', channel=channels, starttime=start_t, endtime=end_t, attach_response=False)
+                 else:
+                      stream = client_fdsn(data[st]['client']).get_waveforms(data[st]['network'], st, '*', channel=channels, starttime=start_t, endtime=end_t, attach_response=False)
+
+                 if len(stream) != 0:
+                    if len(stream.get_gaps()) > 0:
+                       stream.merge()
+
+                    for if0 in stream:
+                        if len(if0.data) == 0:
+                           stream.remove(if0)
+
+                    if len(stream) > 0:
+                       streams[st] = stream
+                       detect_duplicates.append(data[st]['coords'])
+
+             except Exception:
+                    print('Fetching failed for station', st)
+                    pass
+
+    return streams
+
+
+def get_streams_fdsn_bulk(start_time, data, mult_windows, secs_before):
+    """
+
+    Uses ObsPy FDSN client to generate a bulk request to download streams with 60 second long waveforms for a set of stations.
+
+    Args:
+         start_time (str): Start of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss
+         data (dict): A dictionary with information about the stations. Example: {'LANDS': {'network': 'SX', 'channels': ['HHN', 'HHE', 'HHZ'], 'coords': [51.526, 12.163, 115.0], 'client': 'BGR', 'epic_distance': '53.61'}
+         mult_windows (bools): If True, the retrieved streams will be for multiple time windows around the event time
+         secs_before (float or list): If the picks will be predicted on multiple windows, this parameter is a list of seconds to be substracted from the event time. Otherwise, it is a constant value to be substracted from the event time
+
+    Returns:
+            stream_output (dict): A dictionary with the retrieved station streams
+    """
+    streams = Stream()
+    client_list=['BGR', 'LMU', 'GFZ', 'ODC', 'RASPISHAKE', 'RESIF', 'ETH', 'INGV', 'IPGP', 'NIEP', 'ORFEUS']
+
+    if mult_windows == False:
+       start_t = start_time - secs_before
+       end_t = start_t + 60
+
+    else:
+         start_t = start_time - 10
+         end_t = start_time + 60
+
+    for client in client_list:
+        bulk = []; detect_duplicates = []
+
+        for st in data:
+            channels = chan_comma(data[st]['channels'])
+            if data[st]['client'] == client:
+               if data[st]['coords'] in detect_duplicates:
+                  print('Station duplicate detected. Skipping station...')
+               else:
+                    bulk.append((data[st]['network'], st, '*', channels, start_t, end_t))
+                    detect_duplicates.append(data[st]['coords'])
+
+        try:
+            if data[st]['client'] == 'BGR':
+               streams += client_fdsn('http://192.168.11.220:8080').get_waveforms_bulk(bulk)
+            else:
+                 streams += client_fdsn(client).get_waveforms_bulk(bulk)
+
+        except Exception:
+               print('No waveforms retrieved from client', client)
+               pass
+
+    stream_output = {}
+
+    if len(streams) != 0:
+       stations = []
+       for tr in streams:
+           if tr.stats.station not in stations:
+              stations.append(tr.stats.station)
+
+       for station in stations:
+           stream_out = streams.select(station=station)
+
+           if len(stream_out.get_gaps()) > 0:
+              stream_out.merge()
+
+           for if0 in stream_out:
+               if len(if0.data) == 0:
+                  stream_out.remove(if0)
+
+           if len(stream_out) > 0:
+              try:
+                  stream_output[station] = stream_out.trim(starttime=start_t, endtime=end_t)
+              except:
+                     stream_output[station] = stream_out
+
+       return stream_output
+
+
+def get_streams_sds(start_time, data, secs_before, mult_windows, sds_dir):
+    """
+
+    Uses ObsPy SDS client to download streams with 60 second long waveforms for a set of stations.
+
+    Args:
+         start_time (str): Start of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss
+         data (dict): A dictionary with information about the stations. Example: {'LANDS': {'network': 'SX', 'channels': ['HHN', 'HHE', 'HHZ'], 'coords': [51.526, 12.163, 115.0], 'client': 'BGR', 'epic_distance': '53.61'}
+         secs_before (float or list): If the picks will be predicted on multiple windows, this parameter is a list of seconds to be substracted from the event time. Otherwise, it is a constant value to be substracted from the event time
+         mult_windows (bools): If True, the retrieved streams will be for multiple time windows around the event time
+         sds_dir (str): Root directory of SDS archive
+
+    Returns:
+         streams (dict): A dictionary with the retrieved station streams
+    """
+    sds = client_sds(sds_dir)
+    streams = {}
+
+    if mult_windows == False:
+       start_t = start_time - secs_before
+       end_t = start_t + 60
+
+    else:
+         start_t = start_time - 10
+         end_t = start_time + 60
+
+    for st in data:
+        print('Fetching data for station', st)
+        stream = Stream()
+        for ch in data[st]['channels']:
+            trace = sds.get_waveforms(data[st]['network'], st, '*', channel=ch, starttime=start_t, endtime=end_t)
+
+            if len(trace) != 0:
+               if len(trace[0].data) > 0:
+                  stream += trace
+
+        if len(stream) != 0:
+           if len(stream.get_gaps()) > 0:
+              stream.merge()
+           streams[st] = stream
+        else:
+             print('Fetching failed for station', st)
+
+    return streams
+
+
+def select_picks(outputs, outputs_assoc, phase_assoc, mode):
+    """
+
+    When the multiple-window approach (Park et al. 2023) is employed, phase picks will likely be associated in different time windows for a single station. Afterwards, only one(pair) P- and/or S-pick must be selected for depth estimation.
+
+    Args:
+         outputs (dict): Dictionary of predicted picks for each station
+         outputs_assoc (dict): Dictionary of predicted picks which were associated to the event of interest
+         phase_assoc (char): The utilized phase associator. Current options are GaMMA and PyOcto. The latter exports a residual for each associated phase
+         mode (char): How a P- or S-phase will be selected. Options are 'max_prob', in which the selected phase will be that at the time window which had the highest probability; and 'min_res', in which the selected phase will be that at the time window which had the lowest residual. This option is only available if the PyOcto phase associator was employed
+
+    Returns:
+         outputs_final (Pandas dataframe): A Pandas dataframe with the selected picks for depth estimation 
+    """
+    statio = []; phas = []; peak_tim = []; peak_valu = []; residua = []; inde = []
+
+    if mode == 'min_res':
+       for station in outputs:
+           res_p = 9999.; res_s = 9999.
+           for secs_bef in outputs_assoc:
+               outputs_look = outputs_assoc[secs_bef][0]
+               if len(outputs_look[outputs_look['station'] == station]) > 0:
+                  outputs_look_phase = outputs_look[outputs_look['station'] == station]
+                  if len(outputs_look_phase[outputs_look_phase['phase'] == 'P']) > 0:
+                     abs_res_p = abs(outputs_look_phase[outputs_look_phase['phase'] == 'P']['residual'].to_list()[0])
+                     if abs_res_p <= abs(res_p):
+                        res_p = outputs_look_phase[outputs_look_phase['phase'] == 'P']['residual'].to_list()[0]
+                        prob_p = outputs_look_phase[outputs_look_phase['phase'] == 'P']['peak_value'].to_list()[0]
+                        t_p = outputs_look_phase[outputs_look_phase['phase'] == 'P']['time'].to_list()[0]
+                        pt_p = outputs_look_phase[outputs_look_phase['phase'] == 'P']['peak_time'].to_list()[0]
+                        ph_p = outputs_look_phase[outputs_look_phase['phase'] == 'P']['phase'].to_list()[0]
+                        in_p = secs_bef
+                  if len(outputs_look_phase[outputs_look_phase['phase'] == 'S']) > 0:
+                     abs_res_s = abs(outputs_look_phase[outputs_look_phase['phase'] == 'S']['residual'].to_list()[0])
+                     if abs_res_s <= abs(res_s):
+                        res_s = outputs_look_phase[outputs_look_phase['phase'] == 'S']['residual'].to_list()[0]
+                        prob_s = outputs_look_phase[outputs_look_phase['phase'] == 'S']['peak_value'].to_list()[0]
+                        t_s = outputs_look_phase[outputs_look_phase['phase'] == 'S']['time'].to_list()[0]
+                        pt_s = outputs_look_phase[outputs_look_phase['phase'] == 'S']['peak_time'].to_list()[0]
+                        ph_s = outputs_look_phase[outputs_look_phase['phase'] == 'S']['phase'].to_list()[0]
+                        in_s = secs_bef
+           if abs(res_p) < 9999.:
+              statio.append(station)
+              phas.append(ph_p)
+              peak_tim.append(pt_p)
+              peak_valu.append(prob_p)
+              residua.append(res_p)
+              inde.append(in_p)
+           if abs(res_s) < 9999.:
+              statio.append(station)
+              phas.append(ph_s)
+              peak_tim.append(pt_s)
+              peak_valu.append(prob_s)
+              residua.append(res_s)
+              inde.append(in_s)
+
+    if mode == 'max_prob':
+       for station in outputs:
+           prob_p = 0.0; prob_s = 0.0
+           for secs_bef in outputs_assoc:
+               outputs_look = outputs_assoc[secs_bef][0]
+               if len(outputs_look[outputs_look['station'] == station]) > 0:
+                  outputs_look_phase = outputs_look[outputs_look['station'] == station]
+                  if len(outputs_look_phase[outputs_look_phase['phase'] == 'P']) > 0:
+                     outputs_look_phase_prob_p = outputs_look_phase[outputs_look_phase['phase'] == 'P']
+                     if outputs_look_phase_prob_p['peak_value'].to_list()[0] > prob_p:
+                        prob_p = outputs_look_phase_prob_p['peak_value'].to_list()[0]
+                        t_p = outputs_look_phase_prob_p['time'].to_list()[0]
+                        pt_p = outputs_look_phase_prob_p['peak_time'].to_list()[0]
+                        ph_p = outputs_look_phase_prob_p['phase'].to_list()[0]
+                        if phase_assoc.lower() == 'pyocto':
+                           re_p = outputs_look_phase_prob_p['residual'].to_list()[0]
+                        in_p = secs_bef
+                  if len(outputs_look_phase[outputs_look_phase['phase'] == 'S']) > 0:
+                     outputs_look_phase_prob_s = outputs_look_phase[outputs_look_phase['phase'] == 'S']
+                     if outputs_look_phase_prob_s['peak_value'].to_list()[0] > prob_s:
+                        prob_s = outputs_look_phase_prob_s['peak_value'].to_list()[0]
+                        t_s = outputs_look_phase_prob_s['time'].to_list()[0]
+                        pt_s = outputs_look_phase_prob_s['peak_time'].to_list()[0]
+                        ph_s = outputs_look_phase_prob_s['phase'].to_list()[0]
+                        if phase_assoc.lower() == 'pyocto':
+                           re_s = outputs_look_phase_prob_s['residual'].to_list()[0]
+                        in_s = secs_bef
+           if prob_p > 0.0:
+              statio.append(station)
+              phas.append(ph_p)
+              peak_tim.append(pt_p)
+              peak_valu.append(prob_p)
+              if phase_assoc.lower() == 'pyocto':
+                 residua.append(re_p)
+              inde.append(in_p)
+           if prob_s > 0.0:
+              statio.append(station)
+              phas.append(ph_s)
+              peak_tim.append(pt_s)
+              peak_valu.append(prob_s)
+              if phase_assoc.lower() == 'pyocto':
+                 residua.append(re_s)
+              inde.append(in_s)
+
+    if phase_assoc.lower() == 'pyocto':
+       df = {'station': statio, 'peak_time': peak_tim, 'peak_value': peak_valu, 'phase': phas, 'residual': residua, 'index': inde}
+    else:
+         df = {'station': statio, 'peak_time': peak_tim, 'peak_value': peak_valu, 'phase': phas, 'index': inde}
+    outputs_final = pd.DataFrame(data=df)
+
+    to_delete = []
+    for station in outputs_final['station'].drop_duplicates():
+        if len(outputs_final[outputs_final['station'] == station]) == 2:
+           out_final_station = outputs_final[outputs_final['station'] == station]
+           ts = UTCDateTime(str(out_final_station[out_final_station['phase'] == 'S']['peak_time'].to_list()[0]))
+           tp = UTCDateTime(str(out_final_station[out_final_station['phase'] == 'P']['peak_time'].to_list()[0]))
+           if ts - tp < 0:
+              to_delete.append(station)
+
+    if len(to_delete) > 0:
+       for dele in to_delete:
+           index = outputs_final[outputs_final['station'] == dele].index
+           outputs_final = outputs_final.drop(index=index)
+
+    return outputs_final

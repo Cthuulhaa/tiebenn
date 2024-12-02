@@ -22,8 +22,10 @@ def velmods(model, ev_lon, ev_lat):
           10 = Crustal velocity model from Küperkoch et al. (2018) for Insheim
           11 = 1D model for Central Alps (Diehl et al. 2021)
           12 = (P+S) 3D model for Central Alps (Diehl et al. 2021)
+          13 = 3D WEG model: high-resolution P-velocity model for the area around Rotenburg, Soehlingen, Soltau, Verden...
           14 = AlpsLocPS (Brazsus et al., 2024). 1D velocity models for the Greater Alpine Region
-          15 = BENS (Reamer & Hinzen 2004): 1D velocity model of the Northern Rhine Area
+          15 = BENS (Reamer & Hinzen 2004): 1D P- and S-velocity models of the Northern Rhine Area
+          16 = ASZmod1 (Mader et al. 2021): 1D P- and S-velocity models of the Albstadt Shear Zone
          ev_lon (float): Event longitude. This parameter will be used if model = 6 or 7
          ev_lat (float): Event latitude. This parameter will be used if model = 6 or 7
 

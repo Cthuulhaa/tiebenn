@@ -343,7 +343,7 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                       else:
                            dummy = streams[pre].copy()
 
-                      for ch in range(len(streams[pre])):
+                      for ch in range(len(denoised[pre])):
                           stream += dummy[ch].trim(starttime=sta, endtime=sta+60)
 
                       print('Phase picking for station', pre, 'Starttime:', start, 'seconds before event time')

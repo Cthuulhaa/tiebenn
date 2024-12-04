@@ -11,7 +11,7 @@ TieBeNN (**Tie**fen**Be**stimmung mittels **N**euronaler **N**etzwerke) is an ev
 ## Requirements
 
 * **Python 3.9** or a later version.
-* **SeisBench**, the popular toolbox where the machine-learning models required by TieBeNN are stored.
+* **SeisBench**, the popular seismology toolbox where the machine-learning models required by TieBeNN are stored.
 
 ## Installation
 
@@ -28,10 +28,10 @@ Then, we must activate the virtual environment:
 ```
 source <path_to_virtual_environment>/venv_tiebenn/bin/activate
 ```
-> [!TIP]
-> You can create a shortcut in your .bashrc file to quickly access the virtual environment in future runs. Open _.bashrc_ with your favorite editor and add the following line at the end of the file:
+> :bulb: **TIP**
+> You can create a shortcut in your ~.bashrc~ file to quickly access the virtual environment in future runs. Open _.bashrc_ with your favorite editor (e.g. `nano ~/.bashrc`) and add the following line at the end of the file:
 > `alias <alias_name>='source <path_to_virtual_environment>/venv_tiebenn/bin/activate'`
-> Replace `<alias_name>` for something convenient. Then, reset the command line (or closing it also does it :laughing:). Next time you need to activate your virtual environment, just type your `<alias_name>`.
+> Replace `<alias_name>` for something convenient. Then, reset the command line (or closing it also does it :laughing:). Next time you need to activate your virtual environment, just type `<alias_name>` in the command line.
 
 :snail: **...To be continued** :snail:
 

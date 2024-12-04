@@ -29,7 +29,8 @@ Then, we must activate the virtual environment:
 source <path_to_virtual_environment>/venv_tiebenn/bin/activate
 ```
 > :bulb: **TIP**
-> You can create a shortcut in your ~.bashrc~ file to quickly access the virtual environment in future runs. Open _.bashrc_ with your favorite editor (e.g. `nano ~/.bashrc`) and add the following line at the end of the file:
+>
+> You can create a shortcut in your _.bashrc_ file to quickly access the virtual environment in future runs. Open _.bashrc_ with your favorite editor (e.g. `nano ~/.bashrc`) and add the following line at the end of the file:
 > `alias <alias_name>='source <path_to_virtual_environment>/venv_tiebenn/bin/activate'`
 > Replace `<alias_name>` for something convenient. Then, reset the command line (or closing it also does it :laughing:). Next time you need to activate your virtual environment, just type `<alias_name>` in the command line.
 

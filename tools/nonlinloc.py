@@ -39,7 +39,7 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
     print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
 
     if nll3d:
-       if velmod != 12 and velmod != 13:
+       if velmod != 12 and velmod != 13 and velmod != 17:
           try:
               for rem in glob.glob('*_tiebenn_loc/nll_control*'):
                   os.remove(rem)
@@ -59,7 +59,7 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
 
     def prob2uncer(x):
         """
-        Since SeisBench does not export pick-uncertainties (as of January 2024) and one does not simply calculate uncertainties, the pick-probabilities are used as proxy for the uncertainties through a simple equation.
+        Since SeisBench does not export pick-uncertainties (as of December 2024) and one does not simply calculate uncertainties, the pick-probabilities are used as proxy for the uncertainties through a simple equation.
         """
         uncert = 0.02 / x
         return uncert
@@ -82,13 +82,15 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
     with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control.in', 'w') as file3:
          file3.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
 
-         if velmod != 13:
+         if velmod not in [13, 17]:
             file3.write('TRANS   LAMBERT   Clarke-1880   ' + str(ev_lat) + '   ' + str(ev_lon) + '   ' + str(ev_lat - 1) + '   ' + str(ev_lat + 1) + '   ' + str(0.0) + '\n')
-         if velmod == 13:
-            file3.write('TRANS   LAMBERT   WGS-84   52.3348   9.00   52    53    0.0' + '\n')
+         elif velmod == 13:
+              file3.write('TRANS   LAMBERT   WGS-84   52.3348   9.00   52    53    0.0' + '\n')
+         elif velmod == 17:
+              file3.write('TRANS    LAMBERT WGS-84   48.66166   7.77386   47   48   0.0' + '\n')
 
          if not nll3d:
-            if velmod != 12 and velmod != 13:
+            if velmod not in [12, 13, 17]:
                file3.write('VGOUT   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer' + '\n')
                file3.write('VGTYPE   P' + '\n')
                file3.write('VGTYPE   S' + '\n')
@@ -103,13 +105,15 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
                file3.write('VGTYPE   P' + '\n')
                file3.write('VGGRID   43   43   13   -210.   -210   -7.0   10   10   10   SLOW_LEN   SLOW_LEN' + '\n')
 
-         if velmod != 13:
+         if velmod not in [13, 17]:
             file3.write('GTFILES   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
-         else:
-            file3.write('GTFILES   utils/velocity_models/weg/GitterWEG   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
+         elif velmod == 13:
+              file3.write('GTFILES   utils/velocity_models/weg/GitterWEG   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
+         elif velmod == 17:
+              file3.write('GTFILES   utils/velocity_models/lengline/layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
 
          if not nll3d:
-            if velmod != 12 and velmod != 13:
+            if velmod not in [12, 13, 17]:
                file3.write('GTMODE   GRID2D   ANGLES_NO' + '\n')
             else:
                  file3.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
@@ -127,7 +131,9 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
          if velmod == 13:
             file3.write('LOCGRID   884   733   150    4.15   31.55  -0.2  0.1 0.1 0.1  PROB_DENSITY   SAVE' + '\n')
             file3.write('LOCMETH   EDT_OT_WT   9999.0   3   -1   0   ' + str(vpvs) + '   -1   0   1' + '\n')
-
+         elif velmod == 17:
+              file3.write('LOCGRID   401   401   101   -100   -100   0.0   0.5   0.5   0.5  PROB_DENSITY   SAVE' + '\n')
+              file3.write('LOCMETH   EDT_OT_WT   9999.0   3   -1   0   -1   -1   0   1' + '\n')
          else:
               file3.write('LOCGRID   201   201   101   -100.0   -100.0   0.0   1   1   1   PROB_DENSITY   SAVE' + '\n')
               file3.write('LOCMETH   EDT_OT_WT   9999.0   3   -1   0   -1   -1   0   1' + '\n')
@@ -143,10 +149,12 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
     with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control_s.in', 'w') as file4:
          file4.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
 
-         if velmod != 13:
+         if velmod not in [13, 17]:
             file4.write('TRANS   LAMBERT   Clarke-1880   ' + str(ev_lat) + '   ' + str(ev_lon) + '   ' + str(ev_lat - 1) + '   ' + str(ev_lat + 1) + '   ' + str(0.0) + '\n')
-         if velmod == 13:
-            file4.write('TRANS   LAMBERT   WGS-84   52.3348   9.00   52    53    0.0' + '\n')
+         elif velmod == 13:
+              file4.write('TRANS   LAMBERT   WGS-84   52.3348   9.00   52    53    0.0' + '\n')
+         elif velmod == 17:
+              file4.write('TRANS    LAMBERT WGS-84   48.66166   7.77386   47   48   0.0' + '\n')
 
          if velmod == 12:
             file4.write('VGINP    utils/velocity_models/diehl/diehl_3D_sg.txt' + '\n')
@@ -154,17 +162,18 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
             file4.write('VGTYPE   S' + '\n')
             file4.write('VGGRID   43   43   13   -210.   -210   -7.0   10   10   10   SLOW_LEN   SLOW_LEN' + '\n')
 
-
-         if velmod != 13:
+         if velmod not in [13, 17]:
             file4.write('GTFILES   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
-         else:
-            file4.write('GTFILES   utils/velocity_models/weg/GitterWEG   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
+         elif velmod == 13:
+              file4.write('GTFILES   utils/velocity_models/weg/GitterWEG   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
+         elif velmod == 17:
+              file4.write('GTFILES   utils/velocity_models/lengline/layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
 
          if not nll3d:
-            if velmod != 12 and velmod != 13:
+            if velmod not in [12, 13, 17]:
                file4.write('GTMODE   GRID2D   ANGLES_NO' + '\n')
-            if velmod == 12 or velmod == 13:
-               file4.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
+            else:
+                 file4.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
          else:
               file4.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
 
@@ -398,7 +407,7 @@ def pynlloc(control_file, control_file_s, data, velmod, nll3d, plots):
 def create3dgrid(ev_lon, ev_lat, velmod):
     """
 
-    This function uses NLLGrid (https://github.com/claudiodsf/nllgrid) to transform 3D velocity descriptions (e.g. the Crust1 model, which is implemented in Tiebenn) into a 3D SLOW_LEN grid for the calculation of travel times with NonLinLoc. Assumption used: 1° equals 111 km.
+    This function uses NLLGrid (https://github.com/claudiodsf/nllgrid) to transform 3D velocity descriptions (e.g. the Crust1 model, which is implemented in Tiebenn) into a 3D SLOW_LEN grid for the calculation of travel times with NonLinLoc. Assumption: 1° equals 111 km.
 
     Args:
          ev_lon (float): Longitude of the located event with AD-Detektor

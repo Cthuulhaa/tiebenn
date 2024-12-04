@@ -46,7 +46,7 @@ def main(args):
        raise TiebennMinimumDetectionsError('The event should be detected on at least 3 stations. Please set min_detections accordingly')
        return
 
-    if velmod > 16: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
+    if velmod > 17: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
        class TiebennVelocityModelError(Exception):
              pass
        raise TiebennVelocityModelError('Selected velocity model is not implemented on Tiebenn')

@@ -12,6 +12,7 @@ TieBeNN (**Tie**fen**Be**stimmung mittels **N**euronaler **N**etze) is an event-
 
 * **Python 3.9** or a later version.
 * **SeisBench**, the popular seismology toolbox where the machine-learning models required by TieBeNN are stored.
+* **NonLinLoc**, the set of programs written in C for probabilistic hypocenter estimation.
 
 ## Installation
 

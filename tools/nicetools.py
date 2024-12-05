@@ -187,6 +187,19 @@ def get_snr(data, picks, wlen):
 
     starttime = min(st_t); endtime = max(et_t); lendata = max(lendat)
 
+    def merge_st(st):
+        cha = []; merge = False
+        for ch in range(len(st)):
+            if st[ch].stats.channel not in cha:
+               cha.append(st[ch].stats.channel)
+            else:
+                merge = True
+
+        if merge:
+           st.merge()
+
+        return st
+
     for p in picks['phase']:
         pick = picks[picks['phase'] == p]
         peak = UTCDateTime(str(pick['peak_time'].tolist()[0]))
@@ -202,6 +215,9 @@ def get_snr(data, picks, wlen):
         if (endtime - peak) <= wlen:
              nw1 = w_noise.trim(starttime=peak - wlen, endtime=peak)
              sw1 = w_signal.trim(starttime=peak, endtime=endtime)
+
+        nw1 = merge_st(nw1)
+        sw1 = merge_st(sw1)
 
         snr[pick['phase'].tolist()[0]] = round(10 * math.log10((np.percentile(sw1, 95) / np.percentile(nw1, 95)) ** 2), 1)
 

@@ -67,7 +67,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
     picks['peak_time'] = picks['time']
     picks['time'] = picks['time'].apply(lambda x: x.timestamp())
 
-    if velmod == 12 or velmod == 13:
+    if velmod in [12, 13, 17]:
        velmod_ = 7
        layers_from_velmod = velmods(model=velmod_, ev_lon=ev_lon, ev_lat=ev_lat)
 

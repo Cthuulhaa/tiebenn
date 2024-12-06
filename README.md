@@ -64,7 +64,7 @@ git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
 ```
 
 :snail: **...To be continued** :snail:
-srfrefer
+
 ## Usage
 
 ### Input file
@@ -75,7 +75,7 @@ srfrefer
 
 ## Documentation
 
-:pizza::beer: Hungry for more detailed information? In-depth details about Tiebenn's functioning should be available (in the future) in the documentation.
+:pizza: :beer: Hungry for more detailed information? In-depth details about Tiebenn's functioning should be available (in the future) in the documentation.
 
 ## Authors and acknowledgment
 C. Ramos

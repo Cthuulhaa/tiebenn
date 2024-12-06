@@ -50,11 +50,17 @@ source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate
 
 ### Installing dependencies
 
-If you need a pure-CPU installation of SeisBench, you must do it manually. Installing SeisBench will install most of Tiebenn's dependencies. Thus, after activating the virtual environment by using the newly created alias, type:
+Installing SeisBench will install most of Tiebenn's dependencies. You can install a pure-CPU version of SeisBench, in case it is necessary. For this, after activating the virtual environment by using the previously created alias, type:
 
 ```
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 pip install seisbench
+```
+
+If you are working on a GPU machine, then you can skip the first line and directly install SeisBench with the second line. Then, you can proceed with the installation of the remaining dependencies:
+
+```
+pip install 
 ```
 
 Go to the desired directory where you wish to run Tiebenn and clone the repository:

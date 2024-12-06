@@ -35,7 +35,7 @@ def velmods(model, ev_lon, ev_lat):
     """
 
     try:
-        if model != 6 and model != 7 and model != 12 and model != 13:
+        if model not in [6, 7, 12, 13, 17]:
            velmod = []
            with open('utils/velocity_models/v' + str(int(model)), 'r') as v:
                 for line in v:

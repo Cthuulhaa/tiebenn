@@ -132,7 +132,7 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
             file3.write('LOCGRID   884   733   150    4.15   31.55  -0.2  0.1 0.1 0.1  PROB_DENSITY   SAVE' + '\n')
             file3.write('LOCMETH   EDT_OT_WT   9999.0   3   -1   0   ' + str(vpvs) + '   -1   0   1' + '\n')
          elif velmod == 17:
-              file3.write('LOCGRID   401   401   101   -100   -100   0.0   0.5   0.5   0.5  PROB_DENSITY   SAVE' + '\n')
+              file3.write('LOCGRID   401   401   101   -100   -100   -1.0   0.5   0.5   0.5  PROB_DENSITY   SAVE' + '\n')
               file3.write('LOCMETH   EDT_OT_WT   9999.0   3   -1   0   -1   -1   0   1' + '\n')
          else:
               file3.write('LOCGRID   201   201   101   -100.0   -100.0   0.0   1   1   1   PROB_DENSITY   SAVE' + '\n')

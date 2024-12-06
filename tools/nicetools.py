@@ -169,7 +169,7 @@ def get_snr(data, picks, wlen):
 
     Estimates the signal to noise ratio (SNR) of a seismogram. Adapted from the EQTransformer repository (https://github.com/smousavi05/EQTransformer)
 
-    Args: 
+    Args:
          data (ObsPy Stream): Stream with waveforms and metadata for a given station
          picks (dict): Sample point where a specific phase arrives
          wlen (int, positive): The length of the window in seconds for calculating the SNR
@@ -187,7 +187,7 @@ def get_snr(data, picks, wlen):
 
     starttime = min(st_t); endtime = max(et_t); lendata = max(lendat)
 
-    def merge_st(st):
+    def merge_pad(st, st_sta, st_end):
         cha = []; merge = False
         for ch in range(len(st)):
             if st[ch].stats.channel not in cha:
@@ -198,6 +198,14 @@ def get_snr(data, picks, wlen):
         if merge:
            st.merge()
 
+        pad = False
+        for ch in range(len(st)):
+            if st[ch].stats.starttime - st_sta > 0 or st[ch].stats.endtime - st_end < 0:
+               pad = True
+
+        if pad:
+           st.trim(starttime=st_sta, endtime=st_end, pad=True, fill_value=0)
+
         return st
 
     for p in picks['phase']:
@@ -207,17 +215,20 @@ def get_snr(data, picks, wlen):
         w_signal = data.copy()
 
         if (peak - starttime) >= wlen and (endtime - peak) > wlen:
-           nw1 = w_noise.trim(starttime=peak - wlen, endtime=peak)
-           sw1 = w_signal.trim(starttime=peak, endtime=peak + wlen)
+           nw_sta = peak - wlen; nw_end = peak
+           sw_sta = peak; sw_end = peak + wlen
         if (peak - starttime) < wlen and (endtime - peak) > wlen:
-             nw1 = w_noise.trim(starttime=starttime, endtime=peak)
-             sw1 = w_signal.trim(starttime=peak, endtime=peak + wlen)
+           nw_sta = starttime; nw_end = peak
+           sw_sta = peak; sw_end = peak + wlen
         if (endtime - peak) <= wlen:
-             nw1 = w_noise.trim(starttime=peak - wlen, endtime=peak)
-             sw1 = w_signal.trim(starttime=peak, endtime=endtime)
+           nw_sta = peak - wlen; nw_end = peak
+           sw_sta = peak; sw_end = endtime
 
-        nw1 = merge_st(nw1)
-        sw1 = merge_st(sw1)
+        nw1 = w_noise.trim(starttime=nw_sta, endtime=nw_end)
+        sw1 = w_signal.trim(starttime=sw_sta, endtime=sw_end)
+
+        nw1 = merge_pad(st=nw1, st_sta=nw_sta, st_end=nw_end)
+        sw1 = merge_pad(st=sw1, st_sta=sw_sta, st_end=sw_end)
 
         snr[pick['phase'].tolist()[0]] = round(10 * math.log10((np.percentile(sw1, 95) / np.percentile(nw1, 95)) ** 2), 1)
 

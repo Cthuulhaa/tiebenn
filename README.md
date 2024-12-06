@@ -8,6 +8,8 @@
 
 TieBeNN (**Tie**fen**Be**stimmung mittels **N**euronaler **N**etze) is an event-based wrapper which leverages a number of tools---some machine-learning-based, some classic---to automatically produce phase picks for probabilistic hypocenter estimation of local events using [NonLinLoc](http://alomax.free.fr/nlloc/).
 
+## Workflow
+
 ## Requirements
 
 * **Python 3.9** or a later version.
@@ -38,6 +40,14 @@ source <path_to_virtual_environment>/venv_tiebenn/bin/activate
 > Replace `<alias_name>` for something convenient. Then, reset the command line (or closing it also does it :laughing:). Next time you need to activate your virtual environment, just type `<alias_name>` in the command line.
 
 :snail: **...To be continued** :snail:
+
+## Usage
+
+### Input file
+
+### Syntax
+
+### Output
 
 ## Authors and acknowledgment
 C. Ramos

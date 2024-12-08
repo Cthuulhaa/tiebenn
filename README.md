@@ -15,21 +15,16 @@ TieBeNN (**Tie**fen**Be**stimmung mittels **N**euronaler **N**etze) is an event-
 * **Python 3.9** or a later version.
 * **SeisBench**, the popular seismology toolbox where the machine-learning models required by TieBeNN are stored.
 * **NonLinLoc**, the set of programs written in C for probabilistic hypocenter estimation.
-* **GMT**
-* **PyOcto**
-* **Pyrocko**
-
-Optional:
-
-* **GaMMA**
-* **nllgrid**
-
+* **GMT**,
+* **PyOcto**,
+* **Pyrocko**,
+* **GaMMA**,
 
 ## Installation
 
 I have tested TieBeNN in Linux Mint (and Lubuntu), so the instructions will use the Debian-based syntax.
 
-It is highly recommended to use a *virtual environment* to install software with several requirements. We select the folder where we will install the virtual environment:
+It is highly recommended to use a *virtual environment* to install software with several requirements. We select the folder where we will install the virtual environment (do not forget to replace the names between angle brackets for what you choose):
 
 ```
 python3 -m venv <path_to_virtual_environment>/<venv_tiebenn>
@@ -48,7 +43,7 @@ source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate
 >
 > Replace `<alias_name>` for something convenient. Then, reset the command line (or closing it and opening a new terminal also does it :laughing:). Next time you need to activate your virtual environment, just type `<alias_name>` in the command line.
 
-### Installing dependencies
+### Installing Python dependencies
 
 Installing SeisBench will install most of Tiebenn's dependencies. You can install a pure-CPU version of SeisBench, in case it is necessary. For this, after activating the virtual environment by using the previously created alias, type:
 
@@ -60,7 +55,8 @@ pip install seisbench
 If you are working on a GPU machine, then you can skip the first line and directly install SeisBench with the second line. Then, you can proceed with the installation of the remaining dependencies:
 
 ```
-pip install 
+pip install pygmt, pyocto, pyrocko, nllgrid
+pip install git+https://github.com/wayneweiqiang/GaMMA.git 
 ```
 
 Go to the desired directory where you wish to run Tiebenn and clone the repository:
@@ -68,6 +64,10 @@ Go to the desired directory where you wish to run Tiebenn and clone the reposito
 ```
 git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
 ```
+
+### Installing NonLinLoc and setting paths
+
+### Install GMT
 
 :snail: **...To be continued** :snail:
 
@@ -81,7 +81,7 @@ git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
 
 ## Documentation
 
-:pizza: :beer: Hungry for more detailed information? In-depth details about Tiebenn's functioning should be available (in the future) in the documentation.
+:pizza: :beer: Hungry for more detailed information? In-depth details about Tiebenn's functioning should have a future documentation (in the future).
 
 ## Authors and acknowledgment
 C. Ramos

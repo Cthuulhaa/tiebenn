@@ -39,7 +39,7 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
     print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
 
     if nll3d:
-       if velmod != 12 and velmod != 13 and velmod != 17:
+       if velmod not in [12, 13, 17]:
           try:
               for rem in glob.glob('*_tiebenn_loc/nll_control*'):
                   os.remove(rem)
@@ -50,12 +50,37 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
     if velmod == 13:
        vpvs = 1.74
 
+    if velmod == 17:
+       stations16 = []; stations17 =[]
+
     with open(glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates.txt', 'w') as file1:
          for stations in range(len(glob.glob('*_tiebenn_loc/csv_picks/*.csv'))):
              station = glob.glob('*_tiebenn_loc/csv_picks/*.csv')[stations].split('/')[2].split('_')[0]
              exptxt = 'GTSRCE ' + station + '   LATLON   ' + str(data[station]['coords'][0]) + '  ' + str(data[station]['coords'][1]) + '  ' + '0.0  ' + str(0.001 * data[station]['coords'][2]) + '\n'
+
              file1.write(exptxt)
+
+             if velmod == 17:
+                lat_ = data[station]['coords'][0]; lon_ = data[station]['coords'][1]
+                if lat_ >= 48.66166 - 0.898 and lat_ <= 48.66166 + 0.898 and lon_ >= 7.77386 - 1.429 and lon_ <= 7.77386 + 1.429:
+                   stations17.append(exptxt)
+                else:
+                     stations16.append(exptxt)
     file1.close()
+
+    if velmod == 17:
+
+       if len(stations17) != 0:
+          with open(glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates17.txt', 'w') as file17:
+               for st17 in stations17:
+                   file17.write(st17)
+          file17.close()
+
+       if len(stations16) != 0:
+          with open(glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates16.txt', 'w') as file16:
+               for st16 in stations16:
+                   file16.write(st16)
+          file16.close()
 
     def prob2uncer(x):
         """
@@ -75,29 +100,32 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
                  minute = '%02d' % UTCDateTime(dataframe.arrival_time[pick]).minute
                  second = UTCDateTime(dataframe.arrival_time[pick]).second + 1e-6 * UTCDateTime(dataframe.arrival_time[pick]).microsecond
                  uncertainty = '{:.2e}'.format(prob2uncer(dataframe.probability[pick]))
+                 observation = dataframe.station[pick] + '   ?   HHZ   ?   ' + dataframe.phase[pick] + '   ?   ' + year + month + day + '   ' + hour + minute + '   ' + str(second) + '   GAU   ' + str(uncertainty) + '   -1.00e+00   -1.00e+00   -1.00e+00   1\n'
 
-                 file2.write(dataframe.station[pick] + '   ?   HHZ   ?   ' + dataframe.phase[pick] + '   ?   ' + year + month + day + '   ' + hour + minute + '   ' + str(second) + '   GAU   ' + str(uncertainty) + '   -1.00e+00   -1.00e+00   -1.00e+00   1\n')
+                 file2.write(observation)
     file2.close()
 
     with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control.in', 'w') as file3:
          file3.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
 
-         if velmod not in [13, 17]:
+         if velmod != 13:
             file3.write('TRANS   LAMBERT   Clarke-1880   ' + str(ev_lat) + '   ' + str(ev_lon) + '   ' + str(ev_lat - 1) + '   ' + str(ev_lat + 1) + '   ' + str(0.0) + '\n')
-         elif velmod == 13:
+         else:
               file3.write('TRANS   LAMBERT   WGS-84   52.3348   9.00   52    53    0.0' + '\n')
-         elif velmod == 17:
-              file3.write('TRANS    LAMBERT WGS-84   48.66166   7.77386   47   48   0.0' + '\n')
 
          if not nll3d:
-            if velmod not in [12, 13, 17]:
+            if velmod not in [12, 13]:
                file3.write('VGOUT   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer' + '\n')
                file3.write('VGTYPE   P' + '\n')
                file3.write('VGTYPE   S' + '\n')
                file3.write('VGGRID   2   401   121   0.0   0.0   -3.0   1   1   1   SLOW_LEN' + '\n')
 
-               for i in velmods(velmod, ev_lon, ev_lat):
-                   file3.write(i + '\n')
+               if velmod != 17:
+                  for i in velmods(velmod, ev_lon, ev_lat):
+                      file3.write(i + '\n')
+               else:
+                    for i in velmods(model=16, ev_lon=ev_lon, ev_lat=ev_lat):
+                        file3.write(i + '\n')
 
             if velmod == 12:
                file3.write('VGINP    utils/velocity_models/diehl/diehl_3D_pg.txt' + '\n')
@@ -109,19 +137,19 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
             file3.write('GTFILES   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
          elif velmod == 13:
               file3.write('GTFILES   utils/velocity_models/weg/GitterWEG   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
-         elif velmod == 17:
-              file3.write('GTFILES   utils/velocity_models/lengline/layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
 
          if not nll3d:
             if velmod not in [12, 13, 17]:
                file3.write('GTMODE   GRID2D   ANGLES_NO' + '\n')
-            else:
+            elif velmod in [12, 13]:
                  file3.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
          else:
               file3.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
 
-         file3.write('INCLUDE   ' + glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates.txt' + '\n')
-         file3.write('GT_PLFD   1.0e-3   0' + '\n')
+         if velmod != 17:
+            file3.write('INCLUDE   ' + glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates.txt' + '\n')
+            file3.write('GT_PLFD   1.0e-3   0' + '\n')
+
          file3.write('LOCSIG   Tiebenn/NonLinLoc' + '\n')
          file3.write('LOCCOM   ' + str(ev_time) + '\n')
          file3.write('LOCFILES   ' + glob.glob('*_tiebenn_loc/')[0] + 'obs_ttimes.obs   NLLOC_OBS   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'loc_eqdatetime' + '\n')
@@ -138,7 +166,6 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
               file3.write('LOCGRID   201   201   101   -100.0   -100.0   0.0   1   1   1   PROB_DENSITY   SAVE' + '\n')
               file3.write('LOCMETH   EDT_OT_WT   9999.0   3   -1   0   -1   -1   0   1' + '\n')
 
-
          file3.write('LOCGAU   0.2   0.0' + '\n')
          file3.write('LOCGAU2   0.02   0.05   2.0' + '\n')
          file3.write('LOCQUAL2ERR   0.1   0.5   1.0   2.0   99999.9' + '\n')
@@ -146,40 +173,76 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
          file3.write('LOCPHSTAT   9999.0   -1   9999.0   1.0   1.0   9999.9   -9999.9   9999.9' + '\n')
     file3.close()
 
-    with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control_s.in', 'w') as file4:
-         file4.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
+    if velmod != 17:
+       with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control_s.in', 'w') as file4:
+            file4.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
 
-         if velmod not in [13, 17]:
-            file4.write('TRANS   LAMBERT   Clarke-1880   ' + str(ev_lat) + '   ' + str(ev_lon) + '   ' + str(ev_lat - 1) + '   ' + str(ev_lat + 1) + '   ' + str(0.0) + '\n')
-         elif velmod == 13:
-              file4.write('TRANS   LAMBERT   WGS-84   52.3348   9.00   52    53    0.0' + '\n')
-         elif velmod == 17:
-              file4.write('TRANS    LAMBERT WGS-84   48.66166   7.77386   47   48   0.0' + '\n')
+            if velmod != 13:
+               file4.write('TRANS   LAMBERT   Clarke-1880   ' + str(ev_lat) + '   ' + str(ev_lon) + '   ' + str(ev_lat - 1) + '   ' + str(ev_lat + 1) + '   ' + str(0.0) + '\n')
+            else:
+                 file4.write('TRANS   LAMBERT   WGS-84   52.3348   9.00   52    53    0.0' + '\n')
 
-         if velmod == 12:
-            file4.write('VGINP    utils/velocity_models/diehl/diehl_3D_sg.txt' + '\n')
-            file4.write('VGOUT   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer' + '\n')
-            file4.write('VGTYPE   S' + '\n')
-            file4.write('VGGRID   43   43   13   -210.   -210   -7.0   10   10   10   SLOW_LEN   SLOW_LEN' + '\n')
+            if velmod == 12:
+               file4.write('VGINP    utils/velocity_models/diehl/diehl_3D_sg.txt' + '\n')
+               file4.write('VGOUT   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer' + '\n')
+               file4.write('VGTYPE   S' + '\n')
+               file4.write('VGGRID   43   43   13   -210.   -210   -7.0   10   10   10   SLOW_LEN   SLOW_LEN' + '\n')
 
-         if velmod not in [13, 17]:
-            file4.write('GTFILES   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
-         elif velmod == 13:
-              file4.write('GTFILES   utils/velocity_models/weg/GitterWEG   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
-         elif velmod == 17:
-              file4.write('GTFILES   utils/velocity_models/lengline/layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
+            if velmod != 13:
+               file4.write('GTFILES   ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
+            else:
+                 file4.write('GTFILES   utils/velocity_models/weg/GitterWEG   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
 
-         if not nll3d:
-            if velmod not in [12, 13, 17]:
-               file4.write('GTMODE   GRID2D   ANGLES_NO' + '\n')
+            if not nll3d:
+               if velmod not in [12, 13]:
+                  file4.write('GTMODE   GRID2D   ANGLES_NO' + '\n')
+               else:
+                    file4.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
             else:
                  file4.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
-         else:
-              file4.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
 
-         file4.write('INCLUDE   ' + glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates.txt' + '\n')
-         file4.write('GT_PLFD   1.0e-3   0' + '\n')
-    file4.close()
+            file4.write('INCLUDE   ' + glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates.txt' + '\n')
+            file4.write('GT_PLFD   1.0e-3   0' + '\n')
+       file4.close()
+
+    if velmod == 17:
+       if len(stations17) != 0:
+          with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control17.in', 'w') as file317:
+               file317.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
+               file317.write('TRANS    LAMBERT WGS-84   48.66166   7.77386   47   49   0.0' + '\n')
+               file317.write('GTFILES   utils/velocity_models/lengline/layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
+               file317.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
+               file317.write('INCLUDE   ' + glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates17.txt' + '\n')
+               file317.write('GT_PLFD   1.0e-3   0' + '\n')
+          file317.close()
+
+          with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control17_s.in', 'w') as file417:
+               file417.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
+               file417.write('TRANS    LAMBERT WGS-84   48.66166   7.77386   47   49   0.0' + '\n')
+               file417.write('GTFILES   utils/velocity_models/lengline/layer   ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
+               file417.write('GTMODE   GRID3D   ANGLES_NO' + '\n')
+               file417.write('INCLUDE   ' + glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates17.txt' + '\n')
+               file417.write('GT_PLFD   1.0e-3   0' + '\n')
+          file417.close()
+
+       if len(stations16) != 0:
+          with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control16.in', 'w') as file316:
+               file316.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
+               file316.write('TRANS   LAMBERT   Clarke-1880   ' + str(ev_lat) + '   ' + str(ev_lon) + '   ' + str(ev_lat - 1) + '   ' + str(ev_lat + 1) + '   ' + str(0.0) + '\n')
+               file316.write('GTFILES    ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer    ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   P' + '\n')
+               file316.write('GTMODE   GRID2D   ANGLES_NO' + '\n')
+               file316.write('INCLUDE   ' + glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates16.txt' + '\n')
+               file316.write('GT_PLFD   1.0e-3   0' + '\n')
+          file316.close()
+
+          with open(glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control16_s.in', 'w') as file416:
+               file416.write('CONTROL   ' + str(verbosity) + '   54321' + '\n')
+               file416.write('TRANS   LAMBERT   Clarke-1880   ' + str(ev_lat) + '   ' + str(ev_lon) + '   ' + str(ev_lat - 1) + '   ' + str(ev_lat + 1) + '   ' + str(0.0) + '\n')
+               file416.write('GTFILES    ' + glob.glob('*_tiebenn_loc/')[0] + 'model_layer    ' + glob.glob('*_tiebenn_loc/')[0] + 'time_layer   S' + '\n')
+               file416.write('GTMODE   GRID2D   ANGLES_NO' + '\n')
+               file416.write('INCLUDE   ' + glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates16.txt' + '\n')
+               file416.write('GT_PLFD   1.0e-3   0' + '\n')
+          file416.close()
 
     print('Files prepared.')
 
@@ -198,8 +261,7 @@ def pynlloc(control_file, control_file_s, data, velmod, nll3d, plots):
          plots (bool): if True, it will plot the epicenter with the stations used for location, if the location was sucessful
 
     Returns:
-         loc_eqdatetime.<datetime>.grid0.loc.hyp: here are the location and quality, statistical values in case the location was sucessful   
-         loc_eqdatetime.<datetime>.grid0.loc.scat: a grid which contains the spatial probability density function. The hypocenter is indicated as the spatial point in the grid where de PDF is maximum
+         event_location.NLL: here are the location and quality, statistical values in case the location was sucessful   
          epicenter_stations.pdf: map depicting the epicenter location on the map, alongside the stations with phase picks used by NonLinLoc for depth estimation
     """
 
@@ -307,9 +369,9 @@ def pynlloc(control_file, control_file_s, data, velmod, nll3d, plots):
     try:
         if not nll3d:
            print('NLL: Producing velocity/slowness model from velocity description...')
-           if velmod != 12 and velmod != 13:
+           if velmod not in [12, 13]:
               Vel2Grid(control_file)
-           if velmod == 12:
+           elif velmod == 12:
               Vel2Grid3D(control_file)
               Vel2Grid3D(control_file_s)
 
@@ -317,13 +379,28 @@ def pynlloc(control_file, control_file_s, data, velmod, nll3d, plots):
            print('NLL: Calculating P-wave travel times...')
         else:
              print('NLL3D: Calculating P-wave travel times...')
-        Grid2Time(control_file)
+
+        if velmod != 17:
+           Grid2Time(control_file)
+        else:
+             for control in glob.glob('*_tiebenn_loc/nlloc_control17*'):
+                 Grid2Time(control)
+
+             for rem_p in glob.glob(glob.glob('*_tiebenn_loc/')[0] + 'time_layer.P.mod*'):
+                 os.remove(rem_p)
+             for rem_s in glob.glob(glob.glob('*_tiebenn_loc/')[0] + 'time_layer.S.mod*'):
+                 os.remove(rem_s)
 
         if not nll3d:
            print('NLL: Calculating S-wave travel times...')
         else:
              print('NLL3D: Calculating S-wave travel times...')
-        Grid2Time(control_file_s)
+
+        if velmod != 17:
+           Grid2Time(control_file_s)
+        else:
+             for control in glob.glob('*_tiebenn_loc/nlloc_control16*'):
+                 Grid2Time(control)
 
         if not nll3d:
            print('NLL: Depth estimation...')

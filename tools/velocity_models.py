@@ -13,7 +13,7 @@ def velmods(model, ev_lon, ev_lat):
            1 = AK135 (for continental structure)
            2 = BGR velocity model (by J. Schlittenhardt)
            3 = WET, velocity model for Germany and adjacent regions
-           4 = VOG, velocity model for Vogtland
+           4 = WB2012, Vogtland/ West Bohemia velocity model (1D, P+S), averaged from the 3D velocity models of Ruzek & Horalek (2013)
            5 = DEU, 3-layer model for Germany with a Moho depth of 28.5 km. It seems to be more appropriate for southern Germany. A vp/vs ratio of 1.68 was used to generate S-wave velocities
            6 = Crust1.0, for each latitude and longitude pair it produces up to 9 layers. Crust1.0 contains the topography at the epicenter
            7 = Crust1.0 + AK135, the Crust1.0 model is used for the crustal structure and the lower continental structure from AK135 is merged immediately below

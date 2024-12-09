@@ -17,9 +17,9 @@ def velmods(model, ev_lon, ev_lat):
            5 = DEU, 3-layer model for Germany with a Moho depth of 28.5 km. It seems to be more appropriate for southern Germany. A vp/vs ratio of 1.68 was used to generate S-wave velocities
            6 = Crust1.0, for each latitude and longitude pair it produces up to 9 layers. Crust1.0 contains the topography at the epicenter
            7 = Crust1.0 + AK135, the Crust1.0 model is used for the crustal structure and the lower continental structure from AK135 is merged immediately below
-           8 = Crustal model for Insheim (DMT model, Kueperkoch)
+           8 = Crustal velocity model from Küperkoch et al. (2018) for Insheim, (1D, P+S)
            9 = Regional model for LI (J. Borns)
-          10 = Crustal velocity model from Küperkoch et al. (2018) for Insheim
+          10 = Landau model (1D, P+S) for the northern Upper Rhine Graben
           11 = 1D model for Central Alps (Diehl et al. 2021)
           12 = WARNING! I STRONGLY SUSPECT THAT THIS MODEL HAS NOT BEEN PROPERLY INTEGRATED IN TIEBENN AND THE AUTHOR (DIEHL, ETH ZÜRICH) MUST BE CONTACTED FOR FURTHER CLARIFICATION!!(P+S) 3D model for Central Alps (Diehl et al. 2021)
           13 = 3D WEG model: high-resolution P-velocity model for the area around Rotenburg, Soehlingen, Soltau, Verden... (This model is not present in the current version of Tiebenn because it is really large and its implementation must be carefully tested!)

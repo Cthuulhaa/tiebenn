@@ -124,7 +124,7 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
                   for i in velmods(velmod, ev_lon, ev_lat):
                       file3.write(i + '\n')
                else:
-                    for i in velmods(model=16, ev_lon=ev_lon, ev_lat=ev_lat):
+                    for i in velmods(model=10, ev_lon=ev_lon, ev_lat=ev_lat):
                         file3.write(i + '\n')
 
             if velmod == 12:

@@ -145,3 +145,30 @@ class crustModel:
                 model_layers[layer] = [vp, vs, rho, layer_thickness, bnd]
 
         return model_layers
+
+
+def select_velmod(ev_lat, ev_lon):
+    """
+
+    In case the velocity model was set to automatic, this function checks if there is a velocity model for the epicenter region which has demonstrated to produce better hypocenter estimations. If not, the velocity model will be set as the BGR velocity model for event location.
+
+    Args:
+         ev_lat (float): Epicenter latitude
+         ev_lon (float): Epicenter longitude
+    Returns:
+            velmod (int): The velocity model which will be used for event location within NonLinLoc.
+    """
+    if (ev_lon > 9.7 and ev_lon <= 13 and ev_lat >= 47 and ev_lat <= 48) or (ev_lon > 13 and ev_lon <= 15 and ev_lat >= 47 and ev_lat <= 49):
+       velmod = 14
+    elif ev_lon >= 6 and ev_lon <= 8 and ev_lat >= 50 and ev_lat <= 51:
+         velmod = 15
+    elif ev_lon >= 8 and ev_lon <= 10 and ev_lat > 48 and ev_lat < 49:
+         velmod = 16
+    elif ev_lon >= 6 and ev_lon <= 9.7 and ev_lat >= 47 and ev_lat <= 48:
+         velmod = 11
+    else:
+         velmod = 2
+
+    print('Selected velocity model for the input latitude and longitude: %s' % str(velmod))
+
+    return velmod

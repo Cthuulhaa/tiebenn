@@ -2,6 +2,7 @@ import argparse, glob, json, shutil, os
 from tools.nonlinloc import inp_files_nlloc_sb, pynlloc, create3dgrid
 from tools.retrieve_data import make_station_list
 from tools.nicetools import str2bool, strmonth2num
+from tools.velocity_models import select_velmod
 from tools.visualization import plot_picks4loc, plot_hypoc_confidence_ellipsoid
 from obspy import UTCDateTime
 from obspy.geodetics.base import gps2dist_azimuth
@@ -15,8 +16,9 @@ def main(args):
         nll3d = args.nll3d
         client = args.client
         station_list_db = args.station_database
-        min_detections = int(args.min_detections)
+        min_detections = round(args.min_detections)
         plotpicks = args.plotpicks
+        vel_mode = args.vel_mode
         velmod = args.velmod
         denoise = args.denoise
         ph_assoc = args.ph_assoc
@@ -41,16 +43,26 @@ def main(args):
        return
 
     if min_detections < 3:
-       class TiebennMinimumDetectionsError(Exception):
-             pass
-       raise TiebennMinimumDetectionsError('The event should be detected on at least 3 stations. Please set min_detections accordingly')
-       return
+       print('WARNING! Minimal detections too small. Set to be 3.')
+       min_detections = 3
 
-    if velmod > 17: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
-       class TiebennVelocityModelError(Exception):
-             pass
-       raise TiebennVelocityModelError('Selected velocity model is not implemented on Tiebenn')
-       return
+    if vel_mode.lower() in ['manual', 'man', 'm']:
+       if not velmod:
+          class TiebennVelocityModeError(Exception):
+                pass
+          raise TiebennVelocityModeError('Velocity model must be selected when manual velocity mode in use.')
+          return
+
+       if velmod < 0 or velmod > 17: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
+          class TiebennVelocityModelError(Exception):
+                pass
+          raise TiebennVelocityModelError('Selected velocity model is not implemented on Tiebenn')
+          return
+    elif vel_mode.lower() not in ['manual', 'man', 'm', 'automatic', 'auto', 'a']:
+         class TiebennVelocityModeError(Exception):
+               pass
+         raise TiebennVelocityModeError('vel_mode must be set to either manual or automatic.')
+         return
 
     if ph_assoc.lower() not in ['gamma', 'pyocto']:
        class PhaseAssociationError(Exception):
@@ -83,6 +95,9 @@ def main(args):
 
         ev_lon = float(x.split()[5])
         ev_lat = float(x.split()[4])
+
+        if vel_mode in ['automatic', 'auto', 'a']:
+           velmod = select_velmod(ev_lat=ev_lat, ev_lon=ev_lon)
 
         for rem in glob.glob('*_tiebenn_loc'):
             shutil.rmtree(rem)
@@ -226,12 +241,13 @@ def read_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--event_file', type=str, help='The complete path and filename containing the event/s for hypocenter estimation')
     parser.add_argument('--max_epic_dist', type=float, help='The stations used for arrival-time picking will be withing this epicentral distance (in km)')
-    parser.add_argument('--picker', default='no', type=str, help='Picker used to phase-picking: SeisBench (eqt or pn)')
+    parser.add_argument('--picker', default='PhaseNet', type=str, help='Picker used to phase-picking: SeisBench (eqt or pn)')
     parser.add_argument('--nll3d', default=False, type=str2bool, help='Use 3D velocity model for depth estimation in NonLinLoc')
-    parser.add_argument('--client', default='no', type=str, help='FDSN or SDS')
-    parser.add_argument('--station_database', type=str2bool, help='True to use json file with stations. False to use ObsPy function get_stations')
+    parser.add_argument('--client', default='FDSN', type=str, help='FDSN or SDS')
+    parser.add_argument('--station_database', default=True, type=str2bool, help='True to use json file with stations. False to use ObsPy function get_stations')
     parser.add_argument('--min_detections', default=3, type=int, help='Minimal detections required to hypocenter estimation')
     parser.add_argument('--plotpicks', default=False, type=str2bool, help='If True, it will plot the identified picks on their respective station')
+    parser.add_argument('--vel_mode', default='auto', type=str, help='Velocity model mode: automatic or manual selection. If manual, velmod must be specified')
     parser.add_argument('--velmod', type=int, help='Velocity model for phase association and hypocenter estimation with NonLinLoc')
     parser.add_argument('--denoise', default=False, type=str2bool, help='True to use DeepDenoiser on collected waveforms up to a distance of 100 km')
     parser.add_argument('--ph_assoc', default='no', type=str, help='Phase associator. Options are GaMMa and PyOcto (not case sensitive)')

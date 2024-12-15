@@ -1,4 +1,4 @@
-import os, glob, torch
+import os, glob, torch, joblib
 from .nicetools import chan_comma, generate_csv, create_input_for_phassoc, get_snr
 from .visualization import plotpicks_sb as plot
 from .visualization import plotpicks_sb_mw as plot_mw
@@ -428,10 +428,8 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
          else:
               outputs_for_phassoc = create_input_for_phassoc(outputs, seconds_before=secs_before)
 
-              outputs_assoc = {}
+              secs_bef_ = []
               for secs_bef in outputs_for_phassoc:
-                  print('Phase association: waveforms were retrieved ', str(secs_bef), 'seconds before event time:')
-
                   testing_lenght = 0
                   for test in outputs_for_phassoc[secs_bef]:
                       testing_lenght = testing_lenght + len(outputs_for_phassoc[secs_bef][test].picks)
@@ -439,11 +437,19 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                   if testing_lenght == 0:
                      print('No picks were produced for this event in the current time window. Skipping...')
                   else:
-                       try:
-                           print(testing_lenght, 'picks will be used for phase association')
-                           outputs_assoc[secs_bef] = phase_association(outputs=outputs_for_phassoc[secs_bef], data=data, velmod=velmod, ev_lon=ev_lon, ev_lat=ev_lat, ev_time=starttime, max_dist=max_dist, plot=True, mult_windows=mult_windows, secs_before=secs_bef)
-                       except:
-                              print('The picks were associated to no event for', str(secs_bef), 'seconds before event time.')
+                       secs_bef_.append(secs_bef)
+
+              if len(secs_bef_) <= int(os.cpu_count() / 2):
+                 n_jobs = len(secs_bef_)
+              else:
+                   n_jobs = int(os.cpu_count() / 2)
+
+              pool = joblib.Parallel(n_jobs=n_jobs, backend='multiprocessing', prefer='processes')
+              out = pool(joblib.delayed(phase_association)(outputs=outputs_for_phassoc[s_bef], data=data, velmod=velmod, ev_lon=ev_lon, ev_lat=ev_lat, ev_time=starttime, max_dist=max_dist, plot=True, mult_windows=mult_windows, secs_before=s_bef) for s_bef in secs_bef_)
+
+              outputs_assoc = {}
+              for sbef in out:
+                  outputs_assoc[sbef[1]] = sbef[0]
 
               if len(outputs_assoc) == 0:
                  print('The predicted P- and S- picks for all the time windows were associated to no event. Skipping to next event in file...')

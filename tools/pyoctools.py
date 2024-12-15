@@ -1,8 +1,8 @@
+import os, pyocto, datetime
 from .velocity_models import velmods
 from .visualization import plot_assoc
 from .nicetools import tt_theo_before_assoc
 from obspy import UTCDateTime, taup
-import os, pyocto, datetime
 import pandas as pd
 import numpy as np
 
@@ -28,8 +28,6 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
             PhAssoc_event<event_number>.pdf: A visualization of the associated picks
 
     """
-    print('PyOcto: Phase association for picked arrivals')
-
     taupmodel = taup.TauPyModel(model='iasp91')
 
     station = []; phase = []; time = []; stats = []; longitude = []; latitude = []; elevation = []; peak_value = []
@@ -81,7 +79,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
         vs.append(float(layer.split('   ')[4]))
 
     layers = pd.DataFrame(data={'depth': depth, 'vp': vp, 'vs': vs}).sort_values('depth')
-    velmod_path = 'velocity_model'
+    velmod_path = 'velocity_model' + str(secs_before)
     pyocto.VelocityModel1D.create_model(layers, 1., 300, 300, velmod_path)
     velocity_model = pyocto.VelocityModel1D(velmod_path, tolerance=2.5, association_cutoff_distance=300.)
 
@@ -116,7 +114,9 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
     picks_all_s = len(picks[picks['phase'] == 'S'])
 
     print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-    print('PyOcto: For a total of', picks_all, 'predicted picks which are comparable to theoretical picks')
+    print('PyOcto: Phase association with waveforms starting %s seconds before event time' % str(secs_before))
+    print('------------------------------------------------------------------------------')
+    print('For a total of %s predicted picks which are comparable to theoretical picks' % str(picks_all))
     print('of which', picks_all_p, 'are P-picks and', picks_all_s, 'are S-picks:')
     print('%', len(events), 'event(s) was/were detected')
     for event in range(len(events)):
@@ -136,4 +136,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
 
     os.remove(velmod_path)
 
-    return events_assoc
+    if mult_windows:
+       return events_assoc, str(secs_before)
+    else:
+         return events_assoc

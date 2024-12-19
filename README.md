@@ -79,6 +79,15 @@ git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
 
 ### Output
 
+## To Do
+
+This is a list of improvements I **would like** to implement in the code:
+
+* Parallelize portions of the code
+* Prepare the code documentation in Sphinx
+* Fix NLL PDF visualization
+* Add starplots to visualize the location quality based on diverse metrics
+
 ## Documentation
 
 :pizza: :beer: Hungry for more detailed information? In-depth details about Tiebenn's functioning should have a future documentation (in the future).

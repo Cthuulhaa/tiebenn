@@ -150,7 +150,7 @@ class crustModel:
 def select_velmod(ev_lat, ev_lon):
     """
 
-    In case the velocity model was set to automatic, this function checks if there is a velocity model for the epicenter region which has demonstrated to produce better hypocenter estimations. If not, the velocity model will be set as the BGR velocity model for event location.
+    In case the velocity model was set to automatic, this function checks if there is a velocity model for the epicenter region which has demonstrated to produce better hypocenter estimations than the standard 2-layer BGR model. If not, the velocity model will be set as the BGR velocity model for event location.
 
     Args:
          ev_lat (float): Epicenter latitude

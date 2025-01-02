@@ -449,7 +449,8 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
               outputs_assoc = {}
               for sbef in out:
-                  outputs_assoc[sbef[1]] = sbef[0]
+                  if sbef != None:
+                     outputs_assoc[sbef[1]] = sbef[0]
 
               if len(outputs_assoc) == 0:
                  print('The predicted P- and S- picks for all the time windows were associated to no event. Skipping to next event in file...')

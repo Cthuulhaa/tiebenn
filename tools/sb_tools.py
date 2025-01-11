@@ -88,7 +88,11 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
                        print('Trying to include additional stations from FDSN server...')
                        streams1_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data1_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
-                       streams1.update(streams1_fdsn)
+
+                       if type(streams1_fdsn) != type(None):
+                          streams1.update(streams1_fdsn)
+                       else:
+                            print('No additional streams retrieved...')
 
                     else:
                          streams1 = get_streams_fdsn_bulk(start_time=starttime, data=data1, mult_windows=mult_windows, secs_before=secs_before)
@@ -115,7 +119,11 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
                        print('Trying to include additional stations from FDSN server...')
                        streams1_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data1_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
-                       streams1.update(streams1_fdsn)
+
+                       if type(streams1_fdsn) != type(None):
+                          streams1.update(streams1_fdsn)
+                       else:
+                            print('No additional streams found...')
                     else:
                          streams1 = get_streams_fdsn_bulk(start_time=starttime, data=data1, mult_windows=mult_windows, secs_before=secs_before)
                     switch1 = 1
@@ -135,7 +143,11 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
                        print('Trying to include additional stations from FDSN server...')
                        streams2_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data2_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
-                       streams2.update(streams2_fdsn)
+
+                       if type(streams2_fdsn) != type(None):
+                          streams2.update(streams2_fdsn)
+                       else:
+                            print('No additional streams found...')
                     else:
                          streams2 = get_streams_fdsn_bulk(start_time=starttime, data=data2, mult_windows=mult_windows, secs_before=secs_before)
                     switch2 = 1
@@ -163,7 +175,11 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                        print('Trying to include additional stations from FDSN server...')
 
                        streams1_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data1_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
-                       streams1.update(streams1_fdsn)
+
+                       if type(streams1_fdsn) != type(None):
+                          streams1.update(streams1_fdsn)
+                       else:
+                            print('No additional streams found...')
                     else:
                         streams1 = get_streams_fdsn_bulk(start_time=starttime, data=data1, mult_windows=mult_windows, secs_before=secs_before)
                     switch1 = 1
@@ -183,7 +199,11 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
                        print('Trying to include additional stations from FDSN server...')
                        streams2_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data2_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
-                       streams2.update(streams2_fdsn)
+
+                       if type(streams2_fdsn) != type(None):
+                          streams2.update(streams2_fdsn)
+                       else:
+                            print('No additional streams found...')
                     else:
                         streams2 = get_streams_fdsn_bulk(start_time=starttime, data=data2, mult_windows=mult_windows, secs_before=secs_before)
                     switch2 = 1
@@ -203,7 +223,11 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
                        print('Trying to include additional stations from FDSN server...')
                        streams3_fdsn = get_streams_fdsn_bulk(start_time=starttime, data=data3_for_fdsn, mult_windows=mult_windows, secs_before=secs_before)
-                       streams3.update(streams3_fdsn)
+
+                       if type(streams3_fdsn) != type(None):
+                          streams3.update(streams3_fdsn)
+                       else:
+                            print('No additional streams found...')
                     else:
                         streams3 = get_streams_fdsn_bulk(start_time=starttime, data=data3, mult_windows=mult_windows, secs_before=secs_before)
                     switch3 = 1
@@ -359,7 +383,7 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                       predictions[pre] = predictions_sta
                       outputs[pre] = outputs_sta
 
-         max_num_stations = 60
+         max_num_stations = 70
 
          if len(outputs) > max_num_stations:
             sorted_distances = []

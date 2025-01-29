@@ -53,7 +53,7 @@ def main(args):
           raise TiebennVelocityModeError('Velocity model must be selected when manual velocity mode in use.')
           return
 
-       if velmod < 0 or velmod > 17: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
+       if velmod < 0 or velmod > 18: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
           class TiebennVelocityModelError(Exception):
                 pass
           raise TiebennVelocityModelError('Selected velocity model is not implemented on Tiebenn')
@@ -78,6 +78,7 @@ def main(args):
 
     f = open(event_file, 'r')
     for x in f:
+        x = x.replace('T', ' ')
         y = x
         x = x.replace('-',' ').replace('_', ' ')
         try:
@@ -91,7 +92,7 @@ def main(args):
                except:
                       class TiebennDatetimeFormatError(Exception):
                             pass
-                      raise TiebennDatetimeFormatError('Accepted Datetime formats for the events are: "dd-Mon-yyyy hh:mm:ss" or "yyyy-mm-dd hh:mm:ss"')
+                      raise TiebennDatetimeFormatError('Accepted Datetime formats for the events are: "dd-Mon-yyyy hh:mm:ss", "yyyy-mm-ddThh:mm:ss", or "yyyy-mm-dd hh:mm:ss"')
 
         ev_lon = float(x.split()[5])
         ev_lat = float(x.split()[4])
@@ -120,7 +121,7 @@ def main(args):
              if denoise == False:
                 secs_before = [10, 8, 6, 4, 2, 0]
              else:
-                  secs_before = [10, 5, 2]
+                  secs_before = [10, 5, 2, 0]
 
         client_list=['BGR', 'LMU', 'GFZ', 'ODC', 'RASPISHAKE', 'RESIF', 'ETH', 'INGV', 'IPGP', 'NIEP', 'ORFEUS']
 

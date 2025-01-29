@@ -27,6 +27,7 @@ def velmods(model, ev_lon, ev_lat):
           15 = BENS (Reamer & Hinzen 2004): 1D P- and S-velocity models of the Northern Rhine Area
           16 = ASZmod1 (Mader et al. 2021): 1D P- and S-velocity models of the Albstadt Shear Zone
           17 = 3D P+S velocity models for the Upper Rhine Graben after Lengline et al. (2023)
+          18 = PO1 (Malek et al. 2023): 1D P- and S-velocity model for the Novy-Kostel earthquake swarm region, constrained models
          ev_lon (float): Event longitude. This parameter will be used if model = 6 or 7
          ev_lat (float): Event latitude. This parameter will be used if model = 6 or 7
 

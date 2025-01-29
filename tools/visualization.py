@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final):
+def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final, station):
     """
 
     Generates a plot which includes time windows showing the waveforms on the different channels on every station used for wave detection under the multiple time-window approach. The predicted P- and/or S-picks are shown as thicks: the ones used for the depth estimation are colored and the rest -- obtained from predictions with other time offsets (and/or not associated to the event) -- are shown thinner and in grey. The probability function of the P- or S-picks is also plotted in colored lines, while that obtained from predictions with other time offsets are in grey. This function is adapted to the outputs produced by the pickers in SeisBench. 
@@ -16,14 +16,15 @@ def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final):
          starttime (str): Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss
          predictions (dict): A dictionary with the probability function for a detection, P- or S-wave on a given station, as obtained from the Annotate method implemented on SeisBench
          picks (dict): A dictionary with information and classification of P- or S-picks on each station, as obtained from the Classify method implemented on SeisBench
-         picks_final (dict):
+         picks_final (dict): picks after selecting for each station the time window with the best phase pick
+         station (list): list with the name of the station for which the phase picks plot are to be created. This variable was created for convenience at the moment of parallelizing. The approach is not the most elegant...
 
     Returns:
          Figures in PDF format, which are stored in the saved_locations/<ev_time>_tiebenn_loc directory
     """
     secs_bef = 10
 
-    for sta in picks:
+    for sta in station:
         try:
             ax0 = 0
             fig, axis = plt.subplots(len(streams[sta]) + 1, 1, figsize=(15, 7), sharex=True, tight_layout=True)

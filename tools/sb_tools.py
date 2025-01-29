@@ -284,9 +284,6 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
               print('SeisBench: Creating PhaseNet picker from pre-trained model...')
               model = sbm.PhaseNet.from_pretrained('instance')
 
-         if torch.cuda.is_available():
-            model.cuda()
-
          denoised = {}
          predictions = {}
          outputs = {}
@@ -355,35 +352,28 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                           denoised[pre] = streams[pre].copy()
                           denoised_for_plot[pre] = streams[pre].copy()
 
-                  predictions_sta = {}
-                  outputs_sta = {}
+                  if len(secs_before) <= int(os.cpu_count() / 2):
+                     njobs = len(secs_before)
+                  else:
+                       njobs = int(os.cpu_count() / 2)
 
-                  for start in secs_before:
-                      sta = starttime - start
-                      stream = Stream()
+                  pool = joblib.Parallel(n_jobs=njobs, backend='multiprocessing', prefer='processes')
 
-                      if denoise:
-                         dummy = denoised[pre].copy()
-                      else:
-                           dummy = streams[pre].copy()
+                  if denoise:
+                             out = pool(joblib.delayed(picks_mulwin)(streams=denoised[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
+                  else:
+                       out = pool(joblib.delayed(picks_mulwin)(streams=streams[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
 
-                      for ch in range(len(denoised[pre])):
-                          stream += dummy[ch].trim(starttime=sta, endtime=sta+60)
+                  predictions_sta = {}; outputs_sta = {}
+                  for sbef in out:
+                      if sbef != None:
+                         predictions_sta[str(sbef[2])] = sbef[0]
+                         outputs_sta[str(sbef[2])] = sbef[1]
 
-                      print('Phase picking for station', pre, 'Starttime:', start, 'seconds before event time')
+                  predictions[pre] = predictions_sta
+                  outputs[pre] = outputs_sta
 
-                      if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer']:
-                         predictions_sta[str(start)] = model.annotate(stream, overlap=3000, detection_threshold=0.25, P_threshold=0.2, S_threshold=0.15)
-                         outputs_sta[str(start)] = model.classify(stream, overlap=3000, detection_threshold=0.25, P_threshold=0.2, S_threshold=0.15)
-
-                      elif picker.lower() in ['sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
-                           predictions_sta[str(start)] = model.annotate(stream, overlap=2800, P_threshold=0.2, S_threshold=0.15)
-                           outputs_sta[str(start)] = model.classify(stream, overlap=2800, P_threshold=0.2, S_threshold=0.15)
-
-                      predictions[pre] = predictions_sta
-                      outputs[pre] = outputs_sta
-
-         max_num_stations = 70
+         max_num_stations = 80
 
          if len(outputs) > max_num_stations:
             sorted_distances = []
@@ -547,8 +537,14 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                else:
                     plot(data=data, streams=streams, starttime=starttime, predictions=predictions, picks=outputs)
             else:
+                 if len(outputs) <= int(os.cpu_count() / 2):
+                    njobs = len(outputs)
+                 else:
+                      njobs = int(os.cpu_count() / 2)
+                 pool = joblib.Parallel(n_jobs=njobs, backend='multiprocessing', prefer='processes')
+
                  if denoise:
-                            plot_mw(data=data, streams=denoised_for_plot, starttime=starttime, predictions=predictions, picks=outputs, picks_final=outputs_final)
+                            out = pool(joblib.delayed(plot_mw)(data=data, streams=denoised_for_plot, starttime=starttime, predictions=predictions, picks=outputs, picks_final=outputs_final, station=[sta_]) for sta_ in outputs)
                  else:
                       plot_mw(data=data, streams=streams_for_plot, starttime=starttime, predictions=predictions, picks=outputs, picks_final=outputs_final)
 
@@ -883,3 +879,26 @@ def select_picks(outputs, outputs_assoc, phase_assoc, mode):
            outputs_final = outputs_final.drop(index=index)
 
     return outputs_final
+
+
+def picks_mulwin(streams, start, starttime, picker, model):
+    station = streams[0].stats.station
+    sta = starttime - start
+
+    stream = Stream()
+    dummy = streams.copy()
+
+    for ch in range(len(streams)):
+        stream += dummy[ch].trim(starttime=sta, endtime=sta+60)
+
+    print('Phase picking for station', station, 'Starttime:', start, 'seconds before event time')
+
+    if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer']:
+       predictions = model.annotate(stream, overlap=3000, detection_threshold=0.25, P_threshold=0.2, S_threshold=0.15)
+       outputs = model.classify(stream, overlap=3000, detection_threshold=0.25, P_threshold=0.2, S_threshold=0.15)
+
+    elif picker.lower() in ['sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
+         predictions = model.annotate(stream, overlap=2800, P_threshold=0.2, S_threshold=0.15)
+         outputs = model.classify(stream, overlap=2800, P_threshold=0.2, S_threshold=0.15)
+
+    return predictions, outputs, start

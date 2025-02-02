@@ -103,8 +103,12 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
     events, assignments = associator.associate(picks, stations)
     associator.transform_events(events)
 
-    events['time'] = events['time'].apply(datetime.datetime.fromtimestamp, tz=datetime.timezone.utc)
-    merged = pd.merge(events, assignments, left_on='idx', right_on='event_idx', suffixes=('', '_pick'))
+    try:
+        events['time'] = events['time'].apply(datetime.datetime.fromtimestamp, tz=datetime.timezone.utc)
+        merged = pd.merge(events, assignments, left_on='idx', right_on='event_idx', suffixes=('', '_pick'))
+    except:
+           print('PyOcto: No arrivals were associated to this event %s seconds before the event.' % secs_before)
+           return
 
     if plot:
        plot_assoc(ev_time, data, stations, picks, events, merged, mult_windows, secs_before)
@@ -119,6 +123,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
     print('For a total of %s predicted picks which are comparable to theoretical picks' % str(picks_all))
     print('of which', picks_all_p, 'are P-picks and', picks_all_s, 'are S-picks:')
     print('%', len(events), 'event(s) was/were detected')
+
     for event in range(len(events)):
         print('% for event', event + 1, ':')
         for_event = merged[merged['idx'] == event]

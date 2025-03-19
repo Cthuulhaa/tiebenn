@@ -1,9 +1,13 @@
-from .utm import from_latlon
-from obspy import taup
-from gamma.utils import association
-from .visualization import plot_assoc
-from .nicetools import tt_theo_before_assoc
 import pandas as pd
+
+from obspy import taup
+
+from gamma.utils import association
+
+from .nicetools import tt_theo_before_assoc
+from .utm import from_latlon
+from .visualization import plot_assoc
+
 
 def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, plot, max_dist, mult_windows, secs_before):
     """

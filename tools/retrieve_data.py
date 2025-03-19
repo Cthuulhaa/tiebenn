@@ -1,7 +1,12 @@
+import glob
+import json
+import os
+import shutil
+
 from obspy import UTCDateTime
 from obspy.clients.fdsn import Client as client_fdsn
 from obspy.clients.filesystem.sds import Client as client_sds
-import os, glob, json, shutil
+
 
 def make_station_list(stations_json, client_list, ev_lon, ev_lat, start_time, end_time, channel_list=[], filter_network=[], filter_station=[]):
     """

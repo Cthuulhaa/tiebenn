@@ -41,7 +41,10 @@ source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate
 >
 > `alias <alias_name>='source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate'`
 >
-> Replace `<alias_name>` for something convenient. Then, reset the command line (or closing it and opening a new terminal also does it :laughing:). Next time you need to activate your virtual environment, just type `<alias_name>` in the command line.
+> Replace `<alias_name>` for something convenient. Then, reset the command line:
+> `exec bash`
+
+> for changes to take effect. To activate your virtual environment, just type `<alias_name>` in the command line.
 
 ### Installing Python dependencies
 

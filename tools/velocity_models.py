@@ -1,5 +1,7 @@
-import numpy as np
 from math import floor
+
+import numpy as np
+
 
 def velmods(model, ev_lon, ev_lat):
     """
@@ -28,6 +30,7 @@ def velmods(model, ev_lon, ev_lat):
           16 = ASZmod1 (Mader et al. 2021): 1D P- and S-velocity models of the Albstadt Shear Zone
           17 = 3D P+S velocity models for the Upper Rhine Graben after Lengline et al. (2023)
           18 = PO1 (Malek et al. 2023): 1D P- and S-velocity model for the Novy-Kostel earthquake swarm region, constrained models
+          19 = PO1 (Malek et al. 2023) + WB2012 from 11 km depth
          ev_lon (float): Event longitude. This parameter will be used if model = 6 or 7
          ev_lat (float): Event latitude. This parameter will be used if model = 6 or 7
 

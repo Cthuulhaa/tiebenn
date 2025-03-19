@@ -1,10 +1,16 @@
-import os, pyocto, datetime
+import datetime
+import os
+
+import numpy as np
+import pandas as pd
+import pyocto
+
+from obspy import UTCDateTime, taup
+
+from .nicetools import tt_theo_before_assoc
 from .velocity_models import velmods
 from .visualization import plot_assoc
-from .nicetools import tt_theo_before_assoc
-from obspy import UTCDateTime, taup
-import pandas as pd
-import numpy as np
+
 
 def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, plot, mult_windows, secs_before):
     """
@@ -57,7 +63,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
 
     if len(station) <= 3:
        print('PyOcto: not enough picks passed the comparison with theoretical arrival times! Skipping.')
-       return error
+       return
 
     stations = pd.DataFrame(data={'id': stats, 'longitude': longitude, 'latitude': latitude, 'elevation': elevation})
     picks = pd.DataFrame(data={'station': station, 'phase': phase, 'time': time, 'peak_value': peak_value})

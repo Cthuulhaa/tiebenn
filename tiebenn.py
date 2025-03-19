@@ -1,11 +1,18 @@
-import argparse, glob, json, shutil, os
-from tools.nonlinloc import inp_files_nlloc_sb, pynlloc, create3dgrid
-from tools.retrieve_data import make_station_list
-from tools.nicetools import str2bool, strmonth2num
-from tools.velocity_models import select_velmod
-from tools.visualization import plot_picks4loc, plot_hypoc_confidence_ellipsoid
+import argparse
+import glob
+import json
+import os
+import shutil
+
 from obspy import UTCDateTime
 from obspy.geodetics.base import gps2dist_azimuth
+
+from tools.nicetools import str2bool, strmonth2num
+from tools.nonlinloc import create3dgrid, inp_files_nlloc_sb, pynlloc
+from tools.retrieve_data import make_station_list
+from tools.velocity_models import select_velmod
+from tools.visualization import plot_hypoc_confidence_ellipsoid, plot_picks4loc
+
 
 def main(args):
 
@@ -53,7 +60,7 @@ def main(args):
           raise TiebennVelocityModeError('Velocity model must be selected when manual velocity mode in use.')
           return
 
-       if velmod < 0 or velmod > 18: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
+       if velmod < 0 or velmod > 19: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
           class TiebennVelocityModelError(Exception):
                 pass
           raise TiebennVelocityModelError('Selected velocity model is not implemented on Tiebenn')
@@ -61,13 +68,13 @@ def main(args):
     elif vel_mode.lower() not in ['manual', 'man', 'm', 'automatic', 'auto', 'a']:
          class TiebennVelocityModeError(Exception):
                pass
-         raise TiebennVelocityModeError('vel_mode must be set to either manual or automatic.')
+         raise TiebennVelocityModeError('vel_mode must be set to either manual (m) or automatic (a).')
          return
 
-    if ph_assoc.lower() not in ['gamma', 'pyocto']:
+    if ph_assoc.lower() not in ['gamma', 'g', 'pyocto', 'p']:
        class PhaseAssociationError(Exception):
              pass
-       raise PhaseAssociationError('Unknown phase associator. Options are Gamma and PyOcto')
+       raise PhaseAssociationError('Unknown phase associator. Options are Gamma (g) and PyOcto (p)')
        return
 
     if nll3d == True:

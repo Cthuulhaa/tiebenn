@@ -1,7 +1,11 @@
-import os, math
-import pandas as pd
+import math
+import os
+
 import numpy as np
+import pandas as pd
+
 from obspy import UTCDateTime
+
 
 def tt_theo_before_assoc(ev_time, teo_p_time, teo_s_time, pick, tol_p, tol_s):
     """

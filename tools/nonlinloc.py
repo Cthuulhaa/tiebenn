@@ -1,10 +1,18 @@
-import glob, subprocess, os, shutil
+import glob
+import os
+import shutil
+import subprocess
+
+import numpy as np
 import pandas as pd
+
+from obspy import UTCDateTime
+
+from nllgrid import NLLGrid
+
 from .velocity_models import velmods
 from .visualization import epic_sta_plot
-from nllgrid import NLLGrid
-from obspy import UTCDateTime
-import numpy as np
+
 
 def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detections=3, verbosity=0):
     """

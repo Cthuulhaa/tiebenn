@@ -1,9 +1,13 @@
-import glob, os
-from obspy import UTCDateTime, read
-import pygmt
+import glob
+import os
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+import pygmt
+
+from obspy import UTCDateTime, read
+
 
 def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final, station):
     """

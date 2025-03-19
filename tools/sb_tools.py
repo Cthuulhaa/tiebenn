@@ -1,14 +1,21 @@
-import os, glob, torch, joblib
-from .nicetools import chan_comma, generate_csv, create_input_for_phassoc, get_snr
-from .visualization import plotpicks_sb as plot
-from .visualization import plotpicks_sb_mw as plot_mw
+import glob
+import os
+
+import joblib
+import numpy as np
+import pandas as pd
+import torch
+
+import seisbench.models as sbm
 from obspy import Stream, UTCDateTime
-from obspy.geodetics.base import gps2dist_azimuth
 from obspy.clients.fdsn import Client as client_fdsn
 from obspy.clients.filesystem.sds import Client as client_sds
-import seisbench.models as sbm
-import pandas as pd
-import numpy as np
+from obspy.geodetics.base import gps2dist_azimuth
+
+from .nicetools import chan_comma, create_input_for_phassoc, generate_csv, get_snr
+from .visualization import plotpicks_sb as plot
+from .visualization import plotpicks_sb_mw as plot_mw
+
 
 def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, secs_before, phase_assoc, pick_sel, mult_windows, plotpicks, min_detections=3, denoise=True):
     """
@@ -360,18 +367,24 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                   pool = joblib.Parallel(n_jobs=njobs, backend='multiprocessing', prefer='processes')
 
                   if denoise:
-                             out = pool(joblib.delayed(picks_mulwin)(streams=denoised[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
+                     if len(denoised[pre]) != 0:
+                        out = pool(joblib.delayed(picks_mulwin)(streams=denoised[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
                   else:
-                       out = pool(joblib.delayed(picks_mulwin)(streams=streams[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
+                       if len(streams[pre]) != 0:
+                          out = pool(joblib.delayed(picks_mulwin)(streams=streams[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
 
-                  predictions_sta = {}; outputs_sta = {}
-                  for sbef in out:
-                      if sbef != None:
-                         predictions_sta[str(sbef[2])] = sbef[0]
-                         outputs_sta[str(sbef[2])] = sbef[1]
+                  try:
+                      predictions_sta = {}; outputs_sta = {}
+                      for sbef in out:
+                          if sbef != None:
+                             predictions_sta[str(sbef[2])] = sbef[0]
+                             outputs_sta[str(sbef[2])] = sbef[1]
 
-                  predictions[pre] = predictions_sta
-                  outputs[pre] = outputs_sta
+                      predictions[pre] = predictions_sta
+                      outputs[pre] = outputs_sta
+                  except:
+                         print('Station %s was probably empty. Skipping...' % pre)
+                         pass
 
          max_num_stations = 80
 
@@ -882,6 +895,7 @@ def select_picks(outputs, outputs_assoc, phase_assoc, mode):
 
 
 def picks_mulwin(streams, start, starttime, picker, model):
+
     station = streams[0].stats.station
     sta = starttime - start
 

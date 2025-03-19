@@ -22,7 +22,6 @@ def main(args):
         picker = args.picker
         nll3d = args.nll3d
         client = args.client
-        station_list_db = args.station_database
         min_detections = round(args.min_detections)
         plotpicks = args.plotpicks
         vel_mode = args.vel_mode
@@ -143,31 +142,14 @@ def main(args):
 
         print('Making station list...')
 
-        if station_list_db:
-           with open('utils/database_clients_stations.json') as data_file:
-                data_all = json.load(data_file)
-
-           data = {}
-           for cli in client_list:
-               for sta in list(data_all[cli].keys()):
-                   epicentral_dist = gps2dist_azimuth(data_all[cli][sta]['coords'][0], data_all[cli][sta]['coords'][1], ev_lat, ev_lon)[0] * 0.001
-                   if epicentral_dist <= 200.:
-                      data[sta] = data_all[cli][sta]
-
-        else:
-             stations_json = './tmp_list.json'
-             make_station_list(stations_json=stations_json, client_list=client_list, ev_lat=ev_lat, ev_lon=ev_lon, start_time=starttime, end_time=starttime + 60., channel_list=['HH[ZNE12], EH[ZNE12]', 'DN[ZNE12]', 'SH[ZNE12]', 'HG[ZNE12]', 'BH[ZNE12]'], filter_network=[], filter_station=[])
-
-             with open(stations_json) as data_file:
-                  data = json.load(data_file)
-
-             os.remove(stations_json)
+        data = make_station_list(client_list=client_list, ev_lat=ev_lat, ev_lon=ev_lon, start_time=starttime, end_time=starttime + 60., channel_list=['HH[ZNE12], EH[ZNE12]', 'DN[ZNE12]', 'SH[ZNE12]', 'HG[ZNE12]', 'BH[ZNE12]'], filter_network=[], filter_station=[])
 
         if len(data) < min_detections:
            print('STOP: Not enough stations available for P- and S-wave picking within ca 200 km...')
            continue
 
         print('Removing undesired channels...')
+
         to_delete = []
         for key in data.keys():
             del_chan = []
@@ -252,7 +234,6 @@ def read_args():
     parser.add_argument('--picker', default='PhaseNet', type=str, help='Picker used to phase-picking: SeisBench (eqt or pn)')
     parser.add_argument('--nll3d', default=False, type=str2bool, help='Use 3D velocity model for depth estimation in NonLinLoc')
     parser.add_argument('--client', default='FDSN', type=str, help='FDSN or SDS')
-    parser.add_argument('--station_database', default=True, type=str2bool, help='True to use json file with stations. False to use ObsPy function get_stations')
     parser.add_argument('--min_detections', default=3, type=int, help='Minimal detections required to hypocenter estimation')
     parser.add_argument('--plotpicks', default=False, type=str2bool, help='If True, it will plot the identified picks on their respective station')
     parser.add_argument('--vel_mode', default='auto', type=str, help='Velocity model mode: automatic or manual selection. If manual, velmod must be specified')

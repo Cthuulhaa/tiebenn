@@ -1,7 +1,7 @@
 import glob
 import os
 
-import joblib
+from joblib import Parallel, delayed
 import numpy as np
 import pandas as pd
 import torch
@@ -364,14 +364,14 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                   else:
                        njobs = int(os.cpu_count() / 2)
 
-                  pool = joblib.Parallel(n_jobs=njobs, backend='multiprocessing', prefer='processes')
+                  pool = Parallel(n_jobs=njobs, backend='multiprocessing', prefer='processes')
 
                   if denoise:
                      if len(denoised[pre]) != 0:
-                        out = pool(joblib.delayed(picks_mulwin)(streams=denoised[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
+                        out = pool(delayed(picks_mulwin)(streams=denoised[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
                   else:
                        if len(streams[pre]) != 0:
-                          out = pool(joblib.delayed(picks_mulwin)(streams=streams[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
+                          out = pool(delayed(picks_mulwin)(streams=streams[pre], start=start, starttime=starttime, picker=picker, model=model) for start in secs_before)
 
                   try:
                       predictions_sta = {}; outputs_sta = {}
@@ -471,8 +471,8 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
               else:
                    n_jobs = int(os.cpu_count() / 2)
 
-              pool = joblib.Parallel(n_jobs=n_jobs, backend='multiprocessing', prefer='processes')
-              out = pool(joblib.delayed(phase_association)(outputs=outputs_for_phassoc[s_bef], data=data, velmod=velmod, ev_lon=ev_lon, ev_lat=ev_lat, ev_time=starttime, max_dist=max_dist, plot=True, mult_windows=mult_windows, secs_before=s_bef) for s_bef in secs_bef_)
+              pool = Parallel(n_jobs=n_jobs, backend='multiprocessing', prefer='processes')
+              out = pool(delayed(phase_association)(outputs=outputs_for_phassoc[s_bef], data=data, velmod=velmod, ev_lon=ev_lon, ev_lat=ev_lat, ev_time=starttime, max_dist=max_dist, plot=True, mult_windows=mult_windows, secs_before=s_bef) for s_bef in secs_bef_)
 
               outputs_assoc = {}
               for sbef in out:
@@ -554,10 +554,10 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                     njobs = len(outputs)
                  else:
                       njobs = int(os.cpu_count() / 2)
-                 pool = joblib.Parallel(n_jobs=njobs, backend='multiprocessing', prefer='processes')
+                 pool = Parallel(n_jobs=njobs, backend='multiprocessing', prefer='processes')
 
                  if denoise:
-                            out = pool(joblib.delayed(plot_mw)(data=data, streams=denoised_for_plot, starttime=starttime, predictions=predictions, picks=outputs, picks_final=outputs_final, station=[sta_]) for sta_ in outputs)
+                            out = pool(delayed(plot_mw)(data=data, streams=denoised_for_plot, starttime=starttime, predictions=predictions, picks=outputs, picks_final=outputs_final, station=[sta_]) for sta_ in outputs)
                  else:
                       plot_mw(data=data, streams=streams_for_plot, starttime=starttime, predictions=predictions, picks=outputs, picks_final=outputs_final)
 
@@ -585,8 +585,7 @@ def deepdenoiser(stream):
             stream_denoise (stream): The stream with denoised waveforms
     """
     denoise = sbm.DeepDenoiser.from_pretrained('original')
-#    stream.detrend() # XXX NOTE: This is the recommended procedure, but it is already done before invoking the denoiser, so I commented it out
-#    stream.filter('highpass', freq=1.0)
+
     stream_denoised = denoise.annotate(stream)
 
     for ch in range(len(stream_denoised)):
@@ -595,134 +594,103 @@ def deepdenoiser(stream):
     return stream_denoised
 
 
-def get_streams_fdsn(start_time, data, mult_windows, secs_before):
+def process_client_waveforms(client, data, start_t, end_t):
     """
-
-    Uses ObsPy FDSN client to download streams with 60 second long waveforms for a set of stations.
+    Process waveform retrieval for a single client. It builds a bulk request for all stations associated with the client and retrieves the corresponding waveforms.
 
     Args:
-         start_time (str): Start of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss
+         client (str): ObsPy client to request waveform bulk
          data (dict): A dictionary with information about the stations. Example: {'LANDS': {'network': 'SX', 'channels': ['HHN', 'HHE', 'HHZ'], 'coords': [51.526, 12.163, 115.0], 'client': 'BGR', 'epic_distance': '53.61'}
-         mult_windows (bools): If True, the retrieved streams will be for multiple time windows around the event time
-         secs_before (float or list): If the picks will be predicted on multiple windows, this parameter is a list of seconds to be substracted from the event time. Otherwise, it is a constant value to be substracted from the event time
+         start_t (str): Start of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss
+         end_t (str): End of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss
 
     Returns:
-            streams (dict): A dictionary with the retrieved station streams
+            stream (dict): A dictionary with the retrieved streams which may be empty if no data is retrieved
     """
-    streams = {}
-
-    if mult_windows == False:
-       start_t = start_time - secs_before
-       end_t = start_t + 60
-
-    else:
-         start_t = start_time - 10
-         end_t = start_time + 60
-
+    bulk = []
     detect_duplicates = []
+
     for st in data:
-        print('Fetching data for station', st)
         channels = chan_comma(data[st]['channels'])
-        if data[st]['coords'] in detect_duplicates:
-           print('Station duplicate detected. Skipping station...')
-        else:
-             try:
-                 if data[st]['client'] == 'BGR':
-                    stream = client_fdsn('http://192.168.11.220:8080').get_waveforms(data[st]['network'], st, '*', channel=channels, starttime=start_t, endtime=end_t, attach_response=False)
-                 else:
-                      stream = client_fdsn(data[st]['client']).get_waveforms(data[st]['network'], st, '*', channel=channels, starttime=start_t, endtime=end_t, attach_response=False)
+        if data[st]['client'] == client:
+            if data[st]['coords'] in detect_duplicates:
+                print(f'Station duplicate detected for client {client}. Skipping station {st}...')
+            else:
+                bulk.append((data[st]['network'], st, '*', channels, start_t, end_t))
+                detect_duplicates.append(data[st]['coords'])
 
-                 if len(stream) != 0:
-                    if len(stream.get_gaps()) > 0:
-                       stream.merge()
+    stream = Stream()
+    if bulk:
+        try:
+            if client == 'BGR':
+               try:
+                   stream = client_fdsn('http://192.168.11.220:8080').get_waveforms_bulk(bulk)
+               except:
+                      stream = client_fdsn(client).get_waveforms_bulk(bulk)
+            else:
+                stream = client_fdsn(client).get_waveforms_bulk(bulk)
+        except Exception as e:
+            print(f'No waveforms retrieved from client {client}')
 
-                    for if0 in stream:
-                        if len(if0.data) == 0:
-                           stream.remove(if0)
-
-                    if len(stream) > 0:
-                       streams[st] = stream
-                       detect_duplicates.append(data[st]['coords'])
-
-             except Exception:
-                    print('Fetching failed for station', st)
-                    pass
-
-    return streams
+    return stream
 
 
 def get_streams_fdsn_bulk(start_time, data, mult_windows, secs_before):
     """
-
     Uses ObsPy FDSN client to generate a bulk request to download streams with 60 second long waveforms for a set of stations.
 
     Args:
-         start_time (str): Start of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss
-         data (dict): A dictionary with information about the stations. Example: {'LANDS': {'network': 'SX', 'channels': ['HHN', 'HHE', 'HHZ'], 'coords': [51.526, 12.163, 115.0], 'client': 'BGR', 'epic_distance': '53.61'}
-         mult_windows (bools): If True, the retrieved streams will be for multiple time windows around the event time
-         secs_before (float or list): If the picks will be predicted on multiple windows, this parameter is a list of seconds to be substracted from the event time. Otherwise, it is a constant value to be substracted from the event time
+         start_time (UTCDateTime): Start of requested time window.
+         data (dict): Station information dictionary.
+         mult_windows (bool): If True, multiple time windows are used.
+         secs_before (float or list): Time to subtract from start_time when mult_windows is False.
 
     Returns:
-            stream_output (dict): A dictionary with the retrieved station streams
+         stream_output (dict): Dictionary with the retrieved station streams.
     """
-    streams = Stream()
-    client_list=['BGR', 'LMU', 'GFZ', 'ODC', 'RASPISHAKE', 'RESIF', 'ETH', 'INGV', 'IPGP', 'NIEP', 'ORFEUS']
-
-    if mult_windows == False:
-       start_t = start_time - secs_before
-       end_t = start_t + 60
-
+    if not mult_windows:
+        start_t = start_time - secs_before
+        end_t = start_t + 60
     else:
-         start_t = start_time - 10
-         end_t = start_time + 60
+        start_t = start_time - 10
+        end_t = start_time + 60
 
-    for client in client_list:
-        bulk = []; detect_duplicates = []
+    client_list = ['BGR', 'LMU', 'GFZ', 'ODC', 'RASPISHAKE', 'RESIF', 'ETH', 'INGV', 'IPGP', 'NIEP', 'ORFEUS']
 
-        for st in data:
-            channels = chan_comma(data[st]['channels'])
-            if data[st]['client'] == client:
-               if data[st]['coords'] in detect_duplicates:
-                  print('Station duplicate detected. Skipping station...')
-               else:
-                    bulk.append((data[st]['network'], st, '*', channels, start_t, end_t))
-                    detect_duplicates.append(data[st]['coords'])
+    if len(client_list) <= int(os.cpu_count() / 2):
+       n_jobs = len(client_list)
+    else:
+         n_jobs = int(os.cpu_count() / 2)
 
-        try:
-            if data[st]['client'] == 'BGR':
-               streams += client_fdsn('http://192.168.11.220:8080').get_waveforms_bulk(bulk)
-            else:
-                 streams += client_fdsn(client).get_waveforms_bulk(bulk)
+    streams_list = Parallel(n_jobs=n_jobs, backend='threading')(
+        delayed(process_client_waveforms)(client, data, start_t, end_t)
+        for client in client_list)
 
-        except Exception:
-               print('No waveforms retrieved from client', client)
-               pass
+    combined_streams = Stream()
+    for s in streams_list:
+        combined_streams += s
 
     stream_output = {}
+    if len(combined_streams) != 0:
+        stations = []
+        for tr in combined_streams:
+            if tr.stats.station not in stations:
+                stations.append(tr.stats.station)
+        for station in stations:
+            stream_out = combined_streams.select(station=station)
+            if len(stream_out.get_gaps()) > 0:
+                stream_out.merge()
+            for tr in list(stream_out):
+                if len(tr.data) == 0:
+                    stream_out.remove(tr)
+            if len(stream_out) > 0:
+                try:
+                    stream_output[station] = stream_out.trim(starttime=start_t, endtime=end_t)
+                except Exception as e:
+                    print(f'Error trimming stream for station {station}')
+                    stream_output[station] = stream_out
 
-    if len(streams) != 0:
-       stations = []
-       for tr in streams:
-           if tr.stats.station not in stations:
-              stations.append(tr.stats.station)
-
-       for station in stations:
-           stream_out = streams.select(station=station)
-
-           if len(stream_out.get_gaps()) > 0:
-              stream_out.merge()
-
-           for if0 in stream_out:
-               if len(if0.data) == 0:
-                  stream_out.remove(if0)
-
-           if len(stream_out) > 0:
-              try:
-                  stream_output[station] = stream_out.trim(starttime=start_t, endtime=end_t)
-              except:
-                     stream_output[station] = stream_out
-
-       return stream_output
+    return stream_output
 
 
 def get_streams_sds(start_time, data, secs_before, mult_windows, sds_dir):

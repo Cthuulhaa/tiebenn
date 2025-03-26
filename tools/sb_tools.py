@@ -646,48 +646,70 @@ def get_streams_fdsn_bulk(start_time, data, mult_windows, secs_before):
     return stream_output
 
 
-def get_streams_sds(start_time, data, secs_before, mult_windows, sds_dir):
+def process_station_sds(st, station_info, start_t, end_t, sds_dir):
     """
-
-    Uses ObsPy SDS client to download streams with 60 second long waveforms for a set of stations.
+    Helper function to retrieve waveform data for a single station using the SDS client.
 
     Args:
-         start_time (str): Start of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss
-         data (dict): A dictionary with information about the stations. Example: {'LANDS': {'network': 'SX', 'channels': ['HHN', 'HHE', 'HHZ'], 'coords': [51.526, 12.163, 115.0], 'client': 'BGR', 'epic_distance': '53.61'}
-         secs_before (float or list): If the picks will be predicted on multiple windows, this parameter is a list of seconds to be substracted from the event time. Otherwise, it is a constant value to be substracted from the event time
-         mult_windows (bools): If True, the retrieved streams will be for multiple time windows around the event time
-         sds_dir (str): Root directory of SDS archive
+         st (str): Station name.
+         station_info (dict): Dictionary with station information.
+         start_t (UTCDateTime): Start time for data retrieval.
+         end_t (UTCDateTime): End time for data retrieval.
+         sds_dir (str): Root directory of the SDS archive.
 
     Returns:
-         streams (dict): A dictionary with the retrieved station streams
+         tuple: (station name, retrieved ObsPy Stream or None if fetching failed)
     """
     sds = client_sds(sds_dir)
-    streams = {}
+    stream = Stream()
 
-    if mult_windows == False:
-       start_t = start_time - secs_before
-       end_t = start_t + 60
+    for ch in station_info['channels']:
+        trace = sds.get_waveforms(station_info['network'], st, '*', channel=ch, starttime=start_t, endtime=end_t)
+        if len(trace) != 0:
+           if len(trace[0].data) > 0:
+              stream += trace
 
+    if len(stream) != 0:
+        if len(stream.get_gaps()) > 0:
+            stream.merge()
+
+        return st, stream
     else:
-         start_t = start_time - 10
-         end_t = start_time + 60
+        print('No waveform data for station', st)
 
-    for st in data:
-        print('Fetching data for station', st)
-        stream = Stream()
-        for ch in data[st]['channels']:
-            trace = sds.get_waveforms(data[st]['network'], st, '*', channel=ch, starttime=start_t, endtime=end_t)
+        return st, None
 
-            if len(trace) != 0:
-               if len(trace[0].data) > 0:
-                  stream += trace
 
-        if len(stream) != 0:
-           if len(stream.get_gaps()) > 0:
-              stream.merge()
-           streams[st] = stream
-        else:
-             print('Fetching failed for station', st)
+def get_streams_sds(start_time, data, secs_before, mult_windows, sds_dir):
+    """
+    Uses ObsPy SDS client to download ObsPy streams for a set of stations.
+
+    Args:
+         start_time (UTCDateTime): Start of requested time window.
+         data (dict): Dictionary with station information.
+         secs_before (float or list): Seconds to subtract from event time (if mult_windows is False).
+         mult_windows (bool): If True, uses a different time window (start_time - 10 to start_time + 60).
+         sds_dir (str): Root directory of the SDS archive.
+
+    Returns:
+         streams (dict): Dictionary with retrieved station streams.
+    """
+    if not mult_windows:
+        start_t = start_time - secs_before
+        end_t = start_t + 60
+    else:
+        start_t = start_time - 10
+        end_t = start_time + 60
+
+    n_jobs = calculate_njobs(data)
+
+    results = Parallel(n_jobs=n_jobs, backend='threading')(delayed(process_station_sds)(st, data[st], start_t, end_t, sds_dir)
+        for st in data)
+
+    streams = {}
+    for st, stream in results:
+        if stream is not None:
+            streams[st] = stream
 
     return streams
 

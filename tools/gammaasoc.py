@@ -31,8 +31,6 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
             PhAssoc_event<event_number>.pdf: A visualization of the associated picks
 
     """
-    print('GaMMA: Phase association for picked arrivals')
-
     ev_east, ev_nort, ev_zone_num, ev_zone_lett = from_latlon(ev_lat, ev_lon)
 
     taupmodel = taup.TauPyModel(model='iasp91')
@@ -54,7 +52,6 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
     id_picks = []; id_stations = []; station = []; stats = []; phase = []; time = []; peak_value = []; longitude = []; latitude = []; elevation = []; x = []; y = []; z = []
     for sta in outputs:
         arrivals = taupmodel.get_travel_times(source_depth_in_km=5., distance_in_degree=float(data[sta]['epic_distance'])/111.11)
-
         for i in arrivals:
             if i.name.lower() == 's':
                s_secs_taup = float(i.time)
@@ -62,7 +59,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
                p_secs_taup = float(i.time)
 
         for pick in outputs[sta].picks:
-            teo_verdict = tt_theo_before_assoc(ev_time=ev_time, teo_p_time=p_secs_taup, teo_s_time=s_secs_taup, pick=pick, tolerance=7) #XXX NOTE: The tolerance indicates that if for a pick the theoretical time (for an event at 5 km depth) differs <tolerance> seconds from the observed time, the observation will be discarded. This aims to eliminate false positives, but it is problematic e.g. for small events or low SNR, since more false positives are expected and the association might fail with too few picks. For this reason, the tolerance must allow an error margin in the picks
+            teo_verdict = tt_theo_before_assoc(ev_time=ev_time, teo_p_time=p_secs_taup, teo_s_time=s_secs_taup, pick=pick, tol_p=6, tol_s=7) #XXX NOTE: The tolerance indicates that if for a pick the theoretical time (for an event at 5 km depth) differs <tolerance> seconds from the observed time, the observation will be discarded. This aims to eliminate false positives, but it is problematic e.g. for small events or low SNR, since more false positives are expected and the association might fail with too few picks. For this reason, the tolerance must allow an error margin in the picks
 
             if teo_verdict == 'pass':
                id_picks.append(data[sta]['network'] + '.' + sta)

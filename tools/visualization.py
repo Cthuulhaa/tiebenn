@@ -1,6 +1,8 @@
 import glob
 import os
 
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -9,81 +11,80 @@ import pygmt
 from obspy import UTCDateTime, read
 
 
-def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final, station):
+def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final):
     """
 
-    Generates a plot which includes time windows showing the waveforms on the different channels on every station used for wave detection under the multiple time-window approach. The predicted P- and/or S-picks are shown as thicks: the ones used for the depth estimation are colored and the rest -- obtained from predictions with other time offsets (and/or not associated to the event) -- are shown thinner and in grey. The probability function of the P- or S-picks is also plotted in colored lines, while that obtained from predictions with other time offsets are in grey. This function is adapted to the outputs produced by the pickers in SeisBench. 
+    Generates a plot which includes time windows showing the waveforms on the different channels on a given station used for wave detection under the multiple time-window approach. The predicted P- and/or S-picks are shown as thicks: the ones used for the depth estimation are colored and the rest--obtained from predictions with other time offsets (and/or not associated to the event)-- are shown thinner and in grey. The probability function of the P- or S-picks is also plotted in colored lines, while that obtained from predictions with other time offsets are in grey. This function is adapted to the outputs produced by the pickers in SeisBench.
 
     Args:
          data (dict): A dictionary with station information
-         streams (dict): A dictionary with the ObsPy streams for each station
+         streams (ObsPy Stream): The ObsPy streams for the station
          starttime (str): Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss
          predictions (dict): A dictionary with the probability function for a detection, P- or S-wave on a given station, as obtained from the Annotate method implemented on SeisBench
          picks (dict): A dictionary with information and classification of P- or S-picks on each station, as obtained from the Classify method implemented on SeisBench
          picks_final (dict): picks after selecting for each station the time window with the best phase pick
-         station (list): list with the name of the station for which the phase picks plot are to be created. This variable was created for convenience at the moment of parallelizing. The approach is not the most elegant...
 
     Returns:
          Figures in PDF format, which are stored in the saved_locations/<ev_time>_tiebenn_loc directory
     """
     secs_bef = 10
+    sta = streams[0].stats.station
 
-    for sta in station:
-        try:
-            ax0 = 0
-            fig, axis = plt.subplots(len(streams[sta]) + 1, 1, figsize=(15, 7), sharex=True, tight_layout=True)
-            for ch in range(len(streams[sta])):
-                axis[ax0].plot(streams[sta][ch].times() - secs_bef, streams[sta][ch].data / np.amax(streams[sta][ch].data), 'k', linewidth=1)
-                axis[ax0].set_ylabel(streams[sta][ch].stats.channel)
+    try:
+        ax0 = 0
+        fig, axis = plt.subplots(len(streams) + 1, 1, figsize=(15, 7), sharex=True, tight_layout=True)
+        for ch in range(len(streams)):
+            axis[ax0].plot(streams[ch].times() - secs_bef, streams[ch].data / np.amax(streams[ch].data), 'k', linewidth=1)
+            axis[ax0].set_ylabel(streams[ch].stats.channel)
 
-                for seconds in picks[sta]:
-                    for pick in picks[sta][seconds].picks:
-                        pick_time = pick.peak_time - streams[sta][ch].stats.starttime - secs_bef
-                        axis[ax0].vlines(pick_time, min(streams[sta][ch].data / np.amax(streams[sta][ch].data)), max(streams[sta][ch].data / np.amax(streams[sta][ch].data)), linestyles='solid', colors='lightgrey', linewidth=1)
+            for seconds in picks[sta]:
+                for pick in picks[sta][seconds].picks:
+                    pick_time = pick.peak_time - streams[ch].stats.starttime - secs_bef
+                    axis[ax0].vlines(pick_time, min(streams[ch].data / np.amax(streams[ch].data)), max(streams[ch].data / np.amax(streams[ch].data)), linestyles='solid', colors='lightgrey', linewidth=1)
 
-                pick_pl = picks_final[picks_final['station'] == sta]
-                for pick in range(len(pick_pl)):
-                    pick_time = UTCDateTime(str(pick_pl['peak_time'].to_list()[pick])) - streams[sta][ch].stats.starttime - secs_bef
-                    if pick_pl['phase'].to_list()[pick] == 'P':
-                       axis[ax0].vlines(pick_time, min(streams[sta][ch].data / np.amax(streams[sta][ch].data)), max(streams[sta][ch].data / np.amax(streams[sta][ch].data)), linestyles ='solid', colors ='c', label='P-pick')
-                    if pick_pl['phase'].to_list()[pick] == 'S':
-                       axis[ax0].vlines(pick_time, min(streams[sta][ch].data / np.amax(streams[sta][ch].data)), max(streams[sta][ch].data / np.amax(streams[sta][ch].data)), linestyles ='solid', colors ='r', label='S-pick')
-                    axis[ax0].legend(loc='upper right')
-
-                if ax0 == 0:
-                   axis[ax0].set_title(streams[sta][ch].stats.network + '.' + sta + ' ' + str(starttime))
-                ax0 = ax0 + 1
-
-            for seconds in predictions[sta]:
-                for preds in range(len(predictions[sta][seconds])):
-                    if predictions[sta][seconds][preds].stats.channel.split('_')[-1] != 'N':
-                       offset = predictions[sta][seconds][preds].stats.starttime - streams[sta][ch].stats.starttime
-                       axis[ax0].plot(predictions[sta][seconds][preds].times() + offset - secs_bef, predictions[sta][seconds][preds].data, color='lightgrey', linewidth=1)
-
+            pick_pl = picks_final[picks_final['station'] == sta]
             for pick in range(len(pick_pl)):
-                ind_max = pick_pl['index'].to_list()[pick]
-                for pred in range(len(predictions[sta][ind_max])):
-                    if predictions[sta][str(ind_max)][pred].stats.channel.split('_')[-1] == pick_pl['phase'].to_list()[pick]:
-                       offset = predictions[sta][str(ind_max)][pred].stats.starttime - streams[sta][ch].stats.starttime
-                       axis[ax0].plot(predictions[sta][str(ind_max)][pred].times() + offset - secs_bef, predictions[sta][str(ind_max)][pred].data, label=predictions[sta][str(ind_max)][pred].stats.channel.split('_')[-1])
-            axis[ax0].text(0, -0.3, 'Epicentral distance: ' + data[sta]['epic_distance'] + ' (km)', fontsize=12)
-            axis[ax0].legend()
-            axis[ax0].set_ylim(0, 1)
-            axis[ax0].set_ylabel('Probability')
-            axis[ax0].set_xlabel('Seconds from start time')
-        except:
-               print('No data to plot for station', sta)
-               pass
-        try:
-            os.mkdir(str(starttime) + '_tiebenn_loc/plots_picks')
-        except:
-               pass
-        try:
-            savename = str(starttime) + '_tiebenn_loc/plots_picks/' + streams[sta][0].stats.network + '.' + sta + str(starttime) + '.pdf'
-            plt.savefig(savename)
-            plt.close()
-        except:
-               pass
+                pick_time = UTCDateTime(str(pick_pl['peak_time'].to_list()[pick])) - streams[ch].stats.starttime - secs_bef
+                if pick_pl['phase'].to_list()[pick] == 'P':
+                   axis[ax0].vlines(pick_time, min(streams[ch].data / np.amax(streams[ch].data)), max(streams[ch].data / np.amax(streams[ch].data)), linestyles ='solid', colors ='c', label='P-pick')
+                if pick_pl['phase'].to_list()[pick] == 'S':
+                   axis[ax0].vlines(pick_time, min(streams[ch].data / np.amax(streams[ch].data)), max(streams[ch].data / np.amax(streams[ch].data)), linestyles ='solid', colors ='r', label='S-pick')
+                axis[ax0].legend(loc='upper right')
+
+            if ax0 == 0:
+               axis[ax0].set_title(streams[ch].stats.network + '.' + sta + ' ' + str(starttime))
+            ax0 = ax0 + 1
+
+        for seconds in predictions[sta]:
+            for preds in range(len(predictions[sta][seconds])):
+                if predictions[sta][seconds][preds].stats.channel.split('_')[-1] != 'N':
+                   offset = predictions[sta][seconds][preds].stats.starttime - streams[ch].stats.starttime
+                   axis[ax0].plot(predictions[sta][seconds][preds].times() + offset - secs_bef, predictions[sta][seconds][preds].data, color='lightgrey', linewidth=1)
+
+        for pick in range(len(pick_pl)):
+            ind_max = pick_pl['index'].to_list()[pick]
+            for pred in range(len(predictions[sta][ind_max])):
+                if predictions[sta][str(ind_max)][pred].stats.channel.split('_')[-1] == pick_pl['phase'].to_list()[pick]:
+                   offset = predictions[sta][str(ind_max)][pred].stats.starttime - streams[ch].stats.starttime
+                   axis[ax0].plot(predictions[sta][str(ind_max)][pred].times() + offset - secs_bef, predictions[sta][str(ind_max)][pred].data, label=predictions[sta][str(ind_max)][pred].stats.channel.split('_')[-1])
+        axis[ax0].text(0, -0.3, 'Epicentral distance: ' + data[sta]['epic_distance'] + ' (km)', fontsize=12)
+        axis[ax0].legend()
+        axis[ax0].set_ylim(0, 1)
+        axis[ax0].set_ylabel('Probability')
+        axis[ax0].set_xlabel('Seconds from start time')
+    except:
+           print('No data to plot for station', sta)
+           pass
+
+    output_dir = f'{starttime}_tiebenn_loc/plot_picks'
+    os.makedirs(output_dir, exist_ok=True)
+
+    try:
+        savename = os.path.join(output_dir, f'{streams[0].stats.network}.{sta}{starttime}.pdf')
+        fig.savefig(savename)
+        plt.close(fig)
+    except:
+           pass
 
     return
 
@@ -91,11 +92,11 @@ def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final, s
 def plotpicks_sb(data, streams, starttime, predictions, picks):
     """
 
-    Generates a plot which includes time windows showing the waveforms on the different channels on every station used for wave detection. The identified P- and/or S-picks are shown as thicks. The probability function of the detected event and P- or S-picks is also plotted. This function is adapted to the outputs produced by the pickers in SeisBench. 
+    Generates a plot which includes time windows showing the waveforms on the different channels of a station used for wave detection. The identified P- and/or S-picks are shown as thicks. The probability function of the detected event and P- or S-picks is also plotted. This function is adapted to the outputs produced by the pickers in SeisBench.
 
     Args:
          data (dict): A dictionary with station information
-         streams (dict): A dictionary with the ObsPy streams for each station
+         streams (ObsPy Stream): An ObsPy strea with waveforms
          starttime (str): Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss
          predictions (dict): A dictionary with the probability function for a detection, P- or S-wave on a given station, as obtained from the Annotate method implemented on SeisBench
          picks (dict): A dictionary with information and classification of P- or S-picks on each station, as obtained from the Classify method implemented on SeisBench
@@ -103,53 +104,56 @@ def plotpicks_sb(data, streams, starttime, predictions, picks):
     Returns:
          Figures in PDF format, which are stored in the saved_locations/<ev_time>_tiebenn_loc directory
     """
+    sta = streams[0].stats.station
 
-    for sta in streams:
-        try:
-            ax0 = 0
-            fig, axis = plt.subplots(len(streams[sta]) + 1, 1, figsize=(15, 7), sharex=True, tight_layout=True)
-            for ch in range(len(streams[sta])):
-                axis[ax0].plot(streams[sta][ch].times(), streams[sta][ch].data / np.amax(streams[sta][ch].data), 'k', linewidth=1)
-                for pick in picks[sta].picks:
-                    if pick.phase == 'P':
-                       axis[ax0].vlines(pick.peak_time - streams[sta][ch].stats.starttime, min(streams[sta][ch].data / np.amax(streams[sta][ch].data)), max(streams[sta][ch].data / np.amax(streams[sta][ch].data)), linestyles='solid', colors='c', label='P-pick')
-                       axis[ax0].legend(loc='upper right')
-                    if pick.phase == 'S':
-                       axis[ax0].vlines(pick.peak_time - streams[sta][ch].stats.starttime, min(streams[sta][ch].data / np.amax(streams[sta][ch].data)), max(streams[sta][ch].data / np.amax(streams[sta][ch].data)), linestyles='solid', colors ='r', label='S-pick')
-                       axis[ax0].legend(loc='upper right')
-                axis[ax0].set_ylabel(streams[sta][ch].stats.channel)
-                if ax0 == 0:
-                   axis[ax0].set_title(streams[sta][ch].stats.network + '.' + sta + ' ' + str(starttime))
-                ax0 = ax0 + 1
-            for preds in range(len(predictions[sta])):
-                if predictions[sta][preds].stats.channel.split('_')[-1] != 'N':
-                   offset = predictions[sta][preds].stats.starttime - streams[sta][ch].stats.starttime
-                   axis[ax0].plot(predictions[sta][preds].times() + offset, predictions[sta][preds].data, label=predictions[sta][preds].stats.channel.split('_')[-1])
-            axis[ax0].text(0, -0.3, 'Epicentral distance: ' + data[sta]['epic_distance'] + ' (km)', fontsize=12)
-            axis[ax0].legend()
-            axis[ax0].set_ylim(0, 1)
-            axis[ax0].set_ylabel('Probability')
-            axis[ax0].set_xlabel('Seconds from start time')
-        except:
-               print('No data to plot for station', sta)
-               pass
-        try:
-            os.mkdir(str(starttime) + '_tiebenn_loc/plot_picks')
-        except:
-               pass
-        try:
-            savename = str(starttime) + '_tiebenn_loc/plot_picks/' + streams[sta][0].stats.network + '.' + sta + str(starttime) + '.pdf'
-            plt.savefig(savename)
-            plt.close()
-        except:
-               pass
+    try:
+        fig, axes = plt.subplots(len(streams) + 1, 1, figsize=(15, 7), sharex=True, tight_layout=True)
+        for ax, trace in zip(axes[:-1], streams):
+            ax.plot(trace.times(), trace.data / np.amax(trace.data), 'k', linewidth=1)
+            for pick in picks[sta].picks:
+                if pick.phase == 'P':
+                    ax.vlines(pick.peak_time - trace.stats.starttime, np.min(trace.data / np.amax(trace.data)), np.max(trace.data / np.amax(trace.data)), linestyles='solid', colors='c', label='P-pick')
+                    ax.legend(loc='upper right')
+                elif pick.phase == 'S':
+                    ax.vlines(pick.peak_time - trace.stats.starttime, np.min(trace.data / np.amax(trace.data)), np.max(trace.data / np.amax(trace.data)), linestyles='solid', colors='r', label='S-pick')
+                    ax.legend(loc='upper right')
+            ax.set_ylabel(trace.stats.channel)
+            if ax == axes[0]:
+                ax.set_title(trace.stats.network + '.' + sta + ' ' + str(starttime))
+
+        last_ax = axes[-1]
+
+        for preds in range(len(predictions[sta])):
+            if predictions[sta][preds].stats.channel.split('_')[-1] != 'N':
+                offset = predictions[sta][preds].stats.starttime - streams[0].stats.starttime
+                last_ax.plot(predictions[sta][preds].times() + offset, predictions[sta][preds].data, label=predictions[sta][preds].stats.channel.split('_')[-1])
+
+        last_ax.text(0, -0.3, 'Epicentral distance: ' + data[sta]['epic_distance'] + ' (km)', fontsize=12)
+        last_ax.legend()
+        last_ax.set_ylim(0, 1)
+        last_ax.set_ylabel('Probability')
+        last_ax.set_xlabel('Seconds from start time')
+
+    except Exception as e:
+        print('No data to plot for station', sta, 'Error:', e)
+        return
+
+    output_dir = f'{starttime}_tiebenn_loc/plot_picks'
+    os.makedirs(output_dir, exist_ok=True)
+
+    try:
+        savename = os.path.join(output_dir, f'{streams[0].stats.network}.{sta}{starttime}.pdf')
+        fig.savefig(savename)
+        plt.close(fig)
+
+    except Exception as e:
+        print('Error saving figure for station', sta, 'Error:', e)
 
     return
 
 
 def plot_assoc(ev_time, data, stations, picks, events, merged, mult_windows, secs_before):
     """
-
     The visualization of the associated picks using PyOcto
 
     Args:
@@ -159,27 +163,31 @@ def plot_assoc(ev_time, data, stations, picks, events, merged, mult_windows, sec
          picks (pandas dataframe): Information for each predicted pick: station, phase (P or S), time and probability
          events (pandas dataframe): The event(s) to which PyOcto associated the picks
          merged (pandas dataframe): A single dataframe containing all the information for the associated picks
-         mult_windows (bool): If picks were predicted in the multiple-windows-mode, then the code will name de output plots accordingly
+         mult_windows (bool): If picks were predicted in the multiple-windows-mode, then the code will name the output plots accordingly
          secs_before (int): Seconds before the event time to start retrieving waveforms, among other uses
 
     Returns:
-            PhAssoc_event<event_number>.pdf: Figure in PDF format, which is stored in the saved_locations/<ev_time>_tiebenn_loc directory
+         PhAssoc_event<event_number>.pdf: Figure in PDF format, stored in the saved_locations/<ev_time>_tiebenn_loc directory
     """
     for ev in range(len(events)):
-        max_dist = 0; max_time = 0
+        max_dist = 0
+        max_time = 0
+
+        fig, ax = plt.subplots(figsize=(8, 6), tight_layout=True)
+
         for pi in range(len(picks)):
             t_pick = UTCDateTime(str(picks['peak_time'][pi]))
             time = t_pick - ev_time
             if time >= max_time:
-               max_time = time
+                max_time = time
             st = picks['station'][pi]
             epic_dist = float(data[st]['epic_distance'])
             if epic_dist >= max_dist:
-               max_dist = epic_dist
+                max_dist = epic_dist
             if picks['phase'][pi].lower() == 'p':
-               plt.plot(epic_dist, time, 'c', marker='x', markersize=6)
-            if picks['phase'][pi].lower() == 's':
-               plt.plot(epic_dist, time, 'r', marker='x', markersize=6)
+                ax.plot(epic_dist, time, 'c', marker='x', markersize=6)
+            elif picks['phase'][pi].lower() == 's':
+                ax.plot(epic_dist, time, 'r', marker='x', markersize=6)
 
         merged_plot = merged[merged['idx'] == ev]
         merged_indexes = merged.index[merged['idx'] == ev].to_list()
@@ -189,32 +197,35 @@ def plot_assoc(ev_time, data, stations, picks, events, merged, mult_windows, sec
             epic_dist = float(data[st]['epic_distance'])
             time = UTCDateTime(str(merged_plot['peak_time'][merg])) - ev_time
             if merged_plot['phase'][merg].lower() == 'p':
-               plt.plot(epic_dist, time, 'c', marker='.', markersize=25, markeredgewidth=1.5, markeredgecolor='k')
-            if merged_plot['phase'][merg].lower() == 's':
-               plt.plot(epic_dist, time, 'r', marker='.', markersize=25, markeredgewidth=1.5, markeredgecolor='k')
+                ax.plot(epic_dist, time, 'c', marker='.', markersize=25, markeredgewidth=1.5, markeredgecolor='k')
+            elif merged_plot['phase'][merg].lower() == 's':
+                ax.plot(epic_dist, time, 'r', marker='.', markersize=25, markeredgewidth=1.5, markeredgecolor='k')
 
         for station in stations['id']:
             epic_dist = float(data[station]['epic_distance'])
-            plt.text(epic_dist, 0, station, size=10, rotation=40, ha='center', va='center', bbox=dict(boxstyle='square', ec=(0, 0, 0), fc=(1, 0.9, 0.9)))
+            ax.text(epic_dist, 0, station, size=10, rotation=40, ha='center', va='center', bbox=dict(boxstyle='square', ec=(0, 0, 0), fc=(1, 0.9, 0.9)))
 
-        plt.plot(-10, -10, 'cx', markersize=6, label='Non-associated P')
-        plt.plot(-10, -10, 'rx', markersize=6, label='Non-associated S')
-        plt.plot(-10, -10, 'c.', markersize=25, markeredgewidth=1.5, markeredgecolor='k', label='Associated P')
-        plt.plot(-10, -10, 'r.', markersize=25, markeredgewidth=1.5, markeredgecolor='k', label='Associated S')
-        plt.xlabel('Epicentral distance [km]')
-        plt.ylabel('Seconds after event')
-        plt.xlim(0, max_dist + 5)
-        plt.ylim(0, max_time + 5)
-        plt.grid(True)
-        plt.legend(loc='best')
-        title = 'Picks associated to event ' + str(ev + 1)
-        plt.title(title)
-        if mult_windows == True:
-           savename = 'PhAssoc_event' + str(ev + 1) + '_' + str(secs_before) + '.pdf'
+        ax.plot(-10, -10, 'cx', markersize=6, label='Non-associated P')
+        ax.plot(-10, -10, 'rx', markersize=6, label='Non-associated S')
+        ax.plot(-10, -10, 'c.', markersize=25, markeredgewidth=1.5, markeredgecolor='k', label='Associated P')
+        ax.plot(-10, -10, 'r.', markersize=25, markeredgewidth=1.5, markeredgecolor='k', label='Associated S')
+
+        ax.set_xlabel('Epicentral distance [km]')
+        ax.set_ylabel('Seconds after event')
+        ax.set_xlim(0, max_dist + 5)
+        ax.set_ylim(0, max_time + 5)
+        ax.grid(True)
+        ax.legend(loc='best')
+        title = f'Picks associated to event {ev + 1}'
+        ax.set_title(title)
+
+        if mult_windows:
+            savename = f'PhAssoc_event{ev + 1}_{secs_before}.pdf'
         else:
-             savename = 'PhAssoc_event' + str(ev + 1) + '.pdf'
-        plt.savefig(savename)
-        plt.close()
+            savename = f'PhAssoc_event{ev + 1}.pdf'
+
+        fig.savefig(savename)
+        plt.close(fig)
 
 
 def epic_sta_plot():

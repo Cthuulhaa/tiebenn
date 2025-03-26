@@ -178,7 +178,7 @@ def main(args):
         if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
              from tools.sb_tools import picks_sb
 
-             streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plotpicks, phase_assoc=ph_assoc, pick_sel='min_res', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
+             streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plotpicks, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
 
         if not glob.glob('*_tiebenn_loc/csv_picks/*.csv'):
            print('Skipping to next event in readfile...')

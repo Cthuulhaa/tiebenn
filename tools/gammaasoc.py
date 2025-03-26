@@ -9,7 +9,7 @@ from .utm import from_latlon
 from .visualization import plot_assoc
 
 
-def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, plot, max_dist, mult_windows, secs_before):
+def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, plot, mult_windows, secs_before):
     """
 
     Phase association using GaMMA (https://github.com/AI4EPS/GaMMA). The function receives as input the predicted phase picks obtained from SeisBench (PhaseNet/EQTransformer) and uses a machine-learning model to predict which of them correspond to a certain event.
@@ -17,9 +17,18 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, plot, max_
     NOTE: A future development for this function could be the case where the phase association yields more than one event, not originally detected by the AD-Detector. In this case, additional outputs would be required to account for eventual new events
 
     Args:
-         ev_lat (float):
-         ev_lon (float):
+         outputs (dict): The predicted phases/arrival times obtained from SeisBench for each station
+         data (dict): A dictionary with information regarding the stations on which picks were predicted
+         velmod (int): The velocity model used for phase association
+         ev_lon (float): Longitude of the located event
+         ev_lat (float): Latitude of the located event
+         ev_time (str) Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss
+         plot (bool): If true, it will plot the detected event(s) and the corresponding associated picks
+         mult_windows (bool): If picks were predicted in the multiple-windows-mode, then the code will name de output plots accordingly
+         secs_before (int): Seconds before the event time to start retrieving waveforms, among other uses
     Returns:
+            events_assoc (dict): A dictionary with all the predicted events and their associated phases in a pandas dataframe
+            PhAssoc_event<event_number>.pdf: A visualization of the associated picks
 
     """
     print('GaMMA: Phase association for picked arrivals')
@@ -115,6 +124,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, plot, max_
     print('GaMMA: For a total of', picks_all, 'predicted picks')
     print('of which', picks_all_p, 'are P-picks and', picks_all_s, 'are S-picks:')
     print('%', len(events), 'event(s) was/were detected')
+
     for event in range(len(events)):
         print('% for event', event + 1, ':')
         for_event = merged[merged['idx'] == event]
@@ -130,4 +140,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, plot, max_
         merg = merged[merged['idx'] == event]
         events_assoc[event] = merg[['station', 'time', 'peak_time', 'peak_value', 'phase']]
 
-    return events_assoc
+    if mult_windows:
+       return events_assoc, str(secs_before)
+    else:
+         return events_assoc

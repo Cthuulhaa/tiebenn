@@ -3,6 +3,12 @@ import os
 
 import matplotlib
 matplotlib.use('Agg')
+from matplotlib.patches import RegularPolygon
+from matplotlib.path import Path
+from matplotlib.projections import register_projection
+from matplotlib.projections.polar import PolarAxes
+from matplotlib.spines import Spine
+from matplotlib.transforms import Affine2D
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -477,5 +483,102 @@ def plot_hypoc_confidence_ellipsoid():
 
     for dele in glob.glob('*_tiebenn_loc/loc_eqdatetime*'):
         os.remove(dele)
+
+    return
+
+
+def radar_factory(num_vars):
+    """
+    Create a radar chart with num_vars Axes. This function creates a RadarAxes projection and registers it. Adapted from this example: https://matplotlib.org/stable/gallery/specialty_plots/radar_chart.html
+
+    Args:
+         num_vars (int): Number of variables for radar chart.
+
+    Returns:
+         Polygon of <num_vars> sides.
+    """
+    frame = 'polygon'
+    theta = np.linspace(0, 2*np.pi, num_vars, endpoint=False)
+
+    class RadarTransform(PolarAxes.PolarTransform):
+
+        def transform_path_non_affine(self, path):
+            if path._interpolation_steps > 1:
+               path = path.interpolated(num_vars)
+            return Path(self.transform(path.vertices), path.codes)
+
+    class RadarAxes(PolarAxes):
+
+        name = 'radar'
+        PolarTransform = RadarTransform
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.set_theta_zero_location('N')
+
+        def fill(self, *args, closed=True, **kwargs):
+            """Override fill so that line is closed by default"""
+            return super().fill(closed=closed, *args, **kwargs)
+
+        def plot(self, *args, **kwargs):
+            """Override plot so that line is closed by default"""
+            lines = super().plot(*args, **kwargs)
+            for line in lines:
+                self._close_line(line)
+
+        def _close_line(self, line):
+            x, y = line.get_data()
+            # FIXME: markers at x[0], y[0] get doubled-up
+            if x[0] != x[-1]:
+                x = np.append(x, x[0])
+                y = np.append(y, y[0])
+                line.set_data(x, y)
+
+        def set_varlabels(self, labels):
+            self.set_thetagrids(np.degrees(theta), labels)
+
+        def _gen_axes_patch(self):
+            return RegularPolygon((0.5, 0.5), num_vars, radius=.5, edgecolor="k")
+
+        def _gen_axes_spines(self):
+            spine = Spine(axes=self, spine_type='circle', path=Path.unit_regular_polygon(num_vars))
+            spine.set_transform(Affine2D().scale(.5).translate(.5, .5) + self.transAxes)
+            return {'polar': spine}
+
+    register_projection(RadarAxes)
+
+    return theta
+
+
+def radarplot(event):
+    """
+
+    Visualization of LQS metric using a radar plot, which illustrates the contribution of the 8 parameters defining the LQS value.
+
+    Args:
+         event (Pandas Dataframe): Pandas dataframe with the 8 normalized parameters and the LQS value for a given event
+
+    Returns:
+         PDF figure of LQS metric in a radar plot.
+    """
+    theta = radar_factory(8)
+
+    parameters = [1 - event['norm.det.cov'].tolist()[0], event['norm.sta.den'].tolist()[0], 1 - event['norm.aui'].tolist()[0], 1 - event['norm.azgap'].tolist()[0], 1 - event['norm.sec.azgap'].tolist()[0], 1 - event['norm.near.sta'].tolist()[0], 1 - event['norm.rms'].tolist()[0], event['norm.npicks'].tolist()[0]]
+
+    color = plt.get_cmap('inferno')(event['LQS'].tolist()[0])
+
+    fig, ax = plt.subplots(figsize=(7, 7), nrows=1, ncols=1, tight_layout=True, subplot_kw=dict(projection='radar'))
+
+    ax.set_rgrids([0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.set_rlim(0, 1)
+    ax.tick_params(labelsize=14)
+    ax.set_title(f'{event['datetime'].tolist()[0]}, LQS = {'%.4f'%(event['LQS'].tolist()[0])}', weight='bold', size='medium', position=(0.5, 1.1), horizontalalignment='center', verticalalignment='center')
+    ax.plot(theta, parameters, color=color)
+    ax.set_facecolor((0.91, 0.91, 0.91))
+    ax.fill(theta, parameters, facecolor=color, alpha=0.25, label='_nolegend_')
+    ax.set_varlabels([r'1 - det(Cov[$\bf{X}$])', 'Sta.Dens.', '1 - Az.Unif.', '1 - Az.Gap', '1 - Sec.Az.Gap', '1 - Near.Sta', '1 - RMS', 'N.Picks'])
+
+    fig.savefig(f'{event['datetime_orig'].tolist()[0]}_tiebenn_loc/LQS.pdf')
+    plt.close(fig)
 
     return

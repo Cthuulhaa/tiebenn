@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 
 from obspy import UTCDateTime
+from obspy.geodetics import gps2dist_azimuth
 
 
 def tt_theo_before_assoc(ev_time, teo_p_time, teo_s_time, pick, tol_p, tol_s):
@@ -237,3 +238,225 @@ def get_snr(data, picks, wlen):
         snr[pick['phase'].tolist()[0]] = round(10 * math.log10((np.percentile(sw1, 95) / np.percentile(nw1, 95)) ** 2), 1)
 
     return snr
+
+
+def station_density(epicenter, stations):
+    """
+
+    Calculates station density within a circular area around the epicenter.
+
+    Consideration: If only one station is further away, this might skew the resulting density calculation.
+
+    Args:
+         epicenter (tuple): (latitude, longitude) for the event
+         stations (list): list of tuples [(latitude, longitude), ...] for station locations
+
+    Returns:
+         density (float): Station density (stations per square km).
+    """
+    distances = np.array([gps2dist_azimuth(epicenter[0], epicenter[1], st[0], st[1])[0] / 1000.0
+        for st in stations
+    ])
+
+    max_distance = distances.max()
+    area = np.pi * (max_distance ** 2)
+    density = len(stations) / area if area > 0 else 0
+
+    return density
+
+
+def calculate_azimuths(epicenter, stations):
+    """
+
+    Calculates azimuths from the epicenter to each station.
+
+    Args:
+         epicenter (tuple): (epicenter_latitude, epicenter_longitude)
+         stations (list): List of (lat, lon) tuples of the coordinates of each station
+    Returns:
+         azimuths (NumPy array): Array of station azimuths
+    """
+    lat_e, lon_e = epicenter
+
+    azimuths = []
+    for lat_s, lon_s in stations:
+        _, azimuth, _ = gps2dist_azimuth(lat_e, lon_e, lat_s, lon_s)
+        azimuths.append(azimuth)
+
+    return np.array(azimuths)
+
+
+def azimuthal_uniformity_index(azimuths):
+    """
+
+    Calculate the Azimuthal Uniformity Index (AUI) for a set of station azimuths.
+
+    Args:
+         azimuths (NumPy array): Array of station azimuths
+
+    Returns:
+         aui (float): Azimuthal Uniformity Index
+    """
+    azimuths = np.sort(azimuths)
+    gaps = np.diff(np.concatenate(([azimuths[-1] - 360], azimuths)))
+    std_gap = np.std(gaps)
+
+    aui = std_gap
+    return aui
+
+
+def azimuthal_gaps(event_lat, event_lon, station_coords):
+    """
+
+    Calculates the primary and secondary azimuthal gaps given an event location and station coordinates.
+
+    Args:
+         event_lat (float): Epicentral latitude
+         event_lon (float): Epicentral longitude
+         station_coords (list): List of station coordinates tuples: [(lat1, lon1), (lat2, lon2), (lat3, lon3), ...]
+
+    Returns:
+        tuple: (primary_gap, secondary_gap:
+    """
+    def calculate_azimuth(lat1, lon1, lat2, lon2):
+        """
+        Calculate the azimuth from one geographic coordinate to another.
+        """
+        lat1, lon1, lat2, lon2 = map(np.radians, [lat1, lon1, lat2, lon2])
+        delta_lon = lon2 - lon1
+        x = np.sin(delta_lon) * np.cos(lat2)
+        y = np.cos(lat1) * np.sin(lat2) - np.sin(lat1) * np.cos(lat2) * np.cos(delta_lon)
+        azimuth = np.degrees(np.arctan2(x, y))
+        return (azimuth + 360) % 360
+
+    azimuths = [calculate_azimuth(event_lat, event_lon, lat, lon) for lat, lon in station_coords]
+    azimuths_sorted = np.sort(azimuths)
+    extended_azimuths = np.append(azimuths_sorted, azimuths_sorted[0] + 360)
+    gaps = np.diff(extended_azimuths)
+
+    primary_gap = np.max(gaps)
+    primary_index = np.argmax(gaps)
+    primary_pair = (azimuths_sorted[primary_index], azimuths_sorted[(primary_index + 1) % len(azimuths_sorted)])
+
+    secondary_gap = 0
+    secondary_pair = None
+    for i in range(len(azimuths_sorted)):
+        reduced_azimuths = np.delete(azimuths_sorted, i)
+        extended_reduced = np.append(reduced_azimuths, reduced_azimuths[0] + 360)
+        reduced_gaps = np.diff(extended_reduced)
+        largest_gap = np.max(reduced_gaps)
+        if largest_gap > secondary_gap:
+            secondary_gap = largest_gap
+            secondary_index = np.argmax(reduced_gaps)
+            secondary_pair = (reduced_azimuths[secondary_index], reduced_azimuths[(secondary_index + 1) % len(reduced_azimuths)])
+
+    return primary_gap, secondary_gap
+
+
+def normalize(param, mode, lb, ub):
+    """
+
+    Parameter normalization using robust statistics. The resulting normalized parameter ranges between 0 and 1. Each parameter will be normalized after the modes and bundary values of Ramos et al. (2025, in preparation).
+
+    Args:
+         param (float): Parameter to be normalized
+         mode (str): Choose a normalization mode between 'simple' (simple robust normalization using lb and ub) or 'log' (logarithmic 10-base, robust normalization)
+         lb (float): Lower boundary of normalization. If param < lb, then it will be clipped to 0
+         ub (float): Upper boundary of normalization. If param > ub, then it will be clipped to 1. Note: lb as well as ub for the parameters to be normalized using the log mode, are actually the logarithm of the normalization boundaries
+
+    Returns:
+         norm_param (float): The normalized parameter
+    """
+    if mode == 'simple':
+       norm_param = (np.array(param) - lb) / (ub - lb)
+    elif mode == 'log':
+       epsilon = 1e-6
+       log_param = np.log10(np.array(param) + epsilon)
+       norm_param = (log_param - lb) / (ub - lb)
+
+    norm_param = np.clip(norm_param, 0, 1)
+
+    return norm_param
+
+
+def calculate_lqs(loc_file, sta_file):
+    """
+
+    Calculates the Location Quality Score (LQS) metric, as in the work of Ramos et al. (2025, in preparation). This metric describes the quality of automatic locations based on location parameters and station network distribution in the vicinities of the epicenter.
+
+    Args:
+         loc_file (str): Full path to location file in NonLinLoc format (see section 'Formats' in http://alomax.free.fr/nlloc/)
+         sta_file (str):  Full path to station file in NonLinLoc format (see section 'Formats' in http://alomax.free.fr/nlloc/)
+
+    Returns:
+         parameters (Pandas Dataframe): A dataframe with the original event datetime (from the catalog) and the datetime calculated by NonLinLoc, the LQS metric of the event and the eight normalized parameters used for the calculation of the LQS.
+    """
+    print('Generating radarplot from LQS value...')
+
+    st4loc = []
+    with open(loc_file, 'r') as f:
+         for line in f:
+             if len(line.split()) > 1:
+                if line.split()[0] == 'COMMENT':
+                   datetime_orig = str(UTCDateTime(f'{line.split()[1]} {line.split()[2]}'.split('"')[1]))
+                if line.split()[0] == 'GEOGRAPHIC':
+                   li = line.split()
+                   epicenter = (float(li[9]), float(li[11]))
+                   datetime = UTCDateTime(int(li[2]), int(li[3]), int(li[4]), int(li[5]), int(li[6]), float(li[7]))
+                if line.split()[0] == 'QUALITY':
+                       rms = float(line.split()[8])
+                       npicks = float(line.split()[10])
+                       near_sta = float(line.split()[14])
+                if line.split()[0] == 'STATISTICS':
+                       li = line.split()
+                       cov_xx = float(li[8]); cov_xy = float(li[10]); cov_xz = float(li[12])
+                       cov_yx = cov_xy; cov_yy = float(li[14]); cov_yz = float(li[16])
+                       cov_zx = cov_xz; cov_zy = cov_yz; cov_zz = float(li[18])
+                       covariance = np.array([[cov_xx, cov_xy, cov_xz], [cov_yx, cov_yy, cov_yz], [cov_zx, cov_zy, cov_zz]])
+                       detcov = np.linalg.det(covariance)
+                if line.split()[1] == '?' and float(line.split()[16]) != 0.0:
+                   if line.split()[0] not in st4loc:
+                      st4loc.append(line.split()[0])
+    f.close()
+
+    stations = []
+    with open(sta_file, 'r') as f:
+         for line in f:
+             if line.split()[1] in st4loc:
+                st_lat = float(line.split()[3]); st_lon = float(line.split()[4])
+                stations.append((st_lat, st_lon))
+    f.close()
+
+    density = station_density(epicenter, stations)
+    azimuths = calculate_azimuths(epicenter, stations)
+    aui = azimuthal_uniformity_index(azimuths)
+
+    azgaps = azimuthal_gaps(epicenter[0], epicenter[1], stations)
+    azgap = azgaps[0]
+    sec_azgap = azgaps[1]
+
+    norm_detcov = normalize(detcov, 'log', lb=-3.4713284073615576, ub=0.036130328213886044)
+    norm_dens = normalize(density, 'log', lb=-3.3078381334234708, ub=-2.4335738944657455)
+    norm_azgap = normalize(azgap, 'simple', lb=28.13900043228351, ub=140)
+    norm_sazgap = normalize(sec_azgap, 'simple', lb=40.41388529165775, ub=160)
+    norm_aui = normalize(aui, 'simple', lb=6.301451360922264, ub=17.577533605788116)
+    norm_nsta = normalize(near_sta, 'log', lb=1.000000043429446, ub=1.4771212691961448)
+
+    if rms < 0.128578 and density < 0.0006:
+       norm_rms = 1.0
+    else:
+        norm_rms = normalize(rms, 'log', lb=-0.8781005892308125, ub=-0.2998885611545161)
+
+    norm_npicks = normalize(npicks, 'log', lb=1.6433404945528949, ub=2.0773641073544047)
+
+    weights = {'sta_den': 0.125, 'azgap': 0.05, 'sec_azgap': 0.1, 'rms': 0.1, 'near_sta': 0.1, 'det_cov': 0.35, 'aui': 0.125, 'npicks': 0.05}
+
+    LQS = weights['sta_den'] * norm_dens + weights['azgap'] * (1 - norm_azgap) + weights['sec_azgap'] * (1 - norm_sazgap) + weights['rms'] * (1 - norm_rms) + weights['near_sta'] * (1 - norm_nsta) + weights['det_cov'] * (1 - norm_detcov) + weights['npicks'] * norm_npicks + weights['aui'] * (1 - norm_aui)
+
+    norm_params = {'norm.det.cov': norm_detcov, 'norm.sta.den': norm_dens, 'norm.aui': norm_aui, 'norm.azgap': norm_azgap, 'norm.sec.azgap': norm_sazgap, 'norm.near.sta': norm_nsta, 'norm.rms': norm_rms, 'norm.npicks': norm_npicks}
+
+    merged = {'datetime_orig': datetime_orig, 'datetime': str(datetime), 'LQS': LQS} | norm_params
+
+    parameters = pd.DataFrame([merged])
+
+    return parameters

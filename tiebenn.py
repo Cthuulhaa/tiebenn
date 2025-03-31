@@ -22,7 +22,7 @@ def main(args):
         nll3d = args.nll3d
         client = args.client
         min_detections = round(args.min_detections)
-        plotpicks = args.plotpicks
+        plots = args.plots
         vel_mode = args.vel_mode
         velmod = args.velmod
         denoise = args.denoise
@@ -177,7 +177,7 @@ def main(args):
         if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
              from tools.sb_tools import picks_sb
 
-             streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plotpicks, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
+             streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
 
         if not glob.glob('*_tiebenn_loc/csv_picks/*.csv'):
            print('Skipping to next event in readfile...')
@@ -203,7 +203,7 @@ def main(args):
                 if velmod == 6 or velmod == 7:
                    create3dgrid(ev_lon=ev_lon, ev_lat=ev_lat, velmod=velmod)
 
-             sta_gap, sta_nearest = pynlloc(control_file, control_file_s, velmod=velmod, data=data, nll3d=nll3d, plots=plotpicks)
+             sta_gap, sta_nearest = pynlloc(control_file, control_file_s, velmod=velmod, data=data, nll3d=nll3d, plots=plots)
 
 #             if not nll3d:
 #                if sta_nearest > 150. or sta_gap > 2000.:
@@ -211,9 +211,9 @@ def main(args):
 #                   inp_files_nlloc_sb(ev_lon=ev_lon, ev_lat=ev_lat, ev_time=ev_time, data=data, nll3d=True, velmod=velmod, min_detections=min_detections)
 #                   control_file = glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control.in'
 #                   control_file_s = glob.glob('*_tiebenn_loc/')[0] + 'nlloc_control_s.in'
-#                   sta_gap, sta_nearest = pynlloc(control_file, control_file_s, velmod=velmod, data=data, nll3d=True, plots=plotpicks)
+#                   sta_gap, sta_nearest = pynlloc(control_file, control_file_s, velmod=velmod, data=data, nll3d=True, plots=plots)
 
-             if plotpicks:
+             if plots:
                 try:
                     plot_picks4loc(data=data, streams=streams)
                     plot_hypoc_confidence_ellipsoid()
@@ -249,7 +249,7 @@ def read_args():
     parser.add_argument('--nll3d', default=False, type=str2bool, help='Use 3D velocity model for depth estimation in NonLinLoc')
     parser.add_argument('--client', default='FDSN', type=str, help='FDSN or SDS')
     parser.add_argument('--min_detections', default=3, type=int, help='Minimal detections required to hypocenter estimation')
-    parser.add_argument('--plotpicks', default=False, type=str2bool, help='If True, it will plot the identified picks on their respective station')
+    parser.add_argument('--plots', default=False, type=str2bool, help='If True, it will plot several figures')
     parser.add_argument('--vel_mode', default='auto', type=str, help='Velocity model mode: automatic or manual selection. If manual, velmod must be specified')
     parser.add_argument('--velmod', type=int, help='Velocity model for phase association and hypocenter estimation with NonLinLoc')
     parser.add_argument('--denoise', default=False, type=str2bool, help='True to use DeepDenoiser on collected waveforms up to a distance of 100 km')

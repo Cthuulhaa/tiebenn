@@ -90,10 +90,10 @@ def main(args):
             ev_year = x.split()[2]
             ev_month = strmonth2num(x.split()[1])
             ev_day = x.split()[0]
-            ev_time = f'{ev_year}-{ev_month}-{ev_day} {x.split()[3]}'
+            ev_time = f"{ev_year}-{ev_month}-{ev_day} {x.split()[3]}"
         except:
                try:
-                   ev_time = f'{y.split()[0]} {y.split()[1]}'
+                   ev_time = f"{y.split()[0]} {y.split()[1]}"
                except:
                       class TiebennDatetimeFormatError(Exception):
                             pass
@@ -131,13 +131,13 @@ def main(args):
         client_list=['BGR', 'LMU', 'GFZ', 'ODC', 'RASPISHAKE', 'RESIF', 'ETH', 'INGV', 'IPGP', 'NIEP', 'ORFEUS']
 
         try:
-           shutil.rmtree(glob.glob(f'saved_locations/{str(starttime)}_tiebenn_loc/')[0])
+           shutil.rmtree(glob.glob(f"saved_locations/{str(starttime)}_tiebenn_loc/")[0])
            print('Location existent in saved_locations directory: the current location will replace the existent one.')
         except:
                pass
 
-        if len(glob.glob(f'{str(starttime)}_tiebenn_loc/')) > 0:
-           shutil.rmtree(glob.glob(f'{str(starttime)}_tiebenn_loc/')[0])
+        if len(glob.glob(f"{str(starttime)}_tiebenn_loc/")) > 0:
+           shutil.rmtree(glob.glob(f"{str(starttime)}_tiebenn_loc/")[0])
 
         print('Making station list...')
 
@@ -186,7 +186,7 @@ def main(args):
         else:
              inp_files_nlloc_sb(ev_lon=ev_lon, ev_lat=ev_lat, ev_time=ev_time, data=data, nll3d=nll3d, velmod=velmod, min_detections=min_detections)
 
-        if not glob.glob(f'{str(starttime)}_tiebenn_loc/nlloc_control.in'):
+        if not glob.glob(f"{str(starttime)}_tiebenn_loc/nlloc_control.in"):
            print('No NLL-control file was produced. Skipping event.')
            try:
                shutil.rmtree(glob.glob('*_tiebenn_loc/')[0])
@@ -196,8 +196,8 @@ def main(args):
            continue
 
         else:
-             control_file = f'{glob.glob('*_tiebenn_loc/')[0]}nlloc_control.in'
-             control_file_s = f'{glob.glob('*_tiebenn_loc/')[0]}nlloc_control_s.in'
+             control_file = f"{glob.glob('*_tiebenn_loc/')[0]}nlloc_control.in"
+             control_file_s = f"{glob.glob('*_tiebenn_loc/')[0]}nlloc_control_s.in"
 
              if nll3d:
                 if velmod == 6 or velmod == 7:
@@ -225,13 +225,13 @@ def main(args):
                       os.remove(dele)
 
                   loc_file = glob.glob('*_tiebenn_loc/loc_eqdatetime*.hyp')[0]
-                  new_name = f'{glob.glob('*_tiebenn_loc')[0]}/event_location.NLL'
+                  new_name = f"{glob.glob('*_tiebenn_loc')[0]}/event_location.NLL"
                   os.rename(loc_file, new_name)
 
                   for dele in glob.glob('*_tiebenn_loc/loc_eqdatetime*'):
                       os.remove(dele)
 
-             lqs_parameters = calculate_lqs(loc_file=f'{glob.glob('*_tiebenn_loc')[0]}/event_location.NLL', sta_file=f'{glob.glob('*_tiebenn_loc')[0]}/station_coordinates.txt')
+             lqs_parameters = calculate_lqs(loc_file=f"{glob.glob('*_tiebenn_loc')[0]}/event_location.NLL", sta_file=f"{glob.glob('*_tiebenn_loc')[0]}/station_coordinates.txt")
 
              radarplot(lqs_parameters)
 

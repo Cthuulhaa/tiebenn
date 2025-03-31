@@ -28,13 +28,15 @@ Using as input the coordinates (latitude and longitude) and the time of a local 
 
 ## :white_check_mark: Requirements
 
-* **Python 3.9** or a later version.
+* **Python 3.9** or a later version. I have sucessfully tested on Python 10 and 12.
 * **SeisBench**, the popular seismology toolbox where the machine-learning models required by TieBeNN are stored.
 * **NonLinLoc**, the set of programs written in C for probabilistic hypocenter estimation.
-* **GMT**,
-* **PyOcto**,
-* **Pyrocko**,
-* **GaMMA**,
+* **GMT**, Generic Mapping Tools for map generation.
+* **PyGMT**, Python-based GMT wrapper.
+* **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130)
+* **Pyrocko**, open-source seismology toolbox and library.
+* **GaMMA** phase associator after [Zhu et al.(2022)] (https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249)
+* **NLLGrid**, a Python class for reading, plotting and writing NonLinLoc grid files. Hosted [here] (https://github.com/claudiodsf/nllgrid).
 
 ## :hammer_and_wrench: Installation
 
@@ -86,13 +88,41 @@ git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
 
 ### :hammer_and_wrench: Installing NonLinLoc and setting paths
 
+NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create the directory `<tiebenn_directory>/utils/nonlinloc` and within it, we clone the NonLinLoc repository:
 
+```
+mkdir <tiebenn_directory>/utils/nonlinloc
+cd <tiebenn_directory>/utils/nonlinloc
+
+git clone https://github.com/ut-beg-texnet/NonLinLoc.git
+```
+> :exclamation: **Important**
+>
+> Do not just download NonLinLoc's "last version", as it has bugs which have been fixed within the code, but not yet been added to a new, updated version.
+
+We will compile NonLinLoc in the `src` directory and copy the required programs for depth estimation in the `<tiebenn_directory>/utils/nonlinloc` directory:
+
+```
+cd NonLinLoc/src
+mkdir bin
+cmake .
+make
+cd bin
+cp Vel2Grid* Grid2* NLLoc ../../../
+```
+
+The last step is to set the path, so we can run NonLinLoc from any directory:
+
+```
+nano ~/.bashrc
+
+export PATH=${PATH}:<tiebenn_directory>/utils/nonlinloc/
+exec bash
+```
 
 ### :hammer_and_wrench: Install GMT
 
-:snail: **...To be continued** :snail:
-
-Pygmt dice que necesita >=6.4.0, yo tengo 6.6.0, gpu01f tiene 6.0.0
+According to the offical website of PyGMT, a GMT version 6.4.0 or later is needed in order to run PyGMT correctly. However, I have tested with GMT 6.0 and it works, at least for the few commands needed by TieBeNN. I would recommend version >= 6.0 to be on the safe side. [The official GMT documentation](https://docs.generic-mapping-tools.org/dev/install.html) has installation instructions, including instructions to migrate from earlier versions, and of course, a bunch of tutorials.
 
 ## :test_tube: Usage
 
@@ -128,3 +158,7 @@ Clearly under development.
 [DeepDenoiser example] (https://colab.research.google.com/github/seisbench/seisbench/blob/main/examples/02b_deep_denoiser.ipynb)
 
 [NonLinLoc GitHub] https://github.com/ut-beg-texnet/NonLinLoc
+
+[PyGMT guide and MANY examples](https://www.pygmt.org/dev/index.html)
+
+[Pyrocko applications] (https://pyrocko.org/)

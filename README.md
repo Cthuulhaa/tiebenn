@@ -11,11 +11,17 @@ TieBeNN (**Tie**fen**Be**stimmung mittels **N**euronaler **N**etze) is an event-
 Using as input the coordinates (latitude and longitude) and the time of a local event, the seismic event location with TieBeNN goes through the following stages:
 
 1. **Waveform data fetching**: It produces a catalog of stations around the epicenter. Then, waveform data in miniSEED format are retrieved using an ObsPy client on FDSN servers, or from a SDS directory structure.
+
 1. **Waveform data preprocessing**: empty channels are removed, masked channels are split, data are detrended and bandpass filtered. Optionally, stations within 100 km from the epicenter are denoised using the model DeepDenoiser [(Zhu et al. 2019)](https://arxiv.org/abs/1811.02695).
+
 1. **Phase picking**: P- and S-phases (first arrivals) go through the phase-picking models (either EQTransformer and PhaseNet, as available in the [SeisBench](https://github.com/seisbench/seisbench) toolbox) for phase detection.
+
 1. **Phase association**: Phase picks go through phase association to discard possible false detections. The associators available in TieBeNN are [PyOcto](https://github.com/yetinam/pyocto) and [GaMMA](https://github.com/AI4EPS/GaMMA).
+
 1. **Outputs exported**: Event-associated phase picks on each station are exported in a CSV file, including station coordinates, phase arrival time, probability and signal-to-noise ratio. Input files requested by NonLinLoc are generated. Optionally, figures are generated of waveforms and the detected picks at each station, as well as phase association figures.
+
 1. **Probabilistic hypocenter estimation**: The generated files are used for hypocenter estimation with NonLinLoc. Optionally, figures are generated: :one: epicenter and stations with picks in map :two: waveforms with picks, sorted by epicentral distances :three: confidence ellipsoid of event location.
+
 1. **Location quality assessment**: Location metrics are gathered/calculated to generate the Location Quality Score metric, as well as a figure to visualize it. :memo: **A description of this metric will be available in a manuscript, currently in preparation** :memo:
 
 > :point_right: **Note**: When TieBeNN starts, it will go on in a loop until the minimum requested detections within a given epicentral distance are obtained. If this is not the case (there could be several reasons for this), the epicentral distance for station waveform retrieval is gradually increased and the process is repeated. If not enough phase picks are detected within 200 km, the loop breaks and TieBeNN end the run reporting an unsuccessful event location.
@@ -120,4 +126,5 @@ Clearly under development.
 ## :link: Useful links
 
 [DeepDenoiser example] (https://colab.research.google.com/github/seisbench/seisbench/blob/main/examples/02b_deep_denoiser.ipynb)
+
 [NonLinLoc GitHub] https://github.com/ut-beg-texnet/NonLinLoc

@@ -572,13 +572,13 @@ def radarplot(event):
     ax.set_rgrids([0.2, 0.4, 0.6, 0.8, 1.0])
     ax.set_rlim(0, 1)
     ax.tick_params(labelsize=14)
-    ax.set_title(f'{event['datetime'].tolist()[0]}, LQS = {'%.4f'%(event['LQS'].tolist()[0])}', weight='bold', size='medium', position=(0.5, 1.1), horizontalalignment='center', verticalalignment='center')
+    ax.set_title(f"{event['datetime'].tolist()[0]}, LQS = {'%.4f'%(event['LQS'].tolist()[0])}", weight='bold', size='medium', position=(0.5, 1.1), horizontalalignment='center', verticalalignment='center')
     ax.plot(theta, parameters, color=color)
     ax.set_facecolor((0.91, 0.91, 0.91))
     ax.fill(theta, parameters, facecolor=color, alpha=0.25, label='_nolegend_')
     ax.set_varlabels([r'1 - det(Cov[$\bf{X}$])', 'Sta.Dens.', '1 - Az.Unif.', '1 - Az.Gap', '1 - Sec.Az.Gap', '1 - Near.Sta', '1 - RMS', 'N.Picks'])
 
-    fig.savefig(f'{event['datetime_orig'].tolist()[0]}_tiebenn_loc/LQS.pdf')
+    fig.savefig(f"{event['datetime_orig'].tolist()[0]}_tiebenn_loc/LQS.pdf")
     plt.close(fig)
 
     return

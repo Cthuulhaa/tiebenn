@@ -35,8 +35,8 @@ Using as input the coordinates (latitude and longitude) and the time of a local 
 * **PyGMT**, Python-based GMT wrapper.
 * **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130)
 * **Pyrocko**, open-source seismology toolbox and library.
-* **GaMMA** phase associator after [Zhu et al.(2022)] (https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249)
-* **NLLGrid**, a Python class for reading, plotting and writing NonLinLoc grid files. Hosted [here] (https://github.com/claudiodsf/nllgrid).
+* **GaMMA** phase associator after [Zhu et al.(2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249)
+* **NLLGrid**, a Python class for reading, plotting and writing NonLinLoc grid files. Hosted [here](https://github.com/claudiodsf/nllgrid).
 
 ## :hammer_and_wrench: Installation
 
@@ -155,10 +155,10 @@ Clearly under development.
 
 ## :link: Useful links
 
-[DeepDenoiser example] (https://colab.research.google.com/github/seisbench/seisbench/blob/main/examples/02b_deep_denoiser.ipynb)
+[DeepDenoiser example](https://colab.research.google.com/github/seisbench/seisbench/blob/main/examples/02b_deep_denoiser.ipynb)
 
-[NonLinLoc GitHub] https://github.com/ut-beg-texnet/NonLinLoc
+[NonLinLoc GitHub](https://github.com/ut-beg-texnet/NonLinLoc)
 
 [PyGMT guide and MANY examples](https://www.pygmt.org/dev/index.html)
 
-[Pyrocko applications] (https://pyrocko.org/)
+[Pyrocko applications](https://pyrocko.org/)

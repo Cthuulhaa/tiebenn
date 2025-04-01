@@ -156,8 +156,7 @@ python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker 
 | **SDSDir** | A string with the full path to the SeisComp3 directory |
 | **MinDetections** | Minimum amount of stations on which P- or S- phase picks must be detected for the loop to end |
 | **Plots** | If set to True, it will plot the waveform recorded on each stations with at least one phase detection. It will also plot all the phase picks associated to the event sorted by epicentral distance and plots of the locations: epicenter and stations with detections on a map, waveforms with phase picks sorted by epicentral distance, and confidence ellipsoid of event location |
-| **VelMode** | This parameter decides how to choose a seismic velocity model for the event location. Options are `automatic` (`automatic`, `auto` or `a`) for choosing a local velocity model based on the epicenter (if available) and `manual` (`manual`
-, `man`, `m`) for choosing the velocity model manually. In this case, the parameter `VelMod` must be defined |
+| **VelMode** | This parameter decides how to choose a seismic velocity model for the event location. Options are `automatic` (`automatic`, `auto` or `a`) for choosing a local velocity model based on the epicenter (if available) and `manual` (`manual`, `man`, `m`) for choosing the velocity model manually. In this case, the parameter `VelMod` must be defined |
 | **VelMod** | TEXT HERE (_Note_: 3D velocity models have been tested, although I have still not found a region in Germany where using a 3D velocity model instead of a dedicated, local 1D velocity model is worth the extra travel-time calculation time) |
 | **PhaseAssoc** | TEXT HERE |
 | **Denoise** | TEXT HERE |

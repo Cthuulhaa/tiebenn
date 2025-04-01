@@ -144,23 +144,29 @@ with any extra information after those values (e.g. depth, magnitude...) being i
 With the virtual environment activated (see above), TieBeNN follows this syntax:
 
 ```
-python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker <Picker> --client <Client> --min_detections <MinDetections> --plots <Plots> --vel_mode <VelMode> --velmod <VelMod> --ph_assoc <PhaseAssoc> --denoise <Denoise> --mult_windows <MultiWindows>
+python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker <Picker> --client <Client> --sds_dir <SDSDir> --min_detections <MinDetections> --plots <Plots> --vel_mode <VelMode> --velmod <VelMod> --ph_assoc <PhaseAssoc> --denoise <Denoise> --mult_windows <MultiWindows>
 ```
 
 | Parameter | Description |
 |:----------|:-----------:|
-| **EventFile** | Input file with preliminary epicenter (latitude, longitude) and UTC datetime |
+| **EventFile** | Full path to input file with preliminary epicenter (latitude, longitude) and UTC datetime |
 | **MaxEpDist** | Maximum epicentral distance (in km) for stations on which phase picks will be detected |
 | **Picker** | Select model for phase picking. **EQTransformer** can be defined as `sb_eqt`, `seisbench_eqt`, `seisbench_eqtransformer`, `sb_eqtransformer` and **PhaseNet** as `sb_pn`, `seisbench_pn`, `sb_phasenet`, `seisbench_phasenet`. Not case sensitive |
-| **Client** | If set to `SDS`, it will access the directory with SeisComp3 structure. It will try to fetch waveforms from the stations in the station list within `MaxEpDist` km. It will then try to fetch stations using FDSN clients to access their services. If set to `FDSN`, it skips the search for a SDS directory |
-| **SDSDir** | A string with the full path to the SeisComp3 directory |
-| **MinDetections** | Minimum amount of stations on which P- or S- phase picks must be detected for the loop to end |
-| **Plots** | If set to True, it will plot the waveform recorded on each stations with at least one phase detection. It will also plot all the phase picks associated to the event sorted by epicentral distance and plots of the locations: epicenter and stations with detections on a map, waveforms with phase picks sorted by epicentral distance, and confidence ellipsoid of event location |
-| **VelMode** | This parameter decides how to choose a seismic velocity model for the event location. Options are `automatic` (`automatic`, `auto` or `a`) for choosing a local velocity model based on the epicenter (if available) and `manual` (`manual`, `man`, `m`) for choosing the velocity model manually. In this case, the parameter `VelMod` must be defined |
-| **VelMod** | TEXT HERE (_Note_: 3D velocity models have been tested, although I have still not found a region in Germany where using a 3D velocity model instead of a dedicated, local 1D velocity model is worth the extra travel-time calculation time) |
-| **PhaseAssoc** | TEXT HERE |
-| **Denoise** | TEXT HERE |
-| **MultWindows** | TEXT HERE |
+| **Client** | If set to `SDS`, it will access a directory with SeisComp3 structure. It will try to fetch the available waveforms from the stations in the station list within `MaxEpDist` km. Afterwards, it will try to fetch stations using FDSN clients to access their services. If set to `FDSN`, it skips the search for a SDS directory |
+| **SDSDir** | A string with the full path to the SeisComp3 directory. This parameter must be defined if `Client` is set to `SDS` |
+| **MinDetections** | Minimum amount of stations on which P- or S- phase picks must be detected for the detection loop to end |
+| **Plots** | If set to True, it will plot the waveforms recorded on each stations with at least one phase detection. It will also plot all the phase picks associated to the event sorted by epicentral distance, as well as plots of the locations: epicenter and stations with detections on a map, waveforms with phase picks sorted by epicentral distance, and confidence ellipsoid of event location |
+| **VelMode** | This parameter decides how to choose a seismic velocity model for the event location. Options are `automatic` (`automatic`, `auto` or `a`) for choosing a local velocity model based on the epicenter (if available, otherwise the 2-layer-over-halfspace model used at EdB is used as default) and `manual` (`manual`, `man`, `m`) for choosing the velocity model manually. In this case, the parameter `VelMod` must be defined |
+| **VelMod** | The number corresponding to the model which will be used for hypocenter location with NonLinLoc. [See the full list here](https://192.168.11.188/dzreorg/software/tiebenn/-/blob/main/velocity_models.md) _Note_: 3D velocity models have been tested, although I have still not found a region in Germany where using a 3D velocity model instead of a dedicated, local 1D velocity model results in a dramatic improvement in the event location quality and is worth the extra travel-time calculation time. The implementation of 3D velocity models for real-time event location is, at least momentarily, beyond the scope of this repository |
+| **PhaseAssoc** | Phase associator. Options are `PyOcto` (`pyocto` or `p`) and `GaMMA` (`gamma` or `g`). Not case sensitive |
+| **Denoise** | Boolean parameter. If true, the DeepDenoiser model will be applied on the waveforms of stations within 100 km in epicentral distance |
+| **MultWindows** | Boolean parameter. If true, it maked the phase picker to look for P- or S-waves in moving windows, which helps to attack the prediction inconsistency inherent to machine-learning-based models |
+
+To locate the event with example UTC datetime and coordinates specified above, we type in the terminal (with our virtual environment activated):
+
+```
+python tiebenn.py --event_file example_event --max_epic_dist 150 --picker SeisBench_PhaseNet --client FDSN --min_detections 3 --plots True --vel_mode auto --ph_assoc PyOcto --denoise True --mult_windows True
+```
 
 ### :outbox_tray: Output
 

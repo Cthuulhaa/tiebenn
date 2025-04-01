@@ -126,9 +126,39 @@ According to the offical website of PyGMT, a GMT version 6.4.0 or later is neede
 
 ## :test_tube: Usage
 
+This section shows an example which should make TieBeNN's usage clear.
+
 ### :inbox_tray: Input file
 
+TieBeNN needs an input file with the epicenter and the datetime (UTC) of the event to be located. The structure must be as follows: `datetime  latitude  longitude`. Accepted datetime formats are: `dd-Mon-yyyy hh:mm:ss`, `yyyy-mm-ddThh:mm:ss`, or `yyyy-mm-dd hh:mm:ss`.
+
+A concrete example would be:
+
+```
+2024-12-24T01:55:04 51.337  12.548
+```
+with any extra information after those values (e.g. depth, magnitude...) being ignored.
+
 ### :receipt: Syntax
+
+With the virtual environment activated (see above), TieBeNN follows this syntax:
+
+```
+python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker <Picker> --client <Client> --min_detections <MinDetections> --plots <Plots> --vel_mode <VelMode> --ph_assoc <PhaseAssoc> --denoise <Denoise> --mult_windows <MultiWindows>
+```
+
+| Parameter | Description |
+|:----------|:-----------:|
+| **EventFile** | Input file with preliminary epicenter (latitude, longitude) and UTC datetime |
+| **MaxEpDist** | Maximum epicentral distance (in km) for stations on which phase picks will be detected |
+| **Picker** | Select model for phase picking. **EQTransformer** can be defined as `sb_eqt`, `seisbench_eqt`, `seisbench_eqtransformer`, `sb_eqtransformer` and **PhaseNet** as `sb_pn`, `seisbench_pn`, `sb_phasenet`, `seisbench_phasenet`. Not case sensitive |
+| **Client** | If set to `SDS`, it will access the directory with SeisComp3 structure, which must be defined in `tools/sb_tools.py`, line 86. It will try to fetch waveforms from the stations in the station list within `MaxEpDist`. It will then try to fetch stations using FDSN clients to access their services. If set to `FDSN`, it skips the search for a SDS directory |
+| **MinDetections** | Minimum amount of stations on which P- or S- phase picks must be detected for the loop to end |
+| **Plots** | If set to True, it will plot the waveform recorded on each stations with at least one phase detection. It will also plot all the phase picks associated to the event sorted by epicentral distance and plots of the locations: epicenter and stations with detections on a map, waveforms with phase picks sorted by epicentral distance, and confidence ellipsoid of event location |
+| **VelMode** | |
+| **PhaseAssoc** | |
+| **Denoise** | |
+| **MultWindows** | |
 
 ### :outbox_tray: Output
 
@@ -148,9 +178,11 @@ This is a list of improvements I **would like** to implement in the code:
 A software report is currently in preparation.
 
 ## :brain: Authors and acknowledgment
-C. Ramos
+
+C. Ramos (mantainer)
 
 ## :construction: Project status :construction:
+
 Clearly under development.
 
 ## :link: Useful links

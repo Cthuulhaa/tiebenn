@@ -18,7 +18,7 @@ from .visualization import plotpicks_sb as plot
 from .visualization import plotpicks_sb_mw as plot_mw
 
 
-def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, secs_before, phase_assoc, pick_sel, mult_windows, plotpicks, min_detections=3, denoise=True):
+def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, secs_before, phase_assoc, pick_sel, mult_windows, plotpicks, min_detections=3, denoise=True, sds_dir='/'):
     """
 
     Produces probability functions and picks for P- and S-wave arrivals using SeisBench.
@@ -83,7 +83,6 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                  if switch1 == 0:
                     print('ObsPy: Fetching station waveforms...')
                     if client.lower() in ('sds'):
-                       sds_dir = '/SDS'
                        streams1 = get_streams_sds(start_time=starttime, data=data1, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
 
                        to_delete = []
@@ -115,7 +114,6 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                  if switch1 == 0:
                     print('ObsPy: Fetching station waveforms...')
                     if client.lower() in ('sds'):
-                       sds_dir = '/SDS'
                        streams1 = get_streams_sds(start_time=starttime, data=data1, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
 
                        to_delete = []
@@ -140,7 +138,6 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                  if switch2 == 0:
                     print('ObsPy: Fetching station waveforms...')
                     if client.lower() in ('sds'):
-                       sds_dir = '/SDS'
                        streams2 = get_streams_sds(start_time=starttime, data=data2, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
 
                        to_delete = []
@@ -171,8 +168,6 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                  if switch1 == 0:
                     print('ObsPy: Fetching station waveforms...')
                     if client.lower() in ('sds'):
-                       sds_dir = '/SDS'
-
                        streams1 = get_streams_sds(start_time=starttime, data=data1, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
 
                        to_delete = []
@@ -198,7 +193,6 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                  if switch2 == 0:
                     print('ObsPy: Fetching station waveforms...')
                     if client.lower() in ('sds'):
-                       sds_dir = '/SDS'
                        streams2 = get_streams_sds(start_time=starttime, data=data2, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
 
                        to_delete = []
@@ -223,7 +217,6 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
                  if switch3 == 0:
                     print('ObsPy: Fetching station waveforms...')
                     if client.lower() in ('sds'):
-                       sds_dir = '/SDS'
                        streams3 = get_streams_sds(start_time=starttime, data=data3, secs_before=secs_before, mult_windows=mult_windows, sds_dir=sds_dir)
 
                        to_delete = []

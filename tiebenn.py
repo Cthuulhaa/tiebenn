@@ -21,6 +21,7 @@ def main(args):
         picker = args.picker
         nll3d = args.nll3d
         client = args.client
+        sds_dir = args.sds_dir
         min_detections = round(args.min_detections)
         plots = args.plots
         vel_mode = args.vel_mode
@@ -46,6 +47,13 @@ def main(args):
              pass
        raise TiebennClientError('Client must be either SDS or FDSN!')
        return
+
+    if client.lower() == 'sds':
+       if not sds_dir:
+          class TiebennSDSDirError(Exception):
+               pass
+          raise TiebennSDSDirError('Parameter sds_dir must be set')
+          return
 
     if min_detections < 3:
        print('WARNING! Minimal detections too small. Set to be 3.')
@@ -175,9 +183,12 @@ def main(args):
             data[et]['epic_distance'] = "{:.2f}".format(gps2dist_azimuth(data[et]['coords'][0], data[et]['coords'][1], ev_lat, ev_lon)[0] * 0.001)
 
         if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
-             from tools.sb_tools import picks_sb
+           from tools.sb_tools import picks_sb
 
-             streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
+           if not sds_dir:
+              streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
+           else:
+                streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise, sds_dir=sds_dir)
 
         if not glob.glob('*_tiebenn_loc/csv_picks/*.csv'):
            print('Skipping to next event in readfile...')
@@ -248,6 +259,7 @@ def read_args():
     parser.add_argument('--picker', default='PhaseNet', type=str, help='Picker used to phase-picking: SeisBench (eqt or pn)')
     parser.add_argument('--nll3d', default=False, type=str2bool, help='Use 3D velocity model for depth estimation in NonLinLoc')
     parser.add_argument('--client', default='FDSN', type=str, help='FDSN or SDS')
+    parser.add_argument('--sds_dir', default='/', type=str, help='full path to SeisComp3 directory')
     parser.add_argument('--min_detections', default=3, type=int, help='Minimal detections required to hypocenter estimation')
     parser.add_argument('--plots', default=False, type=str2bool, help='If True, it will plot several figures')
     parser.add_argument('--vel_mode', default='auto', type=str, help='Velocity model mode: automatic or manual selection. If manual, velmod must be specified')

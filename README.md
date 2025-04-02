@@ -1,6 +1,6 @@
-<p align='center'>
-  <img src='figures/tiebenn_logo.svg' />
-</p>
+<div style="text-align: center;">
+  <img src="figures/tiebenn_logo.svg" width="300"/>
+</div>
 
 ## :memo: Description
 
@@ -168,7 +168,9 @@ To locate the event with example UTC datetime and coordinates specified above, w
 python tiebenn.py --event_file example_event --max_epic_dist 150 --picker SeisBench_PhaseNet --client FDSN --min_detections 3 --plots True --vel_mode auto --ph_assoc PyOcto --denoise True --mult_windows True
 ```
 
-The output looks like this:
+### :outbox_tray: Output
+
+The output looks like this in the console:
 
 ```
 ##############################################################
@@ -188,14 +190,14 @@ Since we set the `--plots` parameter to `True`, the following plots were produce
 
 * Phase picks on waveforms for each station, sorted by epicentral distance:
 
-### :outbox_tray: Output
-
 ## :wrench: To Do
 
 This is a list of improvements I **would like** to implement in the code:
 
 * Prepare the code documentation in Sphinx
 * Prepare a containerized version of the code
+
+> :point_right: **Reminder**: Any ideas for further development should be submitted in a new issue
 
 ## :books: Documentation
 

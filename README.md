@@ -229,11 +229,11 @@ This is a list of improvements I **would like** to implement in the code:
 
 ## :books: Documentation
 
-:pizza: :beer: Hungry for more detailed information? In-depth details about Tiebenn's functioning should have a future documentation (in the future).
+:pizza: :beer: Hungry for more detailed information? In-depth details about Tiebenn's functioning should have a future documentation (:construction: in the future :construction:).
 
 ## :book: References
 
-A software report is currently in preparation.
+A paper/software report on TieBeNN is currently in preparation.
 
 ## :brain: Authors and acknowledgment
 

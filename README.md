@@ -41,7 +41,7 @@ Using the coordinates (latitude and longitude) and the time of a local event as 
 
 Tested on Linux Mint and Lubuntu (Debian-based syntax used here).
 
-### Create a virtual environment
+### :hammer_and_wrench: Create a virtual environment
 
 It is highly recommended to use a *virtual environment* to install software with several requirements. We select the folder where we will install the virtual environment (do not forget to replace the names between angle brackets). The created environment can be then activated using `source`:
 
@@ -149,7 +149,7 @@ python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker 
 
 ### :outbox_tray: Output
 
-If successful, you’ll see something like:
+If the location was successful, you’ll see something like:
 ```
 ##############################################################
 NonLinLoc: Location completed.
@@ -199,7 +199,7 @@ Planned improvements:
 
 ## :books: Documentation
 
-:construction: A full Sphinx-based documentation is in the works. Stay tuned!
+:pizza: :beer: Hungry for more detailed information? A full Sphinx-based documentation is in the works. Stay tuned! :construction:
 
 ## :book: References
 

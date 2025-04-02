@@ -1,6 +1,6 @@
-<div style="text-align: center;">
-  <img src="figures/tiebenn_logo.svg" width="300"/>
-</div>
+<p align="center">
+  <img src="figures/tiebenn_logo.svg" width="400"/>
+</p>
 
 ## :memo: Description
 

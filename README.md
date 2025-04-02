@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="figures/tiebenn_logo.svg" width="400"/>
+  <img src="figures/tiebenn_logo.svg" width="600"/>
 </p>
 
 ## :memo: Description

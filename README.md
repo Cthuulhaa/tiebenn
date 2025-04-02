@@ -1,5 +1,5 @@
 <p align='center'>
-  <img src='figures/tiebenn_logo.png' />
+  <img src='figures/tiebenn_logo.svg' />
 </p>
 
 ## :memo: Description
@@ -167,6 +167,26 @@ To locate the event with example UTC datetime and coordinates specified above, w
 ```
 python tiebenn.py --event_file example_event --max_epic_dist 150 --picker SeisBench_PhaseNet --client FDSN --min_detections 3 --plots True --vel_mode auto --ph_assoc PyOcto --denoise True --mult_windows True
 ```
+
+The output looks like this:
+
+```
+##############################################################
+NonLinLoc: Location completed.
+Origin time: 24-12-2024_01:55:4.517789
+             Lat:51.328045 Long:12.543796 Depth: 22.685547 km
+--------------------------------------------------------------
+Location quality:
+RMS:0.285177 Number of phases: 130 Gap: 35.032 Distance from hypocenter to nearest station: 12.077 km
+Ellipsoid semi-major axis: 1.030196e+00
+##############################################################
+```
+
+In this case the location was sucessful and a message is printed with outputs and metrics taken from the location file produced by NonLinLoc. There is information about the origin time and maximum probability hypocenter. Additional information includes the RMS of calculated travel times versus observations, number of phases used for event location, the (primary) azimuthal gap, the distance from epicenter to the nearest station and the semi-major axis of the 68% confidence ellipsoid (in km), which is a measure of the depth uncertainty.
+
+Since we set the `--plots` parameter to `True`, the following plots were produced:
+
+* Phase picks on waveforms for each station, sorted by epicentral distance:
 
 ### :outbox_tray: Output
 

@@ -191,13 +191,13 @@ Since we set the `--plots` parameter to `True`, the following plots were produce
 * Phase picks on waveforms for each station, sorted by epicentral distance:
 
     <p align="center">
-      <img src="figures/example_picks.png" width="500"/>
+      <img src="figures/example_picks.svg" width="500"/>
     </p>
 
 * Phases which were associated to the event of interest, sorted by epicentral distance:
 
     <p align="center">
-      <img src="figures/example_phassoc.png" width="400"/>
+      <img src="figures/example_phassoc.svg" width="400"/>
     </p>
 
 * Map: event's epicenter and stations with picks used for location:
@@ -215,7 +215,7 @@ Since we set the `--plots` parameter to `True`, the following plots were produce
 * Location Quality Score:
 
     <p align="center">
-      <img src="figures/example_LQS.png" width="400"/>
+      <img src="figures/example_LQS.svg" width="400"/>
     </p>
 
 ## :wrench: To Do

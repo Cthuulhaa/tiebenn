@@ -190,6 +190,18 @@ Since we set the `--plots` parameter to `True`, the following plots were produce
 
 * Phase picks on waveforms for each station, sorted by epicentral distance:
 
+* Phases which were associated to the event of interest, sorted by epicentral distance:
+
+* Map: event's epicenter and stations with picks used for location:
+
+* 68% location confidence ellipsoid:
+
+<p align="center">
+  <img src="figures/example_ellipsoid.png" width="400"/>
+</p>
+
+* Location Quality Score:
+
 ## :wrench: To Do
 
 This is a list of improvements I **would like** to implement in the code:

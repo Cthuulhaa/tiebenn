@@ -4,105 +4,88 @@
 
 ## :memo: Description
 
-TieBeNN (**Tie**fen**Be**stimmung mittels **N**euronaler **N**etze) is an event-based wrapper which leverages a number of tools---some machine-learning based, some classic---to automatically produce phase picks for probabilistic hypocenter estimation of local events using [NonLinLoc](http://alomax.free.fr/nlloc/).
+TieBeNN (**Tie**fen**Be**stimmung mittels **N**euronaler **N**etze) is an event-based wrapper that leverages several tools—some machine-learning-based, some traditional—to automatically generate phase picks for probabilistic hypocenter estimation of local events using [NonLinLoc](http://alomax.free.fr/nlloc/).
 
 ## :gear: Workflow
 
-Using as input the coordinates (latitude and longitude) and the time of a local event, the seismic event location with TieBeNN goes through the following stages:
+Using the coordinates (latitude and longitude) and the time of a local event as input, TieBeNN processes seismic event locations through the following stages:
 
-1. **Waveform data fetching**: It produces a catalog of stations around the epicenter. Then, waveform data in miniSEED format are retrieved using an ObsPy client on FDSN servers, or from a SDS directory structure.
+1. **Waveform data fetching**: A catalog of stations around the epicenter is produced. Then, waveform data in miniSEED format are retrieved using an ObsPy client on FDSN servers or from a SDS directory structure.
 
-1. **Waveform data preprocessing**: empty channels are removed, masked channels are split, data are detrended and bandpass filtered. Optionally, stations within 100 km from the epicenter are denoised using the model DeepDenoiser [(Zhu et al. 2019)](https://arxiv.org/abs/1811.02695).
+1. **Waveform data preprocessing**: Empty channels are removed, masked channels are split, and data are detrended and bandpass filtered. Optionally, stations within 100 km from the epicenter are denoised using the DeepDenoiser model [(Zhu et al. 2019)](https://arxiv.org/abs/1811.02695).
 
-1. **Phase picking**: P- and S-phases (first arrivals) go through the phase-picking models (either EQTransformer and PhaseNet, as available in the [SeisBench](https://github.com/seisbench/seisbench) toolbox) for phase detection.
+1. **Phase picking**: P- and S-phases (first arrivals) are detected using phase-picking models (either EQTransformer or PhaseNet, available in the [SeisBench](https://github.com/seisbench/seisbench) toolbox).
 
-1. **Phase association**: Phase picks go through phase association to discard possible false detections. The associators available in TieBeNN are [PyOcto](https://github.com/yetinam/pyocto) and [GaMMA](https://github.com/AI4EPS/GaMMA).
+1. **Phase association**: Detected picks are passed through phase associators to discard possible false detections. TieBeNN supports [PyOcto](https://github.com/yetinam/pyocto) and [GaMMA](https://github.com/AI4EPS/GaMMA).
 
-1. **Outputs exported**: Event-associated phase picks on each station are exported in a CSV file, including station coordinates, phase arrival time, probability and signal-to-noise ratio. Input files requested by NonLinLoc are generated. Optionally, figures are generated of waveforms and the detected picks at each station, as well as phase association figures.
+1. **Export outputs**: Event-associated phase picks are exported to a CSV file, including station coordinates, arrival times, pick probabilities, and signal-to-noise ratios. NonLinLoc input files are generated. Optionally, waveform and pick figures per station, as well as phase association plots, are produced.
 
-1. **Probabilistic hypocenter estimation**: The generated files are used for hypocenter estimation with NonLinLoc. Optionally, figures are generated: :one: epicenter and stations with picks in map :two: waveforms with picks, sorted by epicentral distances :three: confidence ellipsoid of event location.
+1. **Probabilistic hypocenter estimation**: The generated files are used by NonLinLoc for hypocenter estimation. Optionally, figures are created: :one: epicenter and stations on a map; :two: waveforms with picks, sorted by epicentral distance; :three: location confidence ellipsoid.
 
-1. **Location quality assessment**: Location metrics are gathered/calculated to generate the Location Quality Score metric, as well as a figure to visualize it. :memo: **A description of this metric will be available in a manuscript, currently in preparation** :memo:
+1. **Location quality assessment**: Location metrics are gathered to compute the Location Quality Score (LQS) and to generate a visualization. :memo: **A description of this metric should be available in a manuscript, currently in preparation** :memo:
 
-> :point_right: **Note**: When TieBeNN starts, it will go on in a loop until the minimum requested detections within a given epicentral distance are obtained. If this is not the case (there could be several reasons for this), the epicentral distance for station waveform retrieval is gradually increased and the process is repeated. If not enough phase picks are detected within 200 km, the loop breaks and TieBeNN end the run reporting an unsuccessful event location.
+> :point_right: **Note**: TieBeNN loops through this process until the minimum required detections within a given epicentral distance are obtained. If not, the search radius is gradually expanded. If phase picks are insufficient within 200 km, the run ends with an unsuccessful event location.
 
 ## :white_check_mark: Requirements
 
-* **Python 3.9** or a later version. I have sucessfully tested on Python 10 and 12.
-* **SeisBench**, the popular seismology toolbox where the machine-learning models required by TieBeNN are stored.
-* **NonLinLoc**, the set of programs written in C for probabilistic hypocenter estimation.
-* **GMT**, Generic Mapping Tools for map generation.
-* **PyGMT**, Python-based GMT wrapper.
-* **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130)
+* **Python 3.9** or later (tested with Python 3.10 and 3.12).
+* **SeisBench**, the ML model toolbox used for phase picking and denoising.
+* **NonLinLoc**, a suite of C programs for probabilistic hypocenter estimation.
+* **GMT** and **PyGMT**, for map generation.
+* **PyOcto**, phase associator after ([Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130))
 * **Pyrocko**, open-source seismology toolbox and library.
-* **GaMMA** phase associator after [Zhu et al.(2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249)
-* **NLLGrid**, a Python class for reading, plotting and writing NonLinLoc grid files. Hosted [here](https://github.com/claudiodsf/nllgrid).
+* **GaMMA**, phase associator after ([Zhu et al. (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249))
+* **NLLGrid**, a Python class for handling NonLinLoc grid files. Hosted [here](https://github.com/claudiodsf/nllgrid).
 
 ## :hammer_and_wrench: Installation
 
-I have tested TieBeNN in Linux Mint (and Lubuntu), so the instructions will use the Debian-based syntax.
+Tested on Linux Mint and Lubuntu (Debian-based syntax used here).
 
-It is highly recommended to use a *virtual environment* to install software with several requirements. We select the folder where we will install the virtual environment (do not forget to replace the names between angle brackets for what you choose):
+### Create a virtual environment
 
-```
+It is highly recommended to use a *virtual environment* to install software with several requirements. We select the folder where we will install the virtual environment (do not forget to replace the names between angle brackets). The created environment can be then activated using `source`:
+
+```bash
 python3 -m venv <path_to_virtual_environment>/<venv_tiebenn>
-```
-
-Then, we must activate the virtual environment:
-
-```
 source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate
 ```
+
 > :bulb: **TIP**
 >
-> You can create a shortcut in your _.bashrc_ file to quickly access the virtual environment in future runs. Open _.bashrc_ with your favorite editor (e.g. `nano ~/.bashrc`) and add the following line at the end of the file:
+> You can add an alias by including the following line at the end of your `~/.bashrc` for quick access:
 >
-> `alias <alias_name>='source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate'`
->
-> Replace `<alias_name>` for something convenient. Then, reset the command line:
-> `exec bash`
+> ```bash
+> alias <alias_name>='source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate'
+> ```
+> Then reload:
+> ```bash
+> exec bash
+> ```
 
-> for changes to take effect. To activate your virtual environment, just type `<alias_name>` in the command line.
-
-### :hammer_and_wrench: Installing Python dependencies
+### :hammer_and_wrench: Install Python dependencies
 
 Installing SeisBench will install most of Tiebenn's dependencies. You can install a pure-CPU version of SeisBench, in case it is necessary. For this, after activating the virtual environment by using the previously created alias, type:
 
-```
+```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 pip install seisbench
 ```
 
 If you are working on a GPU machine, then you can skip the first line and directly install SeisBench with the second line. Then, you can proceed with the installation of the remaining dependencies:
 
-```
+```bash
 pip install pygmt pyocto pyrocko nllgrid
-pip install git+https://github.com/wayneweiqiang/GaMMA.git 
-```
-
-Go to the desired directory where you wish to run Tiebenn and clone the repository:
-
-```
-git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
+pip install git+https://github.com/wayneweiqiang/GaMMA.git
 ```
 
 ### :hammer_and_wrench: Installing NonLinLoc and setting paths
 
 NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create the directory `<tiebenn_directory>/utils/nonlinloc` and within it, we clone the NonLinLoc repository:
 
-```
-mkdir <tiebenn_directory>/utils/nonlinloc
+```bash
+mkdir -p <tiebenn_directory>/utils/nonlinloc
 cd <tiebenn_directory>/utils/nonlinloc
-
 git clone https://github.com/ut-beg-texnet/NonLinLoc.git
-```
-> :exclamation: **Important**
->
-> Do not just download NonLinLoc's "last version", as it has bugs which have been fixed within the code, but not yet been added to a new, updated version.
-
-We will compile NonLinLoc in the `src` directory and copy the required programs for depth estimation in the `<tiebenn_directory>/utils/nonlinloc` directory:
-
-```
 cd NonLinLoc/src
 mkdir bin
 cmake .
@@ -111,18 +94,20 @@ cd bin
 cp Vel2Grid* Grid2* NLLoc ../../../
 ```
 
-The last step is to set the path, so we can run NonLinLoc from any directory:
+> :exclamation: **Important**
+>
+> Do not use NonLinLoc's latest release directly, as it contains unresolved bugs, whose fix are still unreleased.
 
-```
-nano ~/.bashrc
+Set NonLinLoc in your `PATH`:
 
-export PATH=${PATH}:<tiebenn_directory>/utils/nonlinloc/
+```bash
+echo 'export PATH=${PATH}:<tiebenn_directory>/utils/nonlinloc/' >> ~/.bashrc
 exec bash
 ```
 
 ### :hammer_and_wrench: Install GMT
 
-According to the offical website of PyGMT, a GMT version 6.4.0 or later is needed in order to run PyGMT correctly. However, I have tested with GMT 6.0 and it works, at least for the few commands needed by TieBeNN. I would recommend version >= 6.0 to be on the safe side. [The official GMT documentation](https://docs.generic-mapping-tools.org/dev/install.html) has installation instructions, including instructions to migrate from earlier versions, and of course, a bunch of tutorials.
+GMT version 6.0+ is recommended (officially 6.4+ for PyGMT). [The official GMT documentation](https://docs.generic-mapping-tools.org/dev/install.html) has installation instructions, including instructions to migrate from earlier versions, and of course, a bunch of tutorials.
 
 ## :test_tube: Usage
 
@@ -130,20 +115,20 @@ This section shows an example which should make TieBeNN's usage clear.
 
 ### :inbox_tray: Input file
 
-TieBeNN needs an input file with the epicenter and the datetime (UTC) of the event to be located. The structure must be as follows: `datetime  latitude  longitude`. Accepted datetime formats are: `dd-Mon-yyyy hh:mm:ss`, `yyyy-mm-ddThh:mm:ss`, or `yyyy-mm-dd hh:mm:ss`.
-
-A concrete example would be:
-
+Input format:
+```text
+YYYY-MM-DDTHH:MM:SS  latitude  longitude
 ```
+Example:
+```text
 2024-12-24T01:55:04 51.337  12.548
 ```
-with any extra information after those values (e.g. depth, magnitude...) being ignored.
 
 ### :receipt: Syntax
 
 With the virtual environment activated (see above), TieBeNN follows this syntax:
 
-```
+```bash
 python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker <Picker> --client <Client> --sds_dir <SDSDir> --min_detections <MinDetections> --plots <Plots> --vel_mode <VelMode> --velmod <VelMod> --ph_assoc <PhaseAssoc> --denoise <Denoise> --mult_windows <MultiWindows>
 ```
 
@@ -162,16 +147,9 @@ python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker 
 | **Denoise** | Boolean parameter. If true, the DeepDenoiser model will be applied on the waveforms of stations within 100 km in epicentral distance |
 | **MultWindows** | Boolean parameter. If true, it maked the phase picker to look for P- or S-waves in moving windows, which helps to attack the prediction inconsistency inherent to machine-learning-based models |
 
-To locate the event with example UTC datetime and coordinates specified above, we type in the terminal (with our virtual environment activated):
-
-```
-python tiebenn.py --event_file example_event --max_epic_dist 150 --picker SeisBench_PhaseNet --client FDSN --min_detections 3 --plots True --vel_mode auto --ph_assoc PyOcto --denoise True --mult_windows True
-```
-
 ### :outbox_tray: Output
 
-The output looks like this in the console:
-
+If successful, you’ll see something like:
 ```
 ##############################################################
 NonLinLoc: Location completed.
@@ -184,71 +162,60 @@ Ellipsoid semi-major axis: 1.030196e+00
 ##############################################################
 ```
 
-In this case the location was sucessful and a message is printed with outputs and metrics taken from the location file produced by NonLinLoc. There is information about the origin time and maximum probability hypocenter. Additional information includes the RMS of calculated travel times versus observations, number of phases used for event location, the (primary) azimuthal gap, the distance from epicenter to the nearest station and the semi-major axis of the 68% confidence ellipsoid (in km), which is a measure of the depth uncertainty.
+With `--plots True`, the following figures are also generated:
 
-Since we set the `--plots` parameter to `True`, the following plots were produced:
+* Phase picks on waveforms:
+  <p align="center">
+    <img src="figures/example_picks.svg" width="500"/>
+  </p>
 
-* Phase picks on waveforms for each station, sorted by epicentral distance:
+* Associated phases:
+  <p align="center">
+    <img src="figures/example_phassoc.svg" width="400"/>
+  </p>
 
-    <p align="center">
-      <img src="figures/example_picks.svg" width="500"/>
-    </p>
+* Map: epicenter and stations:
+  <p align="center">
+    <img src="figures/example_epicenter_map.png" width="500"/>
+  </p>
 
-* Phases which were associated to the event of interest, sorted by epicentral distance:
-
-    <p align="center">
-      <img src="figures/example_phassoc.svg" width="400"/>
-    </p>
-
-* Map: event's epicenter and stations with picks used for location:
-
-    <p align="center">
-      <img src="figures/example_epicenter_map.png" width="500"/>
-    </p>
-
-* 68% location confidence ellipsoid:
-
-    <p align="center">
-      <img src="figures/example_ellipsoid.png" width="500"/>
-    </p>
+* Location confidence ellipsoid:
+  <p align="center">
+    <img src="figures/example_ellipsoid.png" width="500"/>
+  </p>
 
 * Location Quality Score:
-
-    <p align="center">
-      <img src="figures/example_LQS.svg" width="400"/>
-    </p>
+  <p align="center">
+    <img src="figures/example_LQS.svg" width="400"/>
+  </p>
 
 ## :wrench: To Do
 
-This is a list of improvements I **would like** to implement in the code:
+Planned improvements:
+* Create Sphinx documentation
+* Build a containerized version
 
-* Prepare the code documentation in Sphinx
-* Prepare a containerized version of the code
-
-> :point_right: **Reminder**: Any ideas for further development should be submitted in a new issue
+> :point_right: **Ideas welcome!** Please submit feature suggestions via new issues.
 
 ## :books: Documentation
 
-:pizza: :beer: Hungry for more detailed information? In-depth details about Tiebenn's functioning should have a future documentation (:construction: in the future :construction:).
+:construction: A full Sphinx-based documentation is in the works. Stay tuned!
 
 ## :book: References
 
-A paper/software report on TieBeNN is currently in preparation.
+A detailed paper/software report on TieBeNN is currently in preparation.
 
-## :brain: Authors and acknowledgment
+## :brain: Authors and Acknowledgment
 
-C. Ramos (mantainer)
+C. Ramos (maintainer)
 
-## :construction: Project status :construction:
+## :construction: Project Status
 
 Clearly under development.
 
-## :link: Useful links
+## :link: Useful Links
 
-[DeepDenoiser example](https://colab.research.google.com/github/seisbench/seisbench/blob/main/examples/02b_deep_denoiser.ipynb)
-
-[NonLinLoc GitHub](https://github.com/ut-beg-texnet/NonLinLoc)
-
-[PyGMT guide and MANY examples](https://www.pygmt.org/dev/index.html)
-
-[Pyrocko applications](https://pyrocko.org/)
+- [DeepDenoiser example](https://colab.research.google.com/github/seisbench/seisbench/blob/main/examples/02b_deep_denoiser.ipynb)
+- [NonLinLoc GitHub](https://github.com/ut-beg-texnet/NonLinLoc)
+- [PyGMT guide and MANY examples](https://www.pygmt.org/dev/index.html)
+- [Pyrocko applications](https://pyrocko.org/)

@@ -194,10 +194,14 @@ Since we set the `--plots` parameter to `True`, the following plots were produce
 
 * Map: event's epicenter and stations with picks used for location:
 
+<p align="center">
+  <img src="figures/example_epicenter_map.png" width="500"/>
+</p>
+
 * 68% location confidence ellipsoid:
 
 <p align="center">
-  <img src="figures/example_ellipsoid.png" width="400"/>
+  <img src="figures/example_ellipsoid.png" width="500"/>
 </p>
 
 * Location Quality Score:

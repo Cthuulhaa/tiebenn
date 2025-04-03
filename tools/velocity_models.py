@@ -23,7 +23,7 @@ def velmods(model, ev_lon, ev_lat):
            9 = Regional model for LI (J. Borns)
           10 = Landau model (1D, P+S) for the northern Upper Rhine Graben
           11 = 1D model for Central Alps (Diehl et al. 2021)
-          12 = WARNING! I STRONGLY SUSPECT THAT THIS MODEL HAS NOT BEEN PROPERLY INTEGRATED IN TIEBENN AND THE AUTHOR (DIEHL, ETH ZÜRICH) MUST BE CONTACTED FOR FURTHER CLARIFICATION!!(P+S) 3D model for Central Alps (Diehl et al. 2021)
+          12 = WARNING! I STRONGLY SUSPECT THAT I HAVE NOT INTEGRATED THIS MODEL IN TIEBENN PROPERLY AND THE AUTHOR (DIEHL, ETH ZÜRICH) SHOULD BE CONTACTED FOR FURTHER CLARIFICATION!!(P+S) 3D model for Central Alps (Diehl et al. 2021)
           13 = 3D WEG model: high-resolution P-velocity model for the area around Rotenburg, Soehlingen, Soltau, Verden... (This model is not present in the current version of Tiebenn because it is really large and its implementation must be carefully tested!)
           14 = AlpsLocPS (Brazsus et al., 2024). 1D velocity models for the Greater Alpine Region
           15 = BENS (Reamer & Hinzen 2004): 1D P- and S-velocity models of the Northern Rhine Area

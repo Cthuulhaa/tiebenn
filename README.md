@@ -177,7 +177,7 @@ With `--plots True`, the following figures are also generated:
 
 * Associated phases:
   <p align="center">
-    <img src="figures/example_phassoc.svg" width="400"/>
+    <img src="figures/example_phassoc.svg" width="500"/>
   </p>
 
 * Map: epicenter and stations:

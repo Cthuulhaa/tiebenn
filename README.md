@@ -8,7 +8,7 @@ TieBeNN (**Tie**fen**Be**stimmung mittels **N**euronaler **N**etze) is an event-
 
 ## :gear: Workflow
 
-Using the coordinates (latitude and longitude) and the time of a local event as input, TieBeNN processes seismic event locations through the following stages:
+Using the coordinates (latitude and longitude) and the UTC time of a local event as input, TieBeNN processes seismic event locations through the following stages:
 
 1. **Waveform data fetching**: A catalog of stations around the epicenter is produced. Then, waveform data in miniSEED format are retrieved using an ObsPy client on FDSN servers or from a SDS directory structure.
 
@@ -18,7 +18,7 @@ Using the coordinates (latitude and longitude) and the time of a local event as 
 
 1. **Phase association**: Detected picks are passed through phase associators to discard possible false detections. TieBeNN supports [PyOcto](https://github.com/yetinam/pyocto) and [GaMMA](https://github.com/AI4EPS/GaMMA).
 
-1. **Export outputs**: Event-associated phase picks are exported to a CSV file, including station coordinates, arrival times, pick probabilities, and signal-to-noise ratios. NonLinLoc input files are generated. Optionally, waveform and pick figures per station, as well as phase association plots, are produced.
+1. **Export outputs**: Event-associated phase picks are exported to CSV files, including station coordinates, arrival times, pick probabilities, and signal-to-noise ratios. NonLinLoc input files are generated. Optionally, waveform and pick figures per station, as well as phase association plots, are produced.
 
 1. **Probabilistic hypocenter estimation**: The generated files are used by NonLinLoc for hypocenter estimation. Optionally, figures are created: :one: epicenter and stations on a map; :two: waveforms with picks, sorted by epicentral distance; :three: location confidence ellipsoid.
 
@@ -28,13 +28,13 @@ Using the coordinates (latitude and longitude) and the time of a local event as 
 
 ## :white_check_mark: Requirements
 
-* **Python 3.9** or later (tested with Python 3.10 and 3.12).
+* **Python 3.9** or later (successfully tested with Python 3.10 and 3.12).
 * **SeisBench**, the ML model toolbox used for phase picking and denoising.
 * **NonLinLoc**, a suite of C programs for probabilistic hypocenter estimation.
 * **GMT** and **PyGMT**, for map generation.
-* **PyOcto**, phase associator after ([Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130))
+* **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130)
 * **Pyrocko**, open-source seismology toolbox and library.
-* **GaMMA**, phase associator after ([Zhu et al. (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249))
+* **GaMMA**, phase associator after [Zhu et al. (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249)
 * **NLLGrid**, a Python class for handling NonLinLoc grid files. Hosted [here](https://github.com/claudiodsf/nllgrid).
 
 ## :hammer_and_wrench: Installation
@@ -43,7 +43,7 @@ Tested on Linux Mint and Lubuntu (Debian-based syntax used here).
 
 ### :hammer_and_wrench: Create a virtual environment
 
-It is highly recommended to use a *virtual environment* to install software with several requirements. We select the folder where we will install the virtual environment (do not forget to replace the names between angle brackets). The created environment can be then activated using `source`:
+It is highly recommended to use a *virtual environment* to install software with several requirements. We move to the folder where we will install the virtual environment (do not forget to replace the names between angle brackets). The created environment can be then activated using `source`:
 
 ```bash
 python3 -m venv <path_to_virtual_environment>/<venv_tiebenn>
@@ -57,7 +57,7 @@ source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate
 > ```bash
 > alias <alias_name>='source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate'
 > ```
-> Then reload:
+> Save changes. Then reload:
 > ```bash
 > exec bash
 > ```
@@ -145,7 +145,13 @@ python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker 
 | **VelMod** | The number corresponding to the model which will be used for hypocenter location with NonLinLoc. [See the full list here](https://192.168.11.188/dzreorg/software/tiebenn/-/blob/main/velocity_models.md) _Note_: 3D velocity models have been tested, although I have still not found a region in Germany where using a 3D velocity model instead of a dedicated, local 1D velocity model results in a dramatic improvement in the event location quality and is worth the extra travel-time calculation time. The implementation of 3D velocity models for real-time event location is, at least momentarily, beyond the scope of this repository |
 | **PhaseAssoc** | Phase associator. Options are `PyOcto` (`pyocto` or `p`) and `GaMMA` (`gamma` or `g`). Not case sensitive |
 | **Denoise** | Boolean parameter. If true, the DeepDenoiser model will be applied on the waveforms of stations within 100 km in epicentral distance |
-| **MultWindows** | Boolean parameter. If true, it maked the phase picker to look for P- or S-waves in moving windows, which helps to attack the prediction inconsistency inherent to machine-learning-based models |
+| **MultWindows** | Boolean parameter. If true, it makes the phase picker to look for P- or S-waves in moving windows, which helps to address the prediction inconsistency inherent to machine-learning-based models |
+
+To locate the event with example UTC datetime and coordinates specified above, we type in the terminal (in the **tiebenn** directory and with our virtual environment activated):
+
+```
+python tiebenn.py --event_file <full_path_to_example_event> --max_epic_dist 150 --picker SeisBench_PhaseNet --client FDSN --min_detections 3 --plots True --vel_mode auto --ph_assoc PyOcto --denoise True --mult_windows True
+```
 
 ### :outbox_tray: Output
 

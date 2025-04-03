@@ -66,7 +66,7 @@ def main(args):
           raise TiebennVelocityModeError('Velocity model must be selected when manual velocity mode in use.')
           return
 
-       if velmod < 0 or velmod > 19: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
+       if velmod < 0 or velmod not in [1, 2 ,3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
           class TiebennVelocityModelError(Exception):
                 pass
           raise TiebennVelocityModelError('Selected velocity model is not implemented on Tiebenn')

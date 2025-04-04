@@ -226,7 +226,7 @@ Clearly under development.
 - [PyGMT guide and MANY examples](https://www.pygmt.org/dev/index.html)
 - [Pyrocko applications](https://pyrocko.org/)
 
-## :page_facing_up: License
+## :balance_scale: License
 
 This project is released under the **GNU General Public License v3.0 (GPLv3)**.
 In short, it's open-source and free to use, modify, and redistribute — but any modified version that is shared must also remain open under the same license.

@@ -7,8 +7,31 @@
    width="710.896"
    height="283.31998"
    viewBox="0 0 710.896 283.31998"
+   sodipodi:docname="tiebenn_logo.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview62"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.4898157"
+     inkscape:cx="232.1457"
+     inkscape:cy="141.77756"
+     inkscape:window-width="1920"
+     inkscape:window-height="1006"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g130" />
   <defs
      id="defs6">
     <linearGradient
@@ -222,31 +245,31 @@
                id="g130">
               <path
                  d="m 0,48.086 h 72.52 v 8.945 H 42.969 v 85.938 H 29.414 V 57.031 H 0 Z"
-                 style="fill:#95c11f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="fill:#95c11f;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:0.99975002;stroke-dasharray:none;opacity:1;stroke-opacity:1"
                  id="path132" />
               <path
                  d="M 98.535,142.969 H 85.391 V 73.84 H 98.535 Z M 99.758,58.387 H 84.168 V 48.086 h 15.59 z"
-                 style="fill:#95c11f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="fill:#95c11f;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-opacity:1"
                  id="path134" />
               <path
                  d="m 143.941,81.297 c -12.742,0 -15.859,4.879 -15.859,20.601 v 1.219 h 35.785 v -1.219 c 0,-15.859 -2.98,-20.601 -15.722,-20.601 z m 33.075,30.633 h -48.934 v 1.629 c 0,15.855 2.98,20.601 15.859,20.601 h 29.278 v 8.809 h -31.446 c -21.554,0 -26.703,-8.676 -26.703,-34.563 0,-27.246 5.285,-35.785 26.703,-35.785 h 8.403 c 21.554,0 26.84,8.539 26.84,35.785 z"
-                 style="fill:#95c11f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="fill:#95c11f;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-opacity:1"
                  id="path136" />
               <path
                  d="m 220.066,125.191 c 10.911,0 16.918,-3.308 16.918,-11.277 0,-9.316 -6.007,-12.629 -16.918,-12.629 h -7.23 v 23.906 z m -5.394,-43.765 c 9.93,0 15.328,-3.063 15.328,-11.524 0,-7.23 -5.273,-10.3 -15.328,-10.3 h -1.836 v 21.824 z m 6.5,-39.598 c 17.406,0 31.137,6.496 31.137,25.746 0,9.317 -4.043,17.285 -12.625,21.696 12.625,2.207 21.574,9.199 21.574,25.5 0,16.675 -12.133,28.199 -33.098,28.199 H 189.785 V 41.828 Z"
-                 style="fill:#123303;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="fill:#123303;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-opacity:1"
                  id="path138" />
               <path
                  d="m 290.074,102.5 c 0.356,-5.754 4.531,-10.176 12.02,-10.176 6.355,0 10.91,3.555 11.886,10.176 z m 45.106,9.09 c 0,-22.086 -14.578,-33.352 -33.707,-33.352 -18.996,0 -34.575,14.953 -34.575,33.352 0,18.265 15.579,33.219 34.575,33.219 13.976,0 25.507,-4.536 32.617,-16.446 l -15.707,-7.84 c -5.27,5.641 -8.332,6.997 -15.313,6.997 -5.531,0 -13.617,-3.309 -13.617,-12.997 h 45.613 c 0.114,-0.734 0.114,-2.089 0.114,-2.933"
-                 style="fill:#bd4b00;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="fill:#bd4b00;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-opacity:1"
                  id="path140" />
               <path
                  d="M 368.402,142.969 H 345.355 V 41.828 h 23.047 l 40.215,62.77 h 0.242 v -62.77 h 23.051 v 101.141 h -23.051 l -40.211,-62.77 h -0.246 z"
-                 style="fill:#123303;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="fill:#123303;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-opacity:1"
                  id="path142" />
               <path
                  d="M 469.668,142.969 H 446.617 V 41.828 h 23.051 l 40.211,62.77 h 0.246 v -62.77 h 23.047 V 142.969 H 510.125 L 469.91,80.199 h -0.242 z"
-                 style="fill:#123303;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 style="fill:#123303;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-opacity:1"
                  id="path144" />
             </g>
           </g>

@@ -76,7 +76,7 @@ def generate_csv(streams, outputs, data, snr_data, ev_time):
             prediction result files in CSV format for each station
     """
     ev_time = str(UTCDateTime(ev_time))
-    os.mkdir(ev_time + '_tiebenn_loc/csv_picks')
+    os.mkdir(f"{ev_time}_tiebenn_loc/csv_picks")
 
     for stat in outputs[0]['station'].drop_duplicates():
         outputs_sta = outputs[0][outputs[0]['station'] == stat]
@@ -104,7 +104,7 @@ def generate_csv(streams, outputs, data, snr_data, ev_time):
 
         df = {'network': net, 'station': sta, 'station_lat': st_lat, 'station_lon': st_lon, 'station_elv': st_elv, 'phase': phase, 'arrival_time': arrival_time, 'probability': probability, 'snr': snr}
         dataframe = pd.DataFrame(data=df)
-        filename = ev_time + '_tiebenn_loc/csv_picks/' + stat + '_' + ev_time + '_prediction_results.csv'
+        filename = f"{ev_time}_tiebenn_loc/csv_picks/{stat}_{ev_time}_prediction_results.csv"
         dataframe.to_csv(filename, index=False)
 
     return
@@ -145,7 +145,7 @@ def chan_comma(chanlist):
     string = ''
 
     for i in range(len(chanlist)):
-        string = string + chanlist[i] + ','
+        string = f"{string}{chanlist[i]},"
     string = string.rstrip(string[-1])
 
     return string

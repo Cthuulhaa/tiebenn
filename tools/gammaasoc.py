@@ -62,14 +62,14 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
             teo_verdict = tt_theo_before_assoc(ev_time=ev_time, teo_p_time=p_secs_taup, teo_s_time=s_secs_taup, pick=pick, tol_p=6, tol_s=7) #XXX NOTE: The tolerance indicates that if for a pick the theoretical time (for an event at 5 km depth) differs <tolerance> seconds from the observed time, the observation will be discarded. This aims to eliminate false positives, but it is problematic e.g. for small events or low SNR, since more false positives are expected and the association might fail with too few picks. For this reason, the tolerance must allow an error margin in the picks
 
             if teo_verdict == 'pass':
-               id_picks.append(data[sta]['network'] + '.' + sta)
+               id_picks.append(f"{data[sta]['network']}.{sta}")
                station.append(sta)
                phase.append(pick.phase.lower())
                time.append(str(pick.peak_time).replace('T', ' ').replace('Z', ''))
                peak_value.append((pick.peak_value))
 
                if sta not in stats:
-                  id_stations.append(data[sta]['network'] + '.' + sta)
+                  id_stations.append(f"{data[sta]['network']}.{sta}")
                   stats.append(sta)
                   longitude.append(data[sta]['coords'][1])
                   latitude.append(data[sta]['coords'][0])

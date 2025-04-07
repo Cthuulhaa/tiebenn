@@ -85,7 +85,7 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
         vs.append(float(layer.split('   ')[4]))
 
     layers = pd.DataFrame(data={'depth': depth, 'vp': vp, 'vs': vs}).sort_values('depth')
-    velmod_path = 'velocity_model' + str(secs_before)
+    velmod_path = f"velocity_model{str(secs_before)}"
     pyocto.VelocityModel1D.create_model(layers, 1., 300, 300, velmod_path)
     velocity_model = pyocto.VelocityModel1D(velmod_path, tolerance=2.5, association_cutoff_distance=300.)
 

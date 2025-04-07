@@ -41,7 +41,7 @@ def velmods(model, ev_lon, ev_lat):
     try:
         if model not in [6, 7, 12, 13, 17]:
            velmod = []
-           with open('utils/velocity_models/v' + str(int(model)), 'r') as v:
+           with open(f"utils/velocity_models/v{str(int(model))}", 'r') as v:
                 for line in v:
                     velmod.append(line.replace('\n', ''))
 
@@ -49,13 +49,13 @@ def velmods(model, ev_lon, ev_lat):
            crust1 = crustModel()
            velmod = []
            for i in crust1.get_point(ev_lat, ev_lon):
-               velmod.append('LAYER   ' + str(-crust1.get_point(ev_lat, ev_lon)[i][4]) + '   ' + str(crust1.get_point(ev_lat, ev_lon)[i][0]) +  '   0.0   ' +  str(crust1.get_point(ev_lat, ev_lon)[i][1]) + '   0.0   ' + str(crust1.get_point(ev_lat, ev_lon)[i][2]) + '   0.0')
+               velmod.append(f"LAYER   {str(-crust1.get_point(ev_lat, ev_lon)[i][4])}   {str(crust1.get_point(ev_lat, ev_lon)[i][0])}   0.0   {str(crust1.get_point(ev_lat, ev_lon)[i][1])}   0.0   {str(crust1.get_point(ev_lat, ev_lon)[i][2])}    0.0")
 
         if model == 7:
            crust1 = crustModel()
            velmod = []
            for i in crust1.get_point(ev_lat, ev_lon):
-               velmod.append('LAYER   ' + str(-crust1.get_point(ev_lat, ev_lon)[i][4]) + '   ' + str(crust1.get_point(ev_lat, ev_lon)[i][0]) +  '   0.0   ' +  str(crust1.get_point(ev_lat, ev_lon)[i][1]) + '   0.0   ' + str(crust1.get_point(ev_lat, ev_lon)[i][2]) + '   0.0')
+               velmod.append(f"LAYER   {str(-crust1.get_point(ev_lat, ev_lon)[i][4])}   {str(crust1.get_point(ev_lat, ev_lon)[i][0])}   0.0   {str(crust1.get_point(ev_lat, ev_lon)[i][1])}   0.0   {str(crust1.get_point(ev_lat, ev_lon)[i][2])}    0.0")
            velmod.append('LAYER   35.0   8.04   0.0   4.48   0.0   3.38   0.0')
            velmod.append('LAYER   77.5   8.045   0.0   4.49   0.0   3.38   0.0')
            velmod.append('LAYER   120.0   8.05   0.0   4.5   0.0   3.36   0.0')

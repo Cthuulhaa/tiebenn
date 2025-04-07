@@ -58,7 +58,7 @@ def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final):
                 axis[ax0].legend(loc='upper right')
 
             if ax0 == 0:
-               axis[ax0].set_title(streams[ch].stats.network + '.' + sta + ' ' + str(starttime))
+               axis[ax0].set_title(f"{streams[ch].stats.network}.{sta} {str(starttime)}")
             ax0 = ax0 + 1
 
         for seconds in predictions[sta]:
@@ -73,7 +73,7 @@ def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final):
                 if predictions[sta][str(ind_max)][pred].stats.channel.split('_')[-1] == pick_pl['phase'].to_list()[pick]:
                    offset = predictions[sta][str(ind_max)][pred].stats.starttime - streams[ch].stats.starttime
                    axis[ax0].plot(predictions[sta][str(ind_max)][pred].times() + offset - secs_bef, predictions[sta][str(ind_max)][pred].data, label=predictions[sta][str(ind_max)][pred].stats.channel.split('_')[-1])
-        axis[ax0].text(0, -0.3, 'Epicentral distance: ' + data[sta]['epic_distance'] + ' (km)', fontsize=12)
+        axis[ax0].text(0, -0.3, f"Epicentral distance: {data[sta]['epic_distance']} (km)", fontsize=12)
         axis[ax0].legend()
         axis[ax0].set_ylim(0, 1)
         axis[ax0].set_ylabel('Probability')
@@ -86,7 +86,7 @@ def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final):
     os.makedirs(output_dir, exist_ok=True)
 
     try:
-        savename = os.path.join(output_dir, f'{streams[0].stats.network}.{sta}{starttime}.pdf')
+        savename = os.path.join(output_dir, f"{streams[0].stats.network}.{sta}{starttime}.pdf")
         fig.savefig(savename)
         plt.close(fig)
     except:
@@ -125,7 +125,7 @@ def plotpicks_sb(data, streams, starttime, predictions, picks):
                     ax.legend(loc='upper right')
             ax.set_ylabel(trace.stats.channel)
             if ax == axes[0]:
-                ax.set_title(trace.stats.network + '.' + sta + ' ' + str(starttime))
+                ax.set_title(f"{trace.stats.network}.{sta} {str(starttime)}")
 
         last_ax = axes[-1]
 
@@ -134,7 +134,7 @@ def plotpicks_sb(data, streams, starttime, predictions, picks):
                 offset = predictions[sta][preds].stats.starttime - streams[0].stats.starttime
                 last_ax.plot(predictions[sta][preds].times() + offset, predictions[sta][preds].data, label=predictions[sta][preds].stats.channel.split('_')[-1])
 
-        last_ax.text(0, -0.3, 'Epicentral distance: ' + data[sta]['epic_distance'] + ' (km)', fontsize=12)
+        last_ax.text(0, -0.3, f"Epicentral distance: {data[sta]['epic_distance']} (km)", fontsize=12)
         last_ax.legend()
         last_ax.set_ylim(0, 1)
         last_ax.set_ylabel('Probability')
@@ -144,11 +144,11 @@ def plotpicks_sb(data, streams, starttime, predictions, picks):
         print('No data to plot for station', sta, 'Error:', e)
         return
 
-    output_dir = f'{starttime}_tiebenn_loc/plot_picks'
+    output_dir = f"{starttime}_tiebenn_loc/plot_picks"
     os.makedirs(output_dir, exist_ok=True)
 
     try:
-        savename = os.path.join(output_dir, f'{streams[0].stats.network}.{sta}{starttime}.pdf')
+        savename = os.path.join(output_dir, f"{streams[0].stats.network}.{sta}{starttime}.pdf")
         fig.savefig(savename)
         plt.close(fig)
 
@@ -222,13 +222,13 @@ def plot_assoc(ev_time, data, stations, picks, events, merged, mult_windows, sec
         ax.set_ylim(0, max_time + 5)
         ax.grid(True)
         ax.legend(loc='best')
-        title = f'Picks associated to event {ev + 1}'
+        title = f"Picks associated to event {ev + 1}"
         ax.set_title(title)
 
         if mult_windows:
-            savename = f'PhAssoc_event{ev + 1}_{secs_before}.pdf'
+            savename = f"PhAssoc_event{ev + 1}_{secs_before}.pdf"
         else:
-            savename = f'PhAssoc_event{ev + 1}.pdf'
+            savename = f"PhAssoc_event{ev + 1}.pdf"
 
         fig.savefig(savename)
         plt.close(fig)
@@ -239,7 +239,7 @@ def epic_sta_plot():
 
     Generates a plot of the event's epicenter and the stations with picks used for depth estimation with NonLinLoc.
     """
-    stations_file = glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates.txt'
+    stations_file = f"{glob.glob('*_tiebenn_loc/')[0]}station_coordinates.txt"
 
     locfile = glob.glob('*_tiebenn_loc/loc_eqdatetime.*.*.grid0.loc.hyp')[0]
 
@@ -269,7 +269,7 @@ def epic_sta_plot():
     fig.text(x=stations.longitude, y=stations.latitude, text=stations.station, font='12p,Courier-Bold,black', justify='LT')
     fig.legend()
 
-    fig.savefig(glob.glob('*_tiebenn_loc/')[0] + 'epicenter_stations.pdf')
+    fig.savefig(f"{glob.glob('*_tiebenn_loc/')[0]}epicenter_stations.pdf")
 
     return
 
@@ -278,12 +278,12 @@ def plot_picks4loc(data, streams):
     """
     Generates a plot depicting all the stations sorted by epicentral distance with picks used for depth estimation with NonLinLoc
     """
-    stations_file = glob.glob('*_tiebenn_loc/')[0] + 'station_coordinates.txt'
-    observations_file = glob.glob('*_tiebenn_loc/')[0] + 'obs_ttimes.obs'
+    stations_file = f"{glob.glob('*_tiebenn_loc/')[0]}station_coordinates.txt"
+    observations_file = f"{glob.glob('*_tiebenn_loc/')[0]}obs_ttimes.obs"
     secs_bef = 10
 
     nll_loctime = glob.glob('*_tiebenn_loc/*.hyp')[0]
-    event_time_nll = UTCDateTime(nll_loctime.split('.')[2] + nll_loctime.split('.')[3])
+    event_time_nll = UTCDateTime(f"{nll_loctime.split('.')[2]}{nll_loctime.split('.')[3]}")
 
     fig, ax = plt.subplots(1, 1, figsize=(11, 15), tight_layout=True)
     for st in open(stations_file, 'r'):
@@ -313,7 +313,7 @@ def plot_picks4loc(data, streams):
     plt.ylabel('Epicentral distance [km]')
     plt.grid(True)
 
-    savename = glob.glob('*_tiebenn_loc')[0] + '/picks_location.pdf'
+    savename = f"{glob.glob('*_tiebenn_loc')[0]}/picks_location.pdf"
 
     plt.savefig(savename)
     plt.close()
@@ -457,28 +457,28 @@ def plot_hypoc_confidence_ellipsoid():
              if len(line.split()) > 0:
                 lin_ = line.split()
                 if lin_[0] == 'GEOGRAPHIC':
-                   datetime = lin_[2] + '-' + lin_[3] + '-' + lin_[4] + ' ' + lin_[5] + ':' + lin_[6] + ':' + lin_[7]
-                   geo_epi = 'Lat: ' + lin_[9] + '  Lon: ' + lin_[11]
-                   depth = 'Depth: ' + lin_[13] + ' km'
+                   datetime = f"{lin_[2]}-{lin_[3]}-{lin_[4]} {lin_[5]}:{lin_[6]}:{lin_[7]}"
+                   geo_epi = f"Lat: {lin_[9]}  Lon: {lin_[11]}"
+                   depth = f"Depth: {lin_[13]} km"
                 if lin_[0] == 'QUALITY':
-                   rms_nphs = 'RMS: ' + lin_[8] + 's ' + lin_[9] + ':' + lin_[10]
-                   gap_dist = 'Az_gap: ' + lin_[12] + ' Ne_sta: ' + lin_[14] + ' km'
+                   rms_nphs = f"RMS: {lin_[8]}s {lin_[9]}:{lin_[10]}"
+                   gap_dist = f"Az_gap: {lin_[12]} Ne_sta: {lin_[14]} km"
                 if lin_[0] == 'QML_ConfidenceEllipsoid':
-                   ell_axes = 'semiMaj: ' + lin_[2] + ' semiInt: ' + lin_[6]
-                   semi_min = 'semiMin: ' + lin_[4] 
+                   ell_axes = f"semiMaj: {lin_[2]} semiInt: {lin_[6]}"
+                   semi_min = f"semiMin: {lin_[4]}"
 
     fig.text(x=11, y=10, text=datetime, font='11p,Courier-Bold,black', justify='LM', no_clip=True)
     fig.text(x=[11, 11], y=[12, 14], text=[geo_epi, depth], font='10p,Courier,black', justify='LT', no_clip=True)
     fig.text(x=[11, 11], y=[16, 18], text=[rms_nphs, gap_dist], font='10p,Courier,black', justify='LT', no_clip=True)
     fig.text(x=[11, 11, 11], y=[20, 22, 24], text=['NLL Confidence ellipsoid axes (km):', ell_axes, semi_min], font='10p,Courier,black', justify='LT', no_clip=True)
 
-    fig.savefig(glob.glob('*_tiebenn_loc/')[0] + 'NLL_confidence_ellipsoid.pdf')
+    fig.savefig(f"{glob.glob('*_tiebenn_loc/')[0]}NLL_confidence_ellipsoid.pdf")
 
     for dele in glob.glob('gmt*.gmt'):
         os.remove(dele)
 
     loc_file = glob.glob('*_tiebenn_loc/loc_eqdatetime*.hyp')[0]
-    new_name = glob.glob('*_tiebenn_loc')[0] + '/event_location.NLL'
+    new_name = f"{glob.glob('*_tiebenn_loc')[0]}/event_location.NLL"
     os.rename(loc_file, new_name)
 
     for dele in glob.glob('*_tiebenn_loc/loc_eqdatetime*'):

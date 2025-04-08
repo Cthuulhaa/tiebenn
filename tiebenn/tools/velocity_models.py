@@ -1,16 +1,44 @@
+from importlib.resources import files
 from math import floor
 
 import numpy as np
 
 
+def load_velmod(name):
+    """
+
+    Accesses the 1D velocity models in the TieBeNN package for seismic location with NonLinLoc.
+
+    Args:
+         model (int): The P- and S-wave velocity models to be loaded. The velocity models are read from files in the directory data/velocity_models/. New velocity models can be added following the NLL structure. See velocity models currently available in velmods
+    Returns:
+         velmod_list (list): Layers of a 1D velocity model as read from TieBeNN's resources
+    """
+    velmod = f"v{str(name)}"
+
+    try:
+        model_path = files('tiebenn.data.velocity_models').joinpath(velmod)
+
+        velmod_list = []
+        with model_path.open('r') as f:
+             for line in f:
+                 velmod_list.append(line.strip())
+    except:
+           class VelModLoadError(Exception):
+                 pass
+           raise VelModLoadError('Velocity model selected does not exist.')
+
+    return velmod_list
+
+
 def velmods(model, ev_lon, ev_lat):
     """
     
-    Produces a 1D seismic velocity model to be included in the NonLinLoc control file for hypocentre location. When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm^3. The density is, however, a carry over in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.
+    Produces a seismic velocity model to be included in the NonLinLoc control file for hypocentre location. When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm^3. The density is, however, a carry over in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.
     IMPORTANT: This functions is programmed so that each column will be separated by 3 blank spaces from the next one. This becomes of relevance during the phase association and must not be modified
 
     Args:
-         model (int): The P- and S-wave velocity models to be exported. The velocity models are read from files in the directory utils/velocity_models/. New velocity models can be added following the NLL structure. Currently, the following models are available: 
+         model (int): The P- and S-wave velocity models to be exported. The velocity models are read from files in the directory data/velocity_models/. New velocity models can be added following the NLL structure. Currently, the following models are available:
            0 = IASP91
            1 = AK135 (for continental structure)
            2 = BGR velocity model (by J. Schlittenhardt)
@@ -37,13 +65,9 @@ def velmods(model, ev_lon, ev_lat):
     Returns:
          velmod (list): List of 1D velocity/density models in NonLinLoc format. The elements of the list are strings containing the information of each layer: LAYER, depth [km], p-wave velocity and velocity gradient, s-wave velocity and velocity gradient [km/s], density and density gradient in any convenient numerical value (see above)
     """
-
     try:
         if model not in [6, 7, 12, 13, 17]:
-           velmod = []
-           with open(f"utils/velocity_models/v{str(int(model))}", 'r') as v:
-                for line in v:
-                    velmod.append(line.replace('\n', ''))
+           velmod = load_velmod(model)
 
         if model == 6:
            crust1 = crustModel()
@@ -81,12 +105,13 @@ class crustModel:
          bnds (ndarray) Elevation of the top of the given layer with respect to sea level model
          layer_names (list) Names of the nine possible layers in the model
     """
+    crust1_dir = files('tiebenn.data.crust1')
 
     def __init__(self):
-        self.vp = np.loadtxt('utils/crust1/crust1.vp')
-        self.vs = np.loadtxt('utils/crust1/crust1.vs')
-        self.rho = np.loadtxt('utils/crust1/crust1.rho')
-        self.bnds = np.loadtxt('utils/crust1/crust1.bnds')
+        self.vp = np.loadtxt(crust1_dir.joinpath('crust1.vp'))
+        self.vs = np.loadtxt(crust1_dir.joinpath('crust1.vs'))
+        self.rho = np.loadtxt(crust1_dir.joinpath('crust1.rho'))
+        self.bnds = np.loadtxt(crust1_dir.joinpath('crust1.bnds'))
 
         self.vp = self.vp.reshape((180, 360, 9))
         self.vs = self.vs.reshape((180, 360, 9))

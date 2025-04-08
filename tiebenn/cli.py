@@ -6,11 +6,11 @@ import shutil
 from obspy import UTCDateTime
 from obspy.geodetics.base import gps2dist_azimuth
 
-from tools.nicetools import calculate_lqs, str2bool, strmonth2num
-from tools.nonlinloc import create3dgrid, inp_files_nlloc_sb, pynlloc
-from tools.retrieve_data import make_station_list
-from tools.velocity_models import select_velmod
-from tools.visualization import plot_hypoc_confidence_ellipsoid, plot_picks4loc, radarplot
+from tiebenn.tools.nicetools import calculate_lqs, str2bool, strmonth2num
+from tiebenn.tools.nonlinloc import create3dgrid, inp_files_nlloc_sb, pynlloc
+from tiebenn.tools.retrieve_data import make_station_list
+from tiebenn.tools.velocity_models import select_velmod
+from tiebenn.tools.visualization import plot_hypoc_confidence_ellipsoid, plot_picks4loc, radarplot
 
 
 def main(args):
@@ -66,11 +66,22 @@ def main(args):
           raise TiebennVelocityModeError('Velocity model must be selected when manual velocity mode in use.')
           return
 
-       if velmod < 0 or velmod not in [1, 2 ,3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]: # XXX NOTE: This value should change as new velocity models are implemented in the tiebenn/utils directory
-          class TiebennVelocityModelError(Exception):
-                pass
-          raise TiebennVelocityModelError('Selected velocity model is not implemented on Tiebenn')
-          return
+       if velmod not in [6, 7, 12, 13, 17]:
+          velmod_name = f"v{str(velmod)}"
+
+          try:
+              model_path = files("tiebenn.data.velocity_models").joinpath(velmod_name)
+          except:
+                 class VelModLoadError(Exception):
+                       pass
+                 raise VelModLoadError('Velocity model selected does not exist.')
+       elif velmod in [6, 7]:
+            print('Crust1.0 model will be used for seismic location.')
+       else:
+            class TiebennNLL3DUnavailable(Exception):
+                  pass
+            raise TiebennNLL3DUnavailable('Depth estimation option using 3D grids is momentarily disabled!')
+            return
     elif vel_mode.lower() not in ['manual', 'man', 'm', 'automatic', 'auto', 'a']:
          class TiebennVelocityModeError(Exception):
                pass
@@ -183,7 +194,7 @@ def main(args):
             data[et]['epic_distance'] = "{:.2f}".format(gps2dist_azimuth(data[et]['coords'][0], data[et]['coords'][1], ev_lat, ev_lon)[0] * 0.001)
 
         if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
-           from tools.sb_tools import picks_sb
+           from tiebenn.tools.sb_tools import picks_sb
 
            if not sds_dir:
               streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
@@ -273,7 +284,7 @@ def read_args():
     return args
 
 
-if __name__ == '__main__':
+def main_cli():
 
     args = read_args()
     main(args)

@@ -1,5 +1,7 @@
 import glob
+from importlib.resources import files
 import os
+from pathlib import Path
 import shutil
 import subprocess
 
@@ -14,6 +16,28 @@ from .velocity_models import velmods
 from .visualization import epic_sta_plot
 
 
+def extract_3d_velmod(model_name: str, workdir: Path):
+    """
+
+    Creates a temporary directory with 3D velocity models copied from Tiebenn's resources.
+
+    Args:
+         model_name (str): Name of velocity model (e.g.: 'diehl', 'lengline', 'weg')
+         workdir (pathlib.Path):
+    Returns:
+         dest (path): Path with the copied 3D velocity model files
+    """
+    model_dir = files('tiebenn.data.velocity_models').joinpath(model_name)
+
+    dest = workdir / model_name
+    dest.mkdir(exist_ok=True)
+
+    for f in model_dir.iterdir():
+        shutil.copy(f, dest)
+
+    return dest
+
+
 def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detections=3, verbosity=0):
     """
 
@@ -25,7 +49,7 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
          ev_time (str): Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss
          data (dict): A dictionary with information about the stations with picks
          nll3d (bool): If True, it will prepare the control files for a NonLinLoc depth estimation with a 3D velocity grid
-         velmod (int): The seismic velocity model to be used in NonLinLoc for hypocentre location. See current options in velmods.py
+         velmod (int): The seismic velocity model to be used in NonLinLoc for hypocentre location. See current options in velocity_models.py
          min_detections (int): It will define the minimum amount of stations on which the event was detected. If this minimum amount of detections is not achieved, the code will exit without calculating the hypocenter if the required minimum is not achieved. Value must be >= 3. Default = 3
          verbosity (int): Verbosity level of NonLinLoc. Possible options are -1 (silent), 0 (errors only), 1 (higher level warnings), >= 2 (low level warnings + information). Default is 0
 
@@ -136,7 +160,9 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
                         file3.write(f"{i}\n")
 
             if velmod == 12:
-               file3.write(f"VGINP    utils/velocity_models/diehl/diehl_3D_pg.txt\n")
+               model_path = extract_3d_velmod(model_name='diehl', workdir='temp_velmodfiles')
+
+               file3.write(f"VGINP    {model_path}/diehl_3D_pg.txt\n")
                file3.write(f"VGOUT   {glob.glob('*_tiebenn_loc/')[0]}model_layer\n")
                file3.write(f"VGTYPE   P\n")
                file3.write(f"VGGRID   43   43   13   -210.   -210   -7.0   10   10   10   SLOW_LEN   SLOW_LEN\n")
@@ -144,7 +170,9 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
          if velmod not in [13, 17]:
             file3.write(f"GTFILES   {glob.glob('*_tiebenn_loc/')[0]}model_layer   {glob.glob('*_tiebenn_loc/')[0]}time_layer   P\n")
          elif velmod == 13:
-              file3.write(f"GTFILES   utils/velocity_models/weg/GitterWEG   {glob.glob('*_tiebenn_loc/')[0]}time_layer   P\n")
+              model_path = extract_3d_velmod(model_name='weg', workdir='temp_velmodfiles')
+
+              file3.write(f"GTFILES   {model_path}/GitterWEG   {glob.glob('*_tiebenn_loc/')[0]}time_layer   P\n")
 
          if not nll3d:
             if velmod not in [12, 13, 17]:
@@ -191,7 +219,9 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
                  file4.write(f"TRANS   LAMBERT   WGS-84   52.3348   9.00   52    53    0.0\n")
 
             if velmod == 12:
-               file4.write(f"VGINP    utils/velocity_models/diehl/diehl_3D_sg.txt\n")
+               model_path = extract_3d_velmod(model_name='diehl', workdir='temp_velmodfiles')
+
+               file4.write(f"VGINP    {model_path}/diehl_3D_sg.txt\n")
                file4.write(f"VGOUT   {glob.glob('*_tiebenn_loc/')[0]}model_layer\n")
                file4.write(f"VGTYPE   S\n")
                file4.write(f"VGGRID   43   43   13   -210.   -210   -7.0   10   10   10   SLOW_LEN   SLOW_LEN\n")
@@ -199,7 +229,9 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
             if velmod != 13:
                file4.write(f"GTFILES   {glob.glob('*_tiebenn_loc/')[0]}model_layer   {glob.glob('*_tiebenn_loc/')[0]}time_layer   S\n")
             else:
-                 file4.write(f"GTFILES   utils/velocity_models/weg/GitterWEG   {glob.glob('*_tiebenn_loc/')[0]}time_layer   S\n")
+                 model_path = extract_3d_velmod(model_name='weg', workdir='temp_velmodfiles')
+
+                 file4.write(f"GTFILES   {model_path}/GitterWEG   {glob.glob('*_tiebenn_loc/')[0]}time_layer   S\n")
 
             if not nll3d:
                if velmod not in [12, 13]:
@@ -215,10 +247,12 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
 
     if velmod == 17:
        if len(stations17) != 0:
+          model_path = extract_3d_velmod(model_name='lengline', workdir='temp_velmodfiles')
+
           with open(f"{glob.glob('*_tiebenn_loc/')[0]}nlloc_control17.in", 'w') as file317:
                file317.write(f"CONTROL   {str(verbosity)}   54321\n")
                file317.write(f"TRANS    LAMBERT WGS-84   48.66166   7.77386   47   49   0.0\n")
-               file317.write(f"GTFILES   utils/velocity_models/lengline/layer   {glob.glob('*_tiebenn_loc/')[0]}time_layer   P\n")
+               file317.write(f"GTFILES   {model_path}/layer   {glob.glob('*_tiebenn_loc/')[0]}time_layer   P\n")
                file317.write(f"GTMODE   GRID3D   ANGLES_NO\n")
                file317.write(f"INCLUDE   {glob.glob('*_tiebenn_loc/')[0]}station_coordinates17.txt\n")
                file317.write(f"GT_PLFD   1.0e-3   0\n")
@@ -227,7 +261,7 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
           with open(f"{glob.glob('*_tiebenn_loc/')[0]}nlloc_control17_s.in", 'w') as file417:
                file417.write(f"CONTROL   {str(verbosity)}   54321\n")
                file417.write(f"TRANS    LAMBERT WGS-84   48.66166   7.77386   47   49   0.0\n")
-               file417.write(f"GTFILES   utils/velocity_models/lengline/layer   {glob.glob('*_tiebenn_loc/')[0]}time_layer   S\n")
+               file417.write(f"GTFILES   {model_path}/layer   {glob.glob('*_tiebenn_loc/')[0]}time_layer   S\n")
                file417.write(f"GTMODE   GRID3D   ANGLES_NO\n")
                file417.write(f"INCLUDE   {glob.glob('*_tiebenn_loc/')[0]}station_coordinates17.txt\n")
                file417.write(f"GT_PLFD   1.0e-3   0\n")
@@ -251,6 +285,9 @@ def inp_files_nlloc_sb(ev_lon, ev_lat, ev_time, data, nll3d, velmod, min_detecti
                file416.write(f"INCLUDE   {glob.glob('*_tiebenn_loc/')[0]}station_coordinates16.txt\n")
                file416.write(f"GT_PLFD   1.0e-3   0\n")
           file416.close()
+
+    if os.path.exists('temp_velmodfiles'):
+       shutil.rmtree('temp_velmodfiles')
 
     print('Files prepared.')
 

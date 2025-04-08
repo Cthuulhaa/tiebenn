@@ -105,13 +105,11 @@ class crustModel:
          bnds (ndarray) Elevation of the top of the given layer with respect to sea level model
          layer_names (list) Names of the nine possible layers in the model
     """
-    crust1_dir = files('tiebenn.data.crust1')
-
     def __init__(self):
-        self.vp = np.loadtxt(crust1_dir.joinpath('crust1.vp'))
-        self.vs = np.loadtxt(crust1_dir.joinpath('crust1.vs'))
-        self.rho = np.loadtxt(crust1_dir.joinpath('crust1.rho'))
-        self.bnds = np.loadtxt(crust1_dir.joinpath('crust1.bnds'))
+        self.vp = np.loadtxt(files('tiebenn.data.crust1').joinpath('crust1.vp'))
+        self.vs = np.loadtxt(files('tiebenn.data.crust1').joinpath('crust1.vs'))
+        self.rho = np.loadtxt(files('tiebenn.data.crust1').joinpath('crust1.rho'))
+        self.bnds = np.loadtxt(files('tiebenn.data.crust1').joinpath('crust1.bnds'))
 
         self.vp = self.vp.reshape((180, 360, 9))
         self.vs = self.vs.reshape((180, 360, 9))

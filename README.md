@@ -35,7 +35,10 @@ Using the coordinates (latitude and longitude) and the UTC time of a local event
 * **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130)
 * **Pyrocko**, open-source seismology toolbox and library.
 * **GaMMA**, phase associator after [Zhu et al. (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249)
-* **NLLGrid**, a Python class for handling NonLinLoc grid files. Hosted [here](https://github.com/claudiodsf/nllgrid).
+
+### Optional
+
+* **NLLGrid**, a Python class for handling NonLinLoc grid files. Hosted [here](https://github.com/claudiodsf/nllgrid). Useful if you would eventually like to try 3D NonLinLoc grids in Python.
 
 ## :hammer_and_wrench: Installation
 
@@ -62,20 +65,22 @@ source <path_to_virtual_environment>/<venv_tiebenn>/bin/activate
 > exec bash
 > ```
 
-### :hammer_and_wrench: Install Python dependencies
+### :hammer_and_wrench: Installing TieBeNN and its Python dependencies
 
-Installing SeisBench will install most of Tiebenn's dependencies. You can install a pure-CPU version of SeisBench, in case it is necessary. For this, after activating the virtual environment by using the previously created alias, type:
+In case you plan to work on a CPU machine, after activating the virtual environment by using the previously created alias, type:
 
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-pip install seisbench
 ```
 
-If you are working on a GPU machine, then you can skip the first line and directly install SeisBench with the second line. Then, you can proceed with the installation of the remaining dependencies:
+If you are working on a GPU machine, then you can skip this line. Then, you can proceed to clone the TieBeNN repository and install it:
 
 ```bash
-pip install pygmt pyocto pyrocko nllgrid
-pip install git+https://github.com/wayneweiqiang/GaMMA.git
+git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
+cd tiebenn
+
+pip install .
+pip install -r optional.txt
 ```
 
 ### :hammer_and_wrench: Installing NonLinLoc and setting paths
@@ -83,8 +88,8 @@ pip install git+https://github.com/wayneweiqiang/GaMMA.git
 NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create the directory `<tiebenn_directory>/utils/nonlinloc` and within it, we clone the NonLinLoc repository:
 
 ```bash
-mkdir -p <tiebenn_directory>/utils/nonlinloc
-cd <tiebenn_directory>/utils/nonlinloc
+mkdir -p <some_convenient_directory>/nonlinloc
+cd <some_convenient_directory>/nonlinloc
 git clone https://github.com/ut-beg-texnet/NonLinLoc.git
 cd NonLinLoc/src
 mkdir bin
@@ -96,12 +101,12 @@ cp Vel2Grid* Grid2* NLLoc ../../../
 
 > :exclamation: **Important**
 >
-> Do not use NonLinLoc's latest release directly, as it contains unresolved bugs, whose fix are still unreleased.
+> Do not use NonLinLoc's latest release directly, as it might contain unresolved bugs, whose fix are still unreleased.
 
 Set NonLinLoc in your `PATH`:
 
 ```bash
-echo 'export PATH=${PATH}:<tiebenn_directory>/utils/nonlinloc/' >> ~/.bashrc
+echo 'export PATH=${PATH}:<some_convenient_directory>/nonlinloc/' >> ~/.bashrc
 exec bash
 ```
 
@@ -129,7 +134,7 @@ Example:
 With the virtual environment activated (see above), TieBeNN follows this syntax:
 
 ```bash
-python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker <Picker> --client <Client> --sds_dir <SDSDir> --min_detections <MinDetections> --plots <Plots> --vel_mode <VelMode> --velmod <VelMod> --ph_assoc <PhaseAssoc> --denoise <Denoise> --mult_windows <MultiWindows>
+tiebenn --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker <Picker> --client <Client> --sds_dir <SDSDir> --min_detections <MinDetections> --plots <Plots> --vel_mode <VelMode> --velmod <VelMod> --ph_assoc <PhaseAssoc> --denoise <Denoise> --mult_windows <MultiWindows> --secs_before <SecsBef>
 ```
 
 | Parameter | Description |
@@ -146,11 +151,14 @@ python tiebenn.py --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker 
 | **PhaseAssoc** | Phase associator. Options are `PyOcto` (`pyocto` or `p`) and `GaMMA` (`gamma` or `g`). Not case sensitive |
 | **Denoise** | Boolean parameter. If true, the DeepDenoiser model will be applied on the waveforms of stations within 100 km in epicentral distance |
 | **MultWindows** | Boolean parameter. If true, it makes the phase picker to look for P- or S-waves in moving windows, which helps to address the prediction inconsistency inherent to machine-learning-based models |
+| **SecsBef** | If **MultWindows** is _False_, then you can use this parameter to set the starttime of the retrieved waveforms (in seconds before the event time). Default is 0 seconds |
 
-To locate the event with example UTC datetime and coordinates specified above, we type in the terminal (in the **tiebenn** directory and with our virtual environment activated):
+> :point_right: **Note**: Commands related to the use of 3D NonLinLoc velocity models is deactivated, but they are still present in the code in case someone wants to pick its development up.
 
-```
-python tiebenn.py --event_file <full_path_to_example_event> --max_epic_dist 150 --picker SeisBench_PhaseNet --client FDSN --min_detections 3 --plots True --vel_mode auto --ph_assoc PyOcto --denoise True --mult_windows True
+To locate the event with example UTC datetime and coordinates specified above, we type in the terminal (remember to activate the virtual environment created above):
+
+```bash
+tiebenn --event_file <full_path_to_example_event> --max_epic_dist 150 --picker SeisBench_PhaseNet --client FDSN --min_detections 3 --plots True --vel_mode auto --ph_assoc PyOcto --denoise True --mult_windows True
 ```
 
 ### :outbox_tray: Output

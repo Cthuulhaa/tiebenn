@@ -1,5 +1,6 @@
 import argparse
 import glob
+from importlib.resources import files
 import os
 import shutil
 
@@ -60,7 +61,7 @@ def main(args):
        min_detections = 3
 
     if vel_mode.lower() in ['manual', 'man', 'm']:
-       if not velmod:
+       if velmod is None:
           class TiebennVelocityModeError(Exception):
                 pass
           raise TiebennVelocityModeError('Velocity model must be selected when manual velocity mode in use.')
@@ -69,12 +70,14 @@ def main(args):
        if velmod not in [6, 7, 12, 13, 17]:
           velmod_name = f"v{str(velmod)}"
 
-          try:
-              model_path = files("tiebenn.data.velocity_models").joinpath(velmod_name)
-          except:
-                 class VelModLoadError(Exception):
-                       pass
-                 raise VelModLoadError('Velocity model selected does not exist.')
+          model_path = files('tiebenn.data.velocity_models').joinpath(velmod_name)
+
+          if model_path.is_file():
+             print(f"Velocity model {str(velmod)} selected")
+          else:
+               class VelModLoadError(Exception):
+                     pass
+               raise VelModLoadError(f"Velocity model {str(velmod)} does not exist.")
        elif velmod in [6, 7]:
             print('Crust1.0 model will be used for seismic location.')
        else:

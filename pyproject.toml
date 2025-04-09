@@ -17,7 +17,6 @@ dependencies = [
   "pygmt",
   "pyocto",
   "pyrocko",
-  "nllgrid",
 ]
 
 [project.urls]

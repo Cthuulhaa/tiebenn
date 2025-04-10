@@ -33,38 +33,55 @@ def load_velmod(name):
 
 def velmods(model, ev_lon, ev_lat):
     """
-    
-    Produces a seismic velocity model to be included in the NonLinLoc control file for hypocentre location. When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm^3. The density is, however, a carry over in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.
-    IMPORTANT: This functions is programmed so that each column will be separated by 3 blank spaces from the next one. This becomes of relevance during the phase association and must not be modified
+    Produces a seismic velocity model to be included in the NonLinLoc control file for hypocenter location.
 
-    Args:
-         model (int): The P- and S-wave velocity models to be exported. The velocity models are read from files in the directory data/velocity_models/. New velocity models can be added following the NLL structure. Currently, the following models are available:
-           0 = IASP91
-           1 = AK135 (for continental structure)
-           2 = BGR velocity model (by J. Schlittenhardt)
-           3 = WET, velocity model for Germany and adjacent regions
-           4 = WB2012, Vogtland/ West Bohemia velocity model (1D, P+S), averaged from the 3D velocity models of Ruzek & Horalek (2013)
-           5 = DEU, 3-layer model for Germany with a Moho depth of 28.5 km. It seems to be more appropriate for southern Germany. A vp/vs ratio of 1.68 was used to generate S-wave velocities
-           6 = Crust1.0, for each latitude and longitude pair it produces up to 9 layers. Crust1.0 contains the topography at the epicenter
-           7 = Crust1.0 + AK135, the Crust1.0 model is used for the crustal structure and the lower continental structure from AK135 is merged immediately below
-           8 = Crustal velocity model from Küperkoch et al. (2018) for Insheim, (1D, P+S)
-           9 = Regional model for LI (J. Borns)
-          10 = Landau model (1D, P+S) for the northern Upper Rhine Graben
-          11 = 1D model for Central Alps (Diehl et al. 2021)
-          12 = WARNING! I STRONGLY SUSPECT THAT I HAVE NOT INTEGRATED THIS MODEL IN TIEBENN PROPERLY AND THE AUTHOR (DIEHL, ETH ZÜRICH) SHOULD BE CONTACTED FOR FURTHER CLARIFICATION!!(P+S) 3D model for Central Alps (Diehl et al. 2021)
-          13 = 3D WEG model: high-resolution P-velocity model for the area around Rotenburg, Soehlingen, Soltau, Verden... (This model is not present in the current version of Tiebenn because it is really large and its implementation must be carefully tested!)
-          14 = AlpsLocPS (Brazsus et al., 2024). 1D velocity models for the Greater Alpine Region
-          15 = BENS (Reamer & Hinzen 2004): 1D P- and S-velocity models of the Northern Rhine Area
-          16 = ASZmod1 (Mader et al. 2021): 1D P- and S-velocity models of the Albstadt Shear Zone
-          17 = 3D P+S velocity models for the Upper Rhine Graben after Lengline et al. (2023)
-          18 = PO1 (Malek et al. 2023): 1D P- and S-velocity model for the Novy-Kostel earthquake swarm region, constrained models
-          19 = PO1 (Malek et al. 2023) + WB2012 from 11 km depth
-         ev_lon (float): Event longitude. This parameter will be used if model = 6 or 7
-         ev_lat (float): Event latitude. This parameter will be used if model = 6 or 7
+    When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm³. The density is, however, a carryover in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.
 
-    Returns:
-         velmod (list): List of 1D velocity/density models in NonLinLoc format. The elements of the list are strings containing the information of each layer: LAYER, depth [km], p-wave velocity and velocity gradient, s-wave velocity and velocity gradient [km/s], density and density gradient in any convenient numerical value (see above)
+    IMPORTANT: This function is programmed so that each column will be separated by 3 blank spaces from the next one. This becomes relevant during the phase association and must not be modified.
+
+    Parameters
+    ----------
+    model : int
+        The P- and S-wave velocity models to be exported. Velocity models are read from files in the directory `data/velocity_models/`. New models can be added following the NLL structure.
+
+        The following model numbers are currently supported::
+
+            0  = IASP91
+            1  = AK135 (for continental structure)
+            2  = BGR velocity model (by J. Schlittenhardt)
+            3  = WET: Germany and adjacent regions
+            4  = WB2012: Vogtland/West Bohemia 1D (P+S)
+            5  = DEU: 3-layer Germany model (Moho at 28.5 km, vp/vs = 1.68)
+            6  = Crust1.0: up to 9 layers per lat/lon point
+            7  = Crust1.0 + AK135 hybrid model
+            8  = Küperkoch et al. (2018) for Insheim (1D, P+S)
+            9  = Regional model for LI (J. Borns)
+           10  = Landau model (1D, P+S) for northern Upper Rhine Graben
+           11  = Central Alps 1D (Diehl et al. 2021)
+           12  = Not fully integrated! 3D Central Alps (Diehl, ETH Zürich)
+           13  = 3D WEG: high-res P model (not functional included in TieBeNN)
+           14  = AlpsLocPS (Brazsus et al., 2024) — Greater Alpine Region
+           15  = BENS (Reamer & Hinzen 2004): Northern Rhine Area
+           16  = ASZmod1 (Mader et al. 2021): Albstadt Shear Zone
+           17  = 3D URG (Lengline et al. 2023): Upper Rhine Graben (currently not functional)
+           18  = (Malek et al. 2023): Novy-Kostel swarm
+           19  = PO1 + WB2012 from 11 km depth
+
+    ev_lon : float
+        Event longitude. Used when model = 6 or 7.
+
+    ev_lat : float
+        Event latitude. Used when model = 6 or 7.
+
+    Returns
+    -------
+    velmod : list of str
+        List of 1D velocity/density layers in NonLinLoc format. Each element is a string representing one layer:
+        LAYER depth[km] vp vp_grad vs vs_grad density density_grad
+
+        Note: density values are placeholders and not used in NLL itself.
     """
+
     try:
         if model not in [6, 7, 12, 13, 17]:
            velmod = load_velmod(model)

@@ -8,7 +8,7 @@ except ImportError:
     import math as mathlib
     use_numpy = False
 
-__all__ = ['to_latlon', 'from_latlon']
+#__all__ = ['to_latlon', 'from_latlon']
 
 K0 = 0.9996
 
@@ -90,11 +90,11 @@ def to_latlon(easting, northing, zone_number, zone_letter=None, northern=None, s
 
         zone_number: int
             Zone number is represented with global map numbers of a UTM zone
-            numbers map. For more information see utmzones [1]_
+            numbers map. For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
 
         zone_letter: str
             Zone letter can be represented as string values.  UTM zone
-            designators can be seen in [1]_
+            designators can be seen in `this reference <http://www.jaworski.ca/utmzones.htm>`_
 
         northern: bool
             You can set True or False to set this parameter. Default is None
@@ -109,9 +109,6 @@ def to_latlon(easting, northing, zone_number, zone_letter=None, northern=None, s
 
         longitude: float or NumPy array
             Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).
-
-
-       .. _[1]: http://www.jaworski.ca/utmzones.htm
 
     """
     if not zone_letter and northern is None:
@@ -202,11 +199,11 @@ def from_latlon(latitude, longitude, force_zone_number=None, force_zone_letter=N
         force_zone_number: int
             Zone number is represented by global map numbers of an UTM zone
             numbers map. You may force conversion to be included within one
-            UTM zone number.  For more information see utmzones [1]_
+            UTM zone number.  For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
 
         force_zone_letter: str
             You may force conversion to be included within one UTM zone
-            letter.  For more information see utmzones [1]_
+            letter.  For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
 
         Returns
         -------
@@ -218,14 +215,12 @@ def from_latlon(latitude, longitude, force_zone_number=None, force_zone_letter=N
 
         zone_number: int
             Zone number is represented by global map numbers of a UTM zone
-            numbers map. More information see utmzones [1]_
+            numbers map. More information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
 
         zone_letter: str
             Zone letter is represented by a string value. UTM zone designators
-            can be accessed in [1]_
+            can be accessed `here <http://www.jaworski.ca/utmzones.htm>`_
 
-
-       .. _[1]: http://www.jaworski.ca/utmzones.htm
     """
     if not in_bounds(latitude, -80.0, 84.0):
         raise OutOfRangeError('latitude out of range (must be between 80 deg S and 84 deg N)')

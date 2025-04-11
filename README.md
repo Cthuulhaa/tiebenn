@@ -24,7 +24,9 @@ Using the coordinates (latitude and longitude) and the UTC time of a local event
 
 1. **Location quality assessment**: Location metrics are gathered to compute the Location Quality Score (LQS) and to generate a visualization. :memo: **A description of this metric should be available in a manuscript, currently in preparation** :memo:
 
-> :point_right: **Note**: TieBeNN loops through this process until the minimum required detections within a given epicentral distance are obtained. If not, the search radius is gradually expanded. If phase picks are insufficient within 200 km, the run ends with an unsuccessful event location.
+> :point_right: **Note**:
+>
+> TieBeNN loops through this process until the minimum required detections within a given epicentral distance are obtained. If not, the search radius is gradually expanded. If phase picks are insufficient within 200 km, the run ends with an unsuccessful event location.
 
 ## :white_check_mark: Requirements
 
@@ -32,13 +34,14 @@ Using the coordinates (latitude and longitude) and the UTC time of a local event
 * **SeisBench**, the ML model toolbox used for phase picking and denoising.
 * **NonLinLoc**, a suite of C programs for probabilistic hypocenter estimation.
 * **GMT** and **PyGMT**, for map generation.
-* **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130)
+* **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130).
 * **Pyrocko**, open-source seismology toolbox and library.
-* **GaMMA**, phase associator after [Zhu et al. (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249)
+* **GaMMA**, phase associator after [Zhu et al. (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249).
 
 ### Optional
 
 * **NLLGrid**, a Python class for handling NonLinLoc grid files. Hosted [here](https://github.com/claudiodsf/nllgrid). Useful if you would eventually like to try 3D NonLinLoc grids in Python.
+* **Sphinx**, in case you want to generate TieBeNN's documentation.
 
 ## :hammer_and_wrench: Installation
 
@@ -83,6 +86,10 @@ pip install .
 pip install -r optional.txt
 ```
 
+> :point_right: **Note**
+>
+> Of course you can modify and comment out those packages you will not need.
+
 ### :hammer_and_wrench: Installing NonLinLoc and setting paths
 
 NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create the directory `<tiebenn_directory>/utils/nonlinloc` and within it, we clone the NonLinLoc repository:
@@ -120,7 +127,7 @@ This section shows an example which should make TieBeNN's usage clear.
 
 ### :inbox_tray: Input file
 
-Input format:
+Input file syntax:
 ```text
 YYYY-MM-DDTHH:MM:SS  latitude  longitude
 ```
@@ -139,21 +146,23 @@ tiebenn --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker <Picker> -
 
 | Parameter | Description |
 |:----------|:-----------:|
-| **EventFile** | Full path to input file with preliminary epicenter (latitude, longitude) and UTC datetime |
-| **MaxEpDist** | Maximum epicentral distance (in km) for stations on which phase picks will be detected |
-| **Picker** | Select model for phase picking. **EQTransformer** can be defined as `sb_eqt`, `seisbench_eqt`, `seisbench_eqtransformer`, `sb_eqtransformer` and **PhaseNet** as `sb_pn`, `seisbench_pn`, `sb_phasenet`, `seisbench_phasenet`. Not case sensitive |
-| **Client** | If set to `SDS`, it will access a directory with SeisComp3 structure. It will try to fetch the available waveforms from the stations in the station list within `MaxEpDist` km. Afterwards, it will try to fetch stations using FDSN clients to access their services. If set to `FDSN`, it skips the search for a SDS directory |
-| **SDSDir** | A string with the full path to the SeisComp3 directory. This parameter must be defined if `Client` is set to `SDS` |
-| **MinDetections** | Minimum amount of stations on which P- or S- phase picks must be detected for the detection loop to end |
-| **Plots** | If set to True, it will plot the waveforms recorded on each stations with at least one phase detection. It will also plot all the phase picks associated to the event sorted by epicentral distance, as well as plots of the locations: epicenter and stations with detections on a map, waveforms with phase picks sorted by epicentral distance, and confidence ellipsoid of event location |
-| **VelMode** | This parameter decides how to choose a seismic velocity model for the event location. Options are `automatic` (`automatic`, `auto` or `a`) for choosing a local velocity model based on the epicenter (if available, otherwise the layer-over-halfspace model used at EdB is used as default) and `manual` (`manual`, `man`, `m`) for choosing the velocity model manually. In this case, the parameter `VelMod` must be defined |
-| **VelMod** | The number corresponding to the model which will be used for hypocenter location with NonLinLoc. [See the full list here](https://192.168.11.188/dzreorg/software/tiebenn/-/blob/main/velocity_models.md) _Note_: 3D velocity models have been tested, although I have still not found a region in Germany where using a 3D velocity model instead of a dedicated, local 1D velocity model results in a dramatic improvement in the event location quality and is worth the extra travel-time calculation time. The implementation of 3D velocity models for real-time event location is, at least momentarily, beyond the scope of this repository |
-| **PhaseAssoc** | Phase associator. Options are `PyOcto` (`pyocto` or `p`) and `GaMMA` (`gamma` or `g`). Not case sensitive |
-| **Denoise** | Boolean parameter. If true, the DeepDenoiser model will be applied on the waveforms of stations within 100 km in epicentral distance |
-| **MultWindows** | Boolean parameter. If true, it makes the phase picker to look for P- or S-waves in moving windows, which helps to address the prediction inconsistency inherent to machine-learning-based models |
-| **SecsBef** | If **MultWindows** is _False_, then you can use this parameter to set the starttime of the retrieved waveforms (in seconds before the event time). Default is 0 seconds |
+| **`--event_file`** | Full path to input file with preliminary epicenter (latitude, longitude) and UTC datetime |
+| **`--max_epic_dist`** | Maximum epicentral distance (in km) for stations on which phase picks will be detected |
+| **`--picker`** | Select model for phase picking. **EQTransformer** can be defined as `sb_eqt`, `seisbench_eqt`, `seisbench_eqtransformer`, `sb_eqtransformer` and **PhaseNet** as `sb_pn`, `seisbench_pn`, `sb_phasenet`, `seisbench_phasenet`. Not case sensitive |
+| **`--client`** | If set to `SDS`, it will access a directory with SeisComp3 structure. It will try to fetch the available waveforms from the stations in the station list within `MaxEpDist` km. Afterwards, it will try to fetch stations using FDSN clients to access their services. If set to `FDSN`, it skips the search for a SDS directory |
+| **`--sds_dir`** | A string with the full path to the SeisComp3 directory. This parameter must be defined if `Client` is set to `SDS` |
+| **`--min_detections`** | Minimum amount of stations on which P- or S- phase picks must be detected for the detection loop to end |
+| **`--plots`** | If set to True, it will plot the waveforms recorded on each stations with at least one phase detection. It will also plot all the phase picks associated to the event sorted by epicentral distance, as well as plots of the locations: epicenter and stations with detections on a map, waveforms with phase picks sorted by epicentral distance, and confidence ellipsoid of event location |
+| **`--vel_mode`** | This parameter decides how to choose a seismic velocity model for the event location. Options are `automatic` (`automatic`, `auto` or `a`) for choosing a local velocity model based on the epicenter (if available, otherwise the layer-over-halfspace model used at EdB is used as default) and `manual` (`manual`, `man`, `m`) for choosing the velocity model manually. In this case, the parameter `VelMod` must be defined |
+| **`--velmod`** | The number corresponding to the model which will be used for hypocenter location with NonLinLoc. [See the full list here](https://192.168.11.188/dzreorg/software/tiebenn/-/blob/main/velocity_models.md) _Note_: 3D velocity models have been tested, although I have still not found a region in Germany where using a 3D velocity model instead of a dedicated, local 1D velocity model results in a dramatic improvement in the event location quality and is worth the extra travel-time calculation time. The implementation of 3D velocity models for real-time event location is, at least momentarily, beyond the scope of this repository |
+| **`--ph_assoc`** | Phase associator. Options are `PyOcto` (`pyocto` or `p`) and `GaMMA` (`gamma` or `g`). Not case sensitive |
+| **`--denoise`** | Boolean parameter. If true, the DeepDenoiser model will be applied on the waveforms of stations within 100 km in epicentral distance |
+| **`--mult_windows`** | Boolean parameter. If true, it makes the phase picker to look for P- or S-waves in moving windows, which helps to address the prediction inconsistency inherent to machine-learning-based models |
+| **`--secs_before`** | If **`--mult_windows`** is _False_, then you can use this parameter to set the starttime of the retrieved waveforms (in seconds before the event time). Default is 0 seconds |
 
-> :point_right: **Note**: Commands related to the use of 3D NonLinLoc velocity models is deactivated, but they are still present in the code in case someone wants to pick its development up.
+> :point_right: **Note**:
+>
+> Commands related to the use of 3D NonLinLoc velocity models is deactivated, but they are still present in the code in case someone wants to pick its development up.
 
 To locate the event with example UTC datetime and coordinates specified above, we type in the terminal (remember to activate the virtual environment created above):
 
@@ -203,17 +212,11 @@ With `--plots True`, the following figures are also generated:
     <img src="figures/example_LQS.svg" width="400"/>
   </p>
 
-## :wrench: To Do
-
-Planned improvements:
-* Create Sphinx documentation
-* Build a containerized version
-
 > :point_right: **Ideas welcome!** Please submit feature suggestions via new issues.
 
 ## :books: Documentation
 
-:pizza: :beer: Hungry for more detailed information? A full Sphinx-based documentation is in the works. Stay tuned! :construction:
+:pizza: :beer: Hungry for more detailed information? The full documentation is [here](https://tiebenn.readthedocs.io/en/latest/)
 
 ## :book: References
 

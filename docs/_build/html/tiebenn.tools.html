@@ -1,0 +1,1235 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tiebenn.tools package &mdash; TieBeNN 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=c3408d7e" />
+
+  
+    <link rel="shortcut icon" href="_static/tiebenn_favicon.png"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="About" href="about.html" />
+    <link rel="prev" title="tiebenn package" href="tiebenn.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            TieBeNN
+              <img src="_static/tiebenn_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="velocity_models.html">Velocity models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">TieBeNN</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="tiebenn.html">tiebenn package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="tiebenn.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tiebenn.tools package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tiebenn.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tiebenn.html#module-tiebenn.cli">tiebenn.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tiebenn.html#module-tiebenn">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TieBeNN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">TieBeNN</a></li>
+          <li class="breadcrumb-item"><a href="tiebenn.html">tiebenn package</a></li>
+      <li class="breadcrumb-item active">tiebenn.tools package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tiebenn.tools.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tiebenn-tools-package">
+<h1>tiebenn.tools package<a class="headerlink" href="#tiebenn-tools-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-tiebenn.tools.gammaasoc">
+<span id="tiebenn-tools-gammaasoc-module"></span><h2>tiebenn.tools.gammaasoc module<a class="headerlink" href="#module-tiebenn.tools.gammaasoc" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.gammaasoc.phase_association">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.gammaasoc.</span></span><span class="sig-name descname"><span class="pre">phase_association</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velmod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.gammaasoc.phase_association" title="Link to this definition"></a></dt>
+<dd><p>Phase association using GaMMA (<a class="reference external" href="https://github.com/AI4EPS/GaMMA">https://github.com/AI4EPS/GaMMA</a>). The function receives as input the predicted phase picks obtained from SeisBench (PhaseNet/EQTransformer) and uses a machine-learning model to predict which of them correspond to a certain event.</p>
+<p>NOTE: A future development for this function could be the case where the phase association yields more than one event, not originally detected by the AD-Detector. In this case, additional outputs would be required to account for eventual new events</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> (<em>dict</em>) – The predicted phases/arrival times obtained from SeisBench for each station</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with information regarding the stations on which picks were predicted</p></li>
+<li><p><strong>velmod</strong> (<em>int</em>) – The velocity model used for phase association</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Longitude of the located event</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Latitude of the located event</p></li>
+<li><p><strong>ev_time</strong> (<em>str</em>) – yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>plot</strong> (<em>bool</em>) – If true, it will plot the detected event(s) and the corresponding associated picks</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If picks were predicted in the multiple-windows-mode, then the code will name de output plots accordingly</p></li>
+<li><p><strong>secs_before</strong> (<em>int</em>) – Seconds before the event time to start retrieving waveforms, among other uses</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with all the predicted events and their associated phases in a pandas dataframe
+PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>events_assoc (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tiebenn.tools.nicetools">
+<span id="tiebenn-tools-nicetools-module"></span><h2>tiebenn.tools.nicetools module<a class="headerlink" href="#module-tiebenn.tools.nicetools" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.azimuthal_gaps">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">azimuthal_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_coords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.azimuthal_gaps" title="Link to this definition"></a></dt>
+<dd><p>Calculates the primary and secondary azimuthal gaps given an event location and station coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event_lat</strong> (<em>float</em>) – Epicentral latitude</p></li>
+<li><p><strong>event_lon</strong> (<em>float</em>) – Epicentral longitude</p></li>
+<li><p><strong>station_coords</strong> (<em>list</em>) – List of station coordinates tuples: [(lat1, lon1), (lat2, lon2), (lat3, lon3), …]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(primary_gap, secondary_gap:</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.azimuthal_uniformity_index">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">azimuthal_uniformity_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.azimuthal_uniformity_index" title="Link to this definition"></a></dt>
+<dd><p>Calculate the Azimuthal Uniformity Index (AUI) for a set of station azimuths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>azimuths</strong> (<em>NumPy array</em>) – Array of station azimuths</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Azimuthal Uniformity Index</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>aui (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.calculate_azimuths">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">calculate_azimuths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epicenter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.calculate_azimuths" title="Link to this definition"></a></dt>
+<dd><p>Calculates azimuths from the epicenter to each station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epicenter</strong> (<em>tuple</em>) – (epicenter_latitude, epicenter_longitude)</p></li>
+<li><p><strong>stations</strong> (<em>list</em>) – List of (lat, lon) tuples of the coordinates of each station</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of station azimuths</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>azimuths (NumPy array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.calculate_lqs">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">calculate_lqs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loc_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sta_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.calculate_lqs" title="Link to this definition"></a></dt>
+<dd><p>Calculates the Location Quality Score (LQS) metric, as in the work of Ramos et al. (2025, in preparation). This metric describes the quality of automatic locations based on location parameters and station network distribution in the vicinities of the epicenter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc_file</strong> (<em>str</em>) – Full path to location file in NonLinLoc format (see section ‘Formats’ in <a class="reference external" href="http://alomax.free.fr/nlloc/">http://alomax.free.fr/nlloc/</a>)</p></li>
+<li><p><strong>sta_file</strong> (<em>str</em>) – Full path to station file in NonLinLoc format (see section ‘Formats’ in <a class="reference external" href="http://alomax.free.fr/nlloc/">http://alomax.free.fr/nlloc/</a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dataframe with the original event datetime (from the catalog) and the datetime calculated by NonLinLoc, the LQS metric of the event and the eight normalized parameters used for the calculation of the LQS.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>parameters (Pandas Dataframe)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.chan_comma">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">chan_comma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chanlist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.chan_comma" title="Link to this definition"></a></dt>
+<dd><p>Transforms the channel list for a given station in a string of channels, each separated by a comma. This is the multiple channel format for a FDSN waveform request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chanlist</strong> (<em>list</em>) – List of channels from which waveforms will be downloaded</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String of channels separated by a comma</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.create_input_for_phassoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">create_input_for_phassoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.create_input_for_phassoc" title="Link to this definition"></a></dt>
+<dd><p>Slight modification of the outputs with phase picks, as necessary for the phase association</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> (<em>dict</em>) – The predicted phases/arrival times obtained from SeisBench for each station</p></li>
+<li><p><strong>seconds_before</strong> (<em>list</em>) – List of the seconds before the event</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modfied structure of the outputs dictionary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>outputs_for_phassoc (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.generate_csv">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">generate_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.generate_csv" title="Link to this definition"></a></dt>
+<dd><p>Generates CSV files with pick detections</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>streams</strong> (<em>obspy.stream.Stream</em>) – The retrieved ObsPy streams for each station</p></li>
+<li><p><strong>outputs</strong> (<em>dict</em>) – The predicted phases/arrival times obtained from SeisBench for each station</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with the nearest stations (ObsPy streams) to the event which contain useful channels for phase-picking</p></li>
+<li><p><strong>snr_data</strong> (<em>dict</em>) – Dictionary with the signal-to-noise ratio for each pick at each station</p></li>
+<li><p><strong>ev_time</strong> (<em>str</em>) – ev_time (str): Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>prediction result files in CSV format for each station</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.get_snr">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">get_snr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.get_snr" title="Link to this definition"></a></dt>
+<dd><p>Estimates the signal to noise ratio (SNR) of a seismogram. Adapted from the EQTransformer repository (<a class="reference external" href="https://github.com/smousavi05/EQTransformer">https://github.com/smousavi05/EQTransformer</a>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>ObsPy Stream</em>) – Stream with waveforms and metadata for a given station</p></li>
+<li><p><strong>picks</strong> (<em>dict</em>) – Sample point where a specific phase arrives</p></li>
+<li><p><strong>wlen</strong> (<em>int</em><em>, </em><em>positive</em>) – The length of the window in seconds for calculating the SNR</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with the estimated SNR in db for each pick</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>snr (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.normalize">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.normalize" title="Link to this definition"></a></dt>
+<dd><p>Parameter normalization using robust statistics. The resulting normalized parameter ranges between 0 and 1. Each parameter will be normalized after the modes and bundary values of Ramos et al. (2025, in preparation).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> (<em>float</em>) – Parameter to be normalized</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Choose a normalization mode between ‘simple’ (simple robust normalization using lb and ub) or ‘log’ (logarithmic 10-base, robust normalization)</p></li>
+<li><p><strong>lb</strong> (<em>float</em>) – Lower boundary of normalization. If param &lt; lb, then it will be clipped to 0</p></li>
+<li><p><strong>ub</strong> (<em>float</em>) – Upper boundary of normalization. If param &gt; ub, then it will be clipped to 1. Note: lb as well as ub for the parameters to be normalized using the log mode, are actually the logarithm of the normalization boundaries</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The normalized parameter</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>norm_param (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.station_density">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">station_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epicenter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.station_density" title="Link to this definition"></a></dt>
+<dd><p>Calculates station density within a circular area around the epicenter.</p>
+<p>Consideration: If only one station is further away, this might skew the resulting density calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epicenter</strong> (<em>tuple</em>) – (latitude, longitude) for the event</p></li>
+<li><p><strong>stations</strong> (<em>list</em>) – list of tuples [(latitude, longitude), …] for station locations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Station density (stations per square km).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>density (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.str2bool">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">str2bool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.str2bool" title="Link to this definition"></a></dt>
+<dd><p>Tries to interpret an input as a boolean argument. Expected true boolean arguments are: yes, true, t, y, and 1. Expected false boolean arguments: no, false, f, n, 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> (<em>str</em>) – Argument to be interpreted as True or False</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The string interpreted as boolean</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>v (bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.strmonth2num">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">strmonth2num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strmonth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.strmonth2num" title="Link to this definition"></a></dt>
+<dd><p>It gets the month number corresponding to the 3-character month (e.g. for the input ‘Jan’ the output is 1)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strmonth</strong> (<em>str</em>) – Month in 3-character format (not case-sensitive)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Month number</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>nummonth (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nicetools.tt_theo_before_assoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nicetools.</span></span><span class="sig-name descname"><span class="pre">tt_theo_before_assoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teo_p_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teo_s_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nicetools.tt_theo_before_assoc" title="Link to this definition"></a></dt>
+<dd><p>This function decides if a predicted pick is close enough to the theoretical pick (for example, obtained using Taup)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_time</strong> (<em>str</em>) – yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>teo_p_time</strong> (<em>float</em>) – Arrival time of the P-wave, in seconds after the event</p></li>
+<li><p><strong>teo_s_time</strong> (<em>float</em>) – Arrival time of the S-wave, in seconds after the event</p></li>
+<li><p><strong>pick</strong> (<em>SeisBench pick</em>) – The pick as predicted by the models in SeisBench</p></li>
+<li><p><strong>tol_p</strong> (<em>int</em><em> or </em><em>float</em>) – Seconds (in absolute value) in which a predicted P-pick is allowed to differ from the theoretical P-pick</p></li>
+<li><p><strong>tol_s</strong> (<em>int</em><em> or </em><em>float</em>) – Seconds (in absolute value) in which a predicted S-pick is allowed to differ from the theoretical S-pick</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tiebenn.tools.nonlinloc">
+<span id="tiebenn-tools-nonlinloc-module"></span><h2>tiebenn.tools.nonlinloc module<a class="headerlink" href="#module-tiebenn.tools.nonlinloc" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.create3dgrid">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">create3dgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velmod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.create3dgrid" title="Link to this definition"></a></dt>
+<dd><p>This function uses NLLGrid (<a class="reference external" href="https://github.com/claudiodsf/nllgrid">https://github.com/claudiodsf/nllgrid</a>) to transform 3D velocity descriptions (e.g. the Crust1 model, which is implemented in Tiebenn) into a 3D SLOW_LEN grid for the calculation of travel times with NonLinLoc. Assumption: 1° equals 111 km.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Longitude of the located event with AD-Detektor</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Latitude of the located event with AD-Detektor</p></li>
+<li><p><strong>velmod</strong> (<em>int</em>) – The seismic velocity model to be used in NonLinLoc for hypocentre location. See current options in velmods</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The 3D SLOW_LEN grids for P- and S-wave velocities</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>model_layer.(P/S).mod(.hdr/.buf)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.extract_3d_velmod">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">extract_3d_velmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.extract_3d_velmod" title="Link to this definition"></a></dt>
+<dd><p>Creates a temporary directory with 3D velocity models copied from Tiebenn’s resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_name</strong> (<em>str</em>) – Name of velocity model (e.g.: ‘diehl’, ‘lengline’, ‘weg’)</p></li>
+<li><p><strong>workdir</strong> (<em>pathlib.Path</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path with the copied 3D velocity model files</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dest (path)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.inp_files_nlloc_sb">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">inp_files_nlloc_sb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nll3d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velmod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_detections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.inp_files_nlloc_sb" title="Link to this definition"></a></dt>
+<dd><p>Prepares the input files required by NonLinLoc for a successfully detected event with SeisBench.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Longitude of the located event with AD-Detektor</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Latitude of the located event with AD-Detektor</p></li>
+<li><p><strong>ev_time</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with information about the stations with picks</p></li>
+<li><p><strong>nll3d</strong> (<em>bool</em>) – If True, it will prepare the control files for a NonLinLoc depth estimation with a 3D velocity grid</p></li>
+<li><p><strong>velmod</strong> (<em>int</em>) – The seismic velocity model to be used in NonLinLoc for hypocentre location. See current options in velocity_models.py</p></li>
+<li><p><strong>min_detections</strong> (<em>int</em>) – It will define the minimum amount of stations on which the event was detected. If this minimum amount of detections is not achieved, the code will exit without calculating the hypocenter if the required minimum is not achieved. Value must be &gt;= 3. Default = 3</p></li>
+<li><p><strong>verbosity</strong> (<em>int</em>) – Verbosity level of NonLinLoc. Possible options are -1 (silent), 0 (errors only), 1 (higher level warnings), &gt;= 2 (low level warnings + information). Default is 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>text file with information about all the stations with seismic detections following the GTSRCE/LATLON syntax
+obs_ttimes.obs: text file with the detected arrival times following the LOCFILES/NLLOC_OBS syntax
+nlloc_control.in: text file with the parameters for execution of NonLinLoc. A full description of each parameter can be found in <a class="reference external" href="https://github.com/alomax/NonLinLoc/blob/master/nlloc_sample/run/nlloc_sample.in">https://github.com/alomax/NonLinLoc/blob/master/nlloc_sample/run/nlloc_sample.in</a>
+nlloc_control_s.in: text file with the parameters for execution of Grid2Time for S-waves</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>station_coordinates.txt</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.pynlloc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">pynlloc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control_file_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velmod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nll3d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plots</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.pynlloc" title="Link to this definition"></a></dt>
+<dd><p>It runs the necessary executables for hypocenter estimation using NonLinLoc: Vel2Grid, Grid2Time and NLLoc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>control_file</strong> (<em>str</em>) – the complete path and filename for the input control file with certain required and optional statements specifying program parameters and input/output file names and locations. These parameters and files are used to execute NonLinLoc</p></li>
+<li><p><strong>control_file_s</strong> (<em>str</em>) – the portion of the control file with the required statements, parameters and file locations for the execution of Grid2Time for S-waves. In the current version of NonLinLoc, the generation of traveltimes is under a non-repeatable parameter (GTFILES). As a consecuence, Grid2Time must be executed twice for generation of P- and S-wave traveltimes. Changing GTFILES to repeatable is as of September 2024 in the to-do list of the author A. Lomax (pers. commun.)</p></li>
+<li><p><strong>velmod</strong> (<em>int</em>) – The seismic velocity model to be used in NonLinLoc for hypocentre location. See current options in velmods.py</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – Dictionary with information of seismic stations</p></li>
+<li><p><strong>nll3d</strong> (<em>bool</em>) – If True, it will skip the execution of Vel2Grid</p></li>
+<li><p><strong>plots</strong> (<em>bool</em>) – if True, it will plot the epicenter with the stations used for location, if the location was sucessful</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>here are the location and quality, statistical values in case the location was sucessful
+epicenter_stations.pdf: map depicting the epicenter location on the map, alongside the stations with phase picks used by NonLinLoc for depth estimation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>event_location.NLL</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tiebenn.tools.pyoctools">
+<span id="tiebenn-tools-pyoctools-module"></span><h2>tiebenn.tools.pyoctools module<a class="headerlink" href="#module-tiebenn.tools.pyoctools" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.pyoctools.phase_association">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.pyoctools.</span></span><span class="sig-name descname"><span class="pre">phase_association</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velmod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.pyoctools.phase_association" title="Link to this definition"></a></dt>
+<dd><p>Phase association using PyOcto (<a class="reference external" href="https://github.com/yetinam/pyocto">https://github.com/yetinam/pyocto</a>). The function receives as input the predicted phase picks from SeisBench (PhaseNet/EQTransformer), uses 4D space-time partitioning and can employ homogeneous and 1D velocity models.</p>
+<p>NOTE: A future development for this function could be the case where the phase association yields more than one event, not originally detected by the AD-Detector. In this case, additional outputs would be required to account for eventual new events</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> (<em>dict</em>) – The predicted phases/arrival times obtained from SeisBench for each station</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with information regarding the stations on which picks were predicted</p></li>
+<li><p><strong>velmod</strong> (<em>int</em>) – The velocity model used for phase association</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Longitude of the located event</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Latitude of the located event</p></li>
+<li><p><strong>ev_time</strong> (<em>str</em>) – yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>plot</strong> (<em>bool</em>) – If true, it will plot the detected event(s) and the corresponding associated picks</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If picks were predicted in the multiple-windows-mode, then the code will name de output plots accordingly</p></li>
+<li><p><strong>secs_before</strong> (<em>int</em>) – Seconds before the event time to start retrieving waveforms, among other uses</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with all the predicted events and their associated phases in a pandas dataframe
+PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>events_assoc (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tiebenn.tools.retrieve_data">
+<span id="tiebenn-tools-retrieve-data-module"></span><h2>tiebenn.tools.retrieve_data module<a class="headerlink" href="#module-tiebenn.tools.retrieve_data" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.retrieve_data.make_station_list">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.retrieve_data.</span></span><span class="sig-name descname"><span class="pre">make_station_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_network</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_station</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.retrieve_data.make_station_list" title="Link to this definition"></a></dt>
+<dd><p>Uses fdsn to find available stations in a specific geographical location and time period.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_list</strong> (<em>list</em>) – List of client names e.g. [‘IRIS’, ‘SCEDC’, ‘USGGS’] from where to extract stations</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Longitude of the located event</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Latitude of the located event</p></li>
+<li><p><strong>start_time</strong> (<em>str</em>) – Start datetime for the beginning of the period. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>end_time</strong> (<em>str</em>) – End datetime for the beginning of the period. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>channel_list</strong> (<em>list</em><em>, </em><em>default=</em><em>[</em><em>]</em>) – A list containing the desired channel codes. Downloads will be limited to these channels based on priority. Defaults to [] –&gt; all channels</p></li>
+<li><p><strong>filter_network</strong> (<em>list</em><em>, </em><em>default=</em><em>[</em><em>]</em>) – A list containing the network codes that need to be avoided</p></li>
+<li><p><strong>filter_station</strong> (<em>list</em><em>, </em><em>default=</em><em>[</em><em>]</em>) – A list containing the station names that need to be avoided</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing relevant information for the available stations, such as geographical coordinates, elevation, available channels</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>stations_list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.retrieve_data.process_client">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.retrieve_data.</span></span><span class="sig-name descname"><span class="pre">process_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_network</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_station</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.retrieve_data.process_client" title="Link to this definition"></a></dt>
+<dd><p>Process a single client: fetch station inventory and filter based on criteria. Returns a dictionary of station info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cl</strong> (<em>str</em>) – Client name e.g. [‘IRIS’, ‘SCEDC’, ‘USGGS’] from where to extract stations</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Longitude of the located event</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Latitude of the located event</p></li>
+<li><p><strong>start_time</strong> (<em>str</em>) – Start datetime for the beginning of the period. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>end_time</strong> (<em>str</em>) – End datetime for the beginning of the period. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>channel_list</strong> (<em>list</em><em>, </em><em>default=</em><em>[</em><em>]</em>) – A list containing the desired channel codes. Downloads will be limited to these channels based on priority. Defaults to [] –&gt; all channels</p></li>
+<li><p><strong>filter_network</strong> (<em>list</em><em>, </em><em>default=</em><em>[</em><em>]</em>) – A list containing the network codes that need to be avoided</p></li>
+<li><p><strong>filter_station</strong> (<em>list</em><em>, </em><em>default=</em><em>[</em><em>]</em>) – A list containing the station names that need to be avoided</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary of the stations, if necessary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>client_station_list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tiebenn.tools.sb_tools">
+<span id="tiebenn-tools-sb-tools-module"></span><h2>tiebenn.tools.sb_tools module<a class="headerlink" href="#module-tiebenn.tools.sb_tools" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.calculate_njobs">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">calculate_njobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loop</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.calculate_njobs" title="Link to this definition"></a></dt>
+<dd><p>Calculates the number of parallel jobs to be run at parallelizations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>loop</strong> – The variable which will determine the number of simultaneous jobs. It can be e.g. the number of stations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.deepdenoiser">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">deepdenoiser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.deepdenoiser" title="Link to this definition"></a></dt>
+<dd><p>DeepDenoiser (Zhu et al. 2019) as implemented on Seisbench.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stream</strong> (<em>stream</em>) – Obspy stream with the waveforms to be denoised</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The stream with denoised waveforms</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>stream_denoise (stream)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.get_streams_fdsn_bulk">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">get_streams_fdsn_bulk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.get_streams_fdsn_bulk" title="Link to this definition"></a></dt>
+<dd><p>Uses ObsPy FDSN client to generate a bulk request to download streams with 60 second long waveforms for a set of stations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_time</strong> (<em>UTCDateTime</em>) – Start of requested time window.</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – Station information dictionary.</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If True, multiple time windows are used.</p></li>
+<li><p><strong>secs_before</strong> (<em>float</em><em> or </em><em>list</em>) – Time to subtract from start_time when mult_windows is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with the retrieved station streams.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>stream_output (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.get_streams_sds">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">get_streams_sds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sds_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.get_streams_sds" title="Link to this definition"></a></dt>
+<dd><p>Uses ObsPy SDS client to download ObsPy streams for a set of stations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_time</strong> (<em>UTCDateTime</em>) – Start of requested time window.</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – Dictionary with station information.</p></li>
+<li><p><strong>secs_before</strong> (<em>float</em><em> or </em><em>list</em>) – Seconds to subtract from event time (if mult_windows is False).</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If True, uses a different time window (start_time - 10 to start_time + 60).</p></li>
+<li><p><strong>sds_dir</strong> (<em>str</em>) – Root directory of the SDS archive.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with retrieved station streams.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>streams (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.parallel_phase_picking">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">parallel_phase_picking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station_streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.parallel_phase_picking" title="Link to this definition"></a></dt>
+<dd><p>Run phase picking in parallel for each station (stream) and each time window alignment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>station_streams</strong> (<em>dict</em>) – Keys are station names, values are ObsPy Stream objects</p></li>
+<li><p><strong>starttime</strong> (<em>UTCDateTime</em>) – The event time</p></li>
+<li><p><strong>picker</strong> (<em>str</em>) – Name of the phase picker to use</p></li>
+<li><p><strong>model</strong> – SeisBench phase picking model</p></li>
+<li><p><strong>start_list</strong> (<em>list</em>) – List of seconds before event time to try (e.g., [0, 2, 5, 10])</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of tuples (station, start, predictions, outputs)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>results (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.picks_mulwin">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">picks_mulwin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.picks_mulwin" title="Link to this definition"></a></dt>
+<dd><p>Phase picks on stations for single-windows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>streams</strong> (<em>ObsPy Stream</em>) – ObsPy Stream where the phases will be detected</p></li>
+<li><p><strong>start</strong> (<em>int</em><em> or </em><em>float</em>) – Seconds before event time for waveform time window to start</p></li>
+<li><p><strong>starttime</strong> (<em>ObsPy UTCDateTime</em>) – Event start time</p></li>
+<li><p><strong>picker</strong> (<em>str</em>) – Name of the phase picker to be used: either EQTransformer or PhaseNet</p></li>
+<li><p><strong>model</strong> (<em>SeisBench PhasePicker</em>) – The actual SeisBench model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Probability time series of P-, S, and noise (for PhaseNet) or detection (for EQTransformer)
+outputs (SeisBench Outputs): Pick information. Time stamp, maximum probability, peak time, etc</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>predictions (SeisBench Predictions)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.picks_sb">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">picks_sb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velmod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase_assoc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pick_sel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotpicks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_detections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denoise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sds_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.picks_sb" title="Link to this definition"></a></dt>
+<dd><p>Produces probability functions and picks for P- and S-wave arrivals using SeisBench.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_time</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Longitude of the located event</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Latitude of the located event</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with the nearest stations (ObsPy streams) to the event which contain useful channels for phase-picking</p></li>
+<li><p><strong>max_dist</strong> (<em>float</em>) – The stations used to seismic detection and P- and S-traveltime picks will be within this radius (in km)</p></li>
+<li><p><strong>client</strong> (<em>str</em>) – Choose between SDS or FDSN ObsPy client to retrieve waveforms. If SDS, make sure the SDS-directory is correctly defined</p></li>
+<li><p><strong>picker</strong> (<em>str</em>) – The pretrained model for phase picking: SeisBench_Phasenet or SeisBench_EQTransformer</p></li>
+<li><p><strong>velmod</strong> (<em>int</em>) – The velocity model used for phase association with PyOcto</p></li>
+<li><p><strong>secs_before</strong> (<em>float</em><em> or </em><em>list</em>) – If the picks will be predicted on multiple windows, this parameter is a list of seconds to be substracted from the event time. Otherwise, it is a constant value to be substracted from the event time</p></li>
+<li><p><strong>phase_assoc</strong> (<em>str</em>) – Implements a phase associator to the detected phase picks. Options are the GaMMA associator (<a class="reference external" href="https://github.com/AI4EPS/GaMMA">https://github.com/AI4EPS/GaMMA</a>) and PyOcto (<a class="reference external" href="https://github.com/yetinam/pyocto">https://github.com/yetinam/pyocto</a>)</p></li>
+<li><p><strong>pick_sel</strong> (<em>char</em>) – If picks are calculated on multiple time windows, the selected criterion is applied for selecting picks. Options are: max_prob (for a given station, it looks for the pick(s) –P and/or S– on that station at the time window where the probability was maximal), min_res (for a given station, it selects the pick(s) –P and/or S– on time windows where the residual has the minimum value. This option is only available for the phase association with PyOcto)</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If true, it will fetch waveforms for pick prediction with SeisBench starting at different times with respect to the event time</p></li>
+<li><p><strong>plotpicks</strong> (<em>bool</em>) – If True it will plot for each station with detections the event waveforms on the three components and their P- and S-arrivals. It will also plot the time series of the probabilities of an event, of a P- and a S-arrival. The phase association will also be plotted under an individual directory</p></li>
+<li><p><strong>min_detections</strong> (<em>int</em>) – For a given max_dist, it will define the minimum amount of stations on which the event was detected. If this minimum amount of detections is not achieved, the station radius will be increased and the detection process will be repeated. Value must be &gt;= 3. Default = 3</p></li>
+<li><p><strong>denoise</strong> (<em>bool</em>) – If True it will apply the deep neural network DeepDenoiser (Zhu et al. 2019) as implemented on Seisbench (<a class="reference external" href="https://github.com/seisbench/seisbench">https://github.com/seisbench/seisbench</a>) to denoise the retrieved waveforms before phase picking. Default is True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>.csv files containing, for each station with sucessfully detected arrival times, all the detections and picking results.
+&lt;station&gt;&lt;datetime&gt;.pdf (optional): .pdf files with plots of the waveforms, P- and S- probability functions and picks on each station</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&lt;station&gt;_&lt;datetime&gt;_prediction_results.csv</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.picks_singwin">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">picks_singwin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.picks_singwin" title="Link to this definition"></a></dt>
+<dd><p>Phase picks on stations for single-windows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream</strong> (<em>ObsPy Stream</em>) – ObsPy Stream where the phases will be detected</p></li>
+<li><p><strong>picker</strong> (<em>str</em>) – Name of the phase picker to be used: either EQTransformer or PhaseNet</p></li>
+<li><p><strong>model</strong> (<em>SeisBench PhasePicker</em>) – The actual SeisBench model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Probability time series of P-, S, and noise (for PhaseNet) or detection (for EQTransformer)
+outputs (SeisBench Outputs): Pick information. Time stamp, maximum probability, peak time, etc</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>predictions (SeisBench Predictions)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.process_client_waveforms">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">process_client_waveforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.process_client_waveforms" title="Link to this definition"></a></dt>
+<dd><p>Process waveform retrieval for a single client. It builds a bulk request for all stations associated with the client and retrieves the corresponding waveforms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<em>str</em>) – ObsPy client to request waveform bulk</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with information about the stations. Example: {‘LANDS’: {‘network’: ‘SX’, ‘channels’: [‘HHN’, ‘HHE’, ‘HHZ’], ‘coords’: [51.526, 12.163, 115.0], ‘client’: ‘BGR’, ‘epic_distance’: ‘53.61’}</p></li>
+<li><p><strong>start_t</strong> (<em>str</em>) – Start of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>end_t</strong> (<em>str</em>) – End of requested time window. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with the retrieved streams which may be empty if no data is retrieved</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>stream (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.process_station_sds">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">process_station_sds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sds_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.process_station_sds" title="Link to this definition"></a></dt>
+<dd><p>Helper function to retrieve waveform data for a single station using the SDS client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>st</strong> (<em>str</em>) – Station name.</p></li>
+<li><p><strong>station_info</strong> (<em>dict</em>) – Dictionary with station information.</p></li>
+<li><p><strong>start_t</strong> (<em>UTCDateTime</em>) – Start time for data retrieval.</p></li>
+<li><p><strong>end_t</strong> (<em>UTCDateTime</em>) – End time for data retrieval.</p></li>
+<li><p><strong>sds_dir</strong> (<em>str</em>) – Root directory of the SDS archive.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(station name, retrieved ObsPy Stream or None if fetching failed)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.select_picks">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">select_picks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs_assoc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase_assoc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.select_picks" title="Link to this definition"></a></dt>
+<dd><p>When the multiple-window approach (Park et al. 2023) is employed, phase picks will likely be associated in different time windows for a single station. Afterwards, only one(pair) P- and/or S-pick must be selected for depth estimation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> (<em>dict</em>) – Dictionary of predicted picks for each station</p></li>
+<li><p><strong>outputs_assoc</strong> (<em>dict</em>) – Dictionary of predicted picks which were associated to the event of interest</p></li>
+<li><p><strong>phase_assoc</strong> (<em>char</em>) – The utilized phase associator. Current options are GaMMA and PyOcto. The latter exports a residual for each associated phase</p></li>
+<li><p><strong>mode</strong> (<em>char</em>) – How a P- or S-phase will be selected. Options are ‘max_prob’, in which the selected phase will be that at the time window which had the highest probability; and ‘min_res’, in which the selected phase will be that at the time window which had the lowest residual. This option is only available if the PyOcto phase associator was employed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Pandas dataframe with the selected picks for depth estimation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>outputs_final (Pandas dataframe)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.waveform_preprocessing">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">waveform_preprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denoise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.waveform_preprocessing" title="Link to this definition"></a></dt>
+<dd><p>Waveform processing with ObsPy</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stream</strong> (<em>ObsPy Stream</em>) – Stream with station channels to be pre-processed. Dead channels are removed, masked channels are split, data are detrended, bandpass-filtered and tapered</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pre-processed ObsPy stream</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>stream (ObsPy stream)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tiebenn.tools.utm">
+<span id="tiebenn-tools-utm-module"></span><h2>tiebenn.tools.utm module<a class="headerlink" href="#module-tiebenn.tools.utm" title="Link to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.OutOfRangeError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">OutOfRangeError</span></span><a class="headerlink" href="#tiebenn.tools.utm.OutOfRangeError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.check_valid_zone">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">check_valid_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zone_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_letter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.check_valid_zone" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.from_latlon">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">from_latlon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_zone_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_zone_letter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.from_latlon" title="Link to this definition"></a></dt>
+<dd><p>This function converts Latitude and Longitude to UTM coordinate</p>
+<blockquote>
+<div><dl class="simple">
+<dt>latitude: float or NumPy array</dt><dd><p>Latitude between 80 deg S and 84 deg N, e.g. (-80.0 to 84.0)</p>
+</dd>
+<dt>longitude: float or NumPy array</dt><dd><p>Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).</p>
+</dd>
+<dt>force_zone_number: int</dt><dd><p>Zone number is represented by global map numbers of an UTM zone
+numbers map. You may force conversion to be included within one
+UTM zone number.  For more information <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">see utmzones</a></p>
+</dd>
+<dt>force_zone_letter: str</dt><dd><p>You may force conversion to be included within one UTM zone
+letter.  For more information <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">see utmzones</a></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>easting: float or NumPy array</dt><dd><p>Easting value of UTM coordinates</p>
+</dd>
+<dt>northing: float or NumPy array</dt><dd><p>Northing value of UTM coordinates</p>
+</dd>
+<dt>zone_number: int</dt><dd><p>Zone number is represented by global map numbers of a UTM zone
+numbers map. More information <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">see utmzones</a></p>
+</dd>
+<dt>zone_letter: str</dt><dd><p>Zone letter is represented by a string value. UTM zone designators
+can be accessed <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">here</a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.in_bounds">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">in_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.in_bounds" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.latitude_to_zone_letter">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">latitude_to_zone_letter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latitude</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.latitude_to_zone_letter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.latlon_to_zone_number">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">latlon_to_zone_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.latlon_to_zone_number" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.mixed_signs">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">mixed_signs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.mixed_signs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.mod_angle">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">mod_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.mod_angle" title="Link to this definition"></a></dt>
+<dd><p>Returns angle in radians to be between -pi and pi</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.negative">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">negative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.negative" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.to_latlon">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">to_latlon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">easting</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">northing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_letter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">northern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.to_latlon" title="Link to this definition"></a></dt>
+<dd><p>This function converts UTM coordinates to Latitude and Longitude</p>
+<blockquote>
+<div><dl class="simple">
+<dt>easting: int or NumPy array</dt><dd><p>Easting value of UTM coordinates</p>
+</dd>
+<dt>northing: int or NumPy array</dt><dd><p>Northing value of UTM coordinates</p>
+</dd>
+<dt>zone_number: int</dt><dd><p>Zone number is represented with global map numbers of a UTM zone
+numbers map. For more information <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">see utmzones</a></p>
+</dd>
+<dt>zone_letter: str</dt><dd><p>Zone letter can be represented as string values.  UTM zone
+designators can be seen in <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">this reference</a></p>
+</dd>
+<dt>northern: bool</dt><dd><p>You can set True or False to set this parameter. Default is None</p>
+</dd>
+<dt>strict: bool</dt><dd><p>Raise an OutOfRangeError if outside of bounds</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>latitude: float or NumPy array</dt><dd><p>Latitude between 80 deg S and 84 deg N, e.g. (-80.0 to 84.0)</p>
+</dd>
+<dt>longitude: float or NumPy array</dt><dd><p>Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.utm.zone_number_to_central_longitude">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.utm.</span></span><span class="sig-name descname"><span class="pre">zone_number_to_central_longitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zone_number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.utm.zone_number_to_central_longitude" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-tiebenn.tools.velocity_models">
+<span id="tiebenn-tools-velocity-models-module"></span><h2>tiebenn.tools.velocity_models module<a class="headerlink" href="#module-tiebenn.tools.velocity_models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tiebenn.tools.velocity_models.crustModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tiebenn.tools.velocity_models.</span></span><span class="sig-name descname"><span class="pre">crustModel</span></span><a class="headerlink" href="#tiebenn.tools.velocity_models.crustModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Top level model object to retreive information from the LLNL Crust 1.0 model. Created by J. Leeman and C. Ammon (<a class="reference external" href="https://github.com/jrleeman/Crust1.0">https://github.com/jrleeman/Crust1.0</a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vp</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>vs</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>rho</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>bnds</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>layer_names</strong> (<em>list</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.velocity_models.crustModel.get_point">
+<span class="sig-name descname"><span class="pre">get_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.velocity_models.crustModel.get_point" title="Link to this definition"></a></dt>
+<dd><p>Returns a model for a given latitude and longitude. Note that the model is only defined on a 1 degree grid starting at 89.5 and -179.5.</p>
+<p>Args:
+lat (float) Latitude of interest
+lon (float) Longitude of interest</p>
+<p>Returns:
+model_layers (dict): Dictionary of layers with the keys as layer names and the values as a list of vp, vs, density, layer thickness, and the top of the layer with respect to sea level</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.velocity_models.load_velmod">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.velocity_models.</span></span><span class="sig-name descname"><span class="pre">load_velmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.velocity_models.load_velmod" title="Link to this definition"></a></dt>
+<dd><p>Accesses the 1D velocity models in the TieBeNN package for seismic location with NonLinLoc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> (<em>int</em>) – The P- and S-wave velocity models to be loaded. The velocity models are read from files in the directory data/velocity_models/. New velocity models can be added following the NLL structure. See velocity models currently available in velmods</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Layers of a 1D velocity model as read from TieBeNN’s resources</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>velmod_list (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.velocity_models.select_velmod">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.velocity_models.</span></span><span class="sig-name descname"><span class="pre">select_velmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.velocity_models.select_velmod" title="Link to this definition"></a></dt>
+<dd><p>In case the velocity model was set to automatic, this function checks if there is a velocity model for the epicenter region which has demonstrated to produce better hypocenter estimations than the standard 2-layer BGR model. If not, the velocity model will be set as the BGR velocity model for event location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Epicenter latitude</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Epicenter longitude</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The velocity model which will be used for event location within NonLinLoc.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>velmod (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.velocity_models.velmods">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.velocity_models.</span></span><span class="sig-name descname"><span class="pre">velmods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.velocity_models.velmods" title="Link to this definition"></a></dt>
+<dd><p>Produces a seismic velocity model to be included in the NonLinLoc control file for hypocenter location.</p>
+<p>When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm³. The density is, however, a carryover in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.</p>
+<p>IMPORTANT: This function is programmed so that each column will be separated by 3 blank spaces from the next one. This becomes relevant during the phase association and must not be modified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>int</em>) – <p>The P- and S-wave velocity models to be exported. Velocity models are read from files in the directory <cite>data/velocity_models/</cite>. New models can be added following the NLL structure.</p>
+<p>The following model numbers are currently supported:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 0  = IASP91
+ 1  = AK135 (for continental structure)
+ 2  = BGR velocity model (by J. Schlittenhardt)
+ 3  = WET: Germany and adjacent regions
+ 4  = WB2012: Vogtland/West Bohemia 1D (P+S)
+ 5  = DEU: 3-layer Germany model (Moho at 28.5 km, vp/vs = 1.68)
+ 6  = Crust1.0: up to 9 layers per lat/lon point
+ 7  = Crust1.0 + AK135 hybrid model
+ 8  = Küperkoch et al. (2018) for Insheim (1D, P+S)
+ 9  = Regional model for LI (J. Borns)
+10  = Landau model (1D, P+S) for northern Upper Rhine Graben
+11  = Central Alps 1D (Diehl et al. 2021)
+12  = Not fully integrated! 3D Central Alps (Diehl, ETH Zürich)
+13  = 3D WEG: high-res P model (not functional included in TieBeNN)
+14  = AlpsLocPS (Brazsus et al., 2024) — Greater Alpine Region
+15  = BENS (Reamer &amp; Hinzen 2004): Northern Rhine Area
+16  = ASZmod1 (Mader et al. 2021): Albstadt Shear Zone
+17  = 3D URG (Lengline et al. 2023): Upper Rhine Graben (currently not functional)
+18  = (Malek et al. 2023): Novy-Kostel swarm
+19  = PO1 + WB2012 from 11 km depth
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Event longitude. Used when model = 6 or 7.</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Event latitude. Used when model = 6 or 7.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>velmod</strong> – List of 1D velocity/density layers in NonLinLoc format. Each element is a string representing one layer:
+LAYER depth[km] vp vp_grad vs vs_grad density density_grad</p>
+<p>Note: density values are placeholders and not used in NLL itself.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tiebenn.tools.visualization">
+<span id="tiebenn-tools-visualization-module"></span><h2>tiebenn.tools.visualization module<a class="headerlink" href="#module-tiebenn.tools.visualization" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.visualization.epic_sta_plot">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">epic_sta_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.visualization.epic_sta_plot" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot of the event’s epicenter and the stations with picks used for depth estimation with NonLinLoc.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.visualization.plot_assoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">plot_assoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merged</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.visualization.plot_assoc" title="Link to this definition"></a></dt>
+<dd><p>The visualization of the associated picks using PyOcto</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_time</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with information about the stations with predicted picks</p></li>
+<li><p><strong>stations</strong> (<em>pandas dataframe</em>) – A dataframe with the coordinates and elevation for each station</p></li>
+<li><p><strong>picks</strong> (<em>pandas dataframe</em>) – Information for each predicted pick: station, phase (P or S), time and probability</p></li>
+<li><p><strong>events</strong> (<em>pandas dataframe</em>) – The event(s) to which PyOcto associated the picks</p></li>
+<li><p><strong>merged</strong> (<em>pandas dataframe</em>) – A single dataframe containing all the information for the associated picks</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If picks were predicted in the multiple-windows-mode, then the code will name the output plots accordingly</p></li>
+<li><p><strong>secs_before</strong> (<em>int</em>) – Seconds before the event time to start retrieving waveforms, among other uses</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figure in PDF format, stored in the saved_locations/&lt;ev_time&gt;_tiebenn_loc directory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PhAssoc_event&lt;event_number&gt;.pdf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.visualization.plot_hypoc_confidence_ellipsoid">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">plot_hypoc_confidence_ellipsoid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.visualization.plot_hypoc_confidence_ellipsoid" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot of the events location (maximum probability point), the probability density function (scatterplot) and the confidence ellipsoid as retrieved from the location with NonLinLoc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>None</strong></p></li>
+<li><p><strong>NonLinLoc</strong> (<em>because it works using files already produced during the location with</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the confidence ellipsoid projected on the XY, XZ and YZ planes and depicting the PDF scatterplot, as well as a red star indicating the point of maximum probability (hypocenter) and the 3 68% confidence ellipsoids projected on each plane</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NLL_confidence_ellipsoid.pdf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.visualization.plot_picks4loc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">plot_picks4loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streams</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.visualization.plot_picks4loc" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot depicting all the stations sorted by epicentral distance with picks used for depth estimation with NonLinLoc</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.visualization.plotpicks_sb">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">plotpicks_sb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.visualization.plotpicks_sb" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot which includes time windows showing the waveforms on the different channels of a station used for wave detection. The identified P- and/or S-picks are shown as thicks. The probability function of the detected event and P- or S-picks is also plotted. This function is adapted to the outputs produced by the pickers in SeisBench.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with station information</p></li>
+<li><p><strong>streams</strong> (<em>ObsPy Stream</em>) – An ObsPy strea with waveforms</p></li>
+<li><p><strong>starttime</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>predictions</strong> (<em>dict</em>) – A dictionary with the probability function for a detection, P- or S-wave on a given station, as obtained from the Annotate method implemented on SeisBench</p></li>
+<li><p><strong>picks</strong> (<em>dict</em>) – A dictionary with information and classification of P- or S-picks on each station, as obtained from the Classify method implemented on SeisBench</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figures in PDF format, which are stored in the saved_locations/&lt;ev_time&gt;_tiebenn_loc directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.visualization.plotpicks_sb_mw">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">plotpicks_sb_mw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks_final</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.visualization.plotpicks_sb_mw" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot which includes time windows showing the waveforms on the different channels on a given station used for wave detection under the multiple time-window approach. The predicted P- and/or S-picks are shown as thicks: the ones used for the depth estimation are colored and the rest–obtained from predictions with other time offsets (and/or not associated to the event)– are shown thinner and in grey. The probability function of the P- or S-picks is also plotted in colored lines, while that obtained from predictions with other time offsets are in grey. This function is adapted to the outputs produced by the pickers in SeisBench.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with station information</p></li>
+<li><p><strong>streams</strong> (<em>ObsPy Stream</em>) – The ObsPy streams for the station</p></li>
+<li><p><strong>starttime</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>predictions</strong> (<em>dict</em>) – A dictionary with the probability function for a detection, P- or S-wave on a given station, as obtained from the Annotate method implemented on SeisBench</p></li>
+<li><p><strong>picks</strong> (<em>dict</em>) – A dictionary with information and classification of P- or S-picks on each station, as obtained from the Classify method implemented on SeisBench</p></li>
+<li><p><strong>picks_final</strong> (<em>dict</em>) – picks after selecting for each station the time window with the best phase pick</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figures in PDF format, which are stored in the saved_locations/&lt;ev_time&gt;_tiebenn_loc directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.visualization.radar_factory">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">radar_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.visualization.radar_factory" title="Link to this definition"></a></dt>
+<dd><p>Create a radar chart with num_vars Axes. This function creates a RadarAxes projection and registers it. Adapted from this example: <a class="reference external" href="https://matplotlib.org/stable/gallery/specialty_plots/radar_chart.html">https://matplotlib.org/stable/gallery/specialty_plots/radar_chart.html</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num_vars</strong> (<em>int</em>) – Number of variables for radar chart.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Polygon of &lt;num_vars&gt; sides.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.visualization.radarplot">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">radarplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.visualization.radarplot" title="Link to this definition"></a></dt>
+<dd><p>Visualization of LQS metric using a radar plot, which illustrates the contribution of the 8 parameters defining the LQS value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>Pandas Dataframe</em>) – Pandas dataframe with the 8 normalized parameters and the LQS value for a given event</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PDF figure of LQS metric in a radar plot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tiebenn.tools">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tiebenn.tools" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tiebenn.html" class="btn btn-neutral float-left" title="tiebenn package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="about.html" class="btn btn-neutral float-right" title="About" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, C. Ramos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

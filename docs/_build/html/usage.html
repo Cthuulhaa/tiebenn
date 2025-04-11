@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; TieBeNN 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=c3408d7e" />
+
+  
+    <link rel="shortcut icon" href="_static/tiebenn_favicon.png"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Velocity models" href="velocity_models.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            TieBeNN
+              <img src="_static/tiebenn_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input-file">Input file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="velocity_models.html">Velocity models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">TieBeNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TieBeNN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<p>This section shows an example which should make TieBeNN’s usage clear.</p>
+<section id="input-file">
+<h2>Input file<a class="headerlink" href="#input-file" title="Link to this heading"></a></h2>
+<p>Input file syntax: <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:MM:SS</span>&#160; <span class="pre">latitude</span>&#160; <span class="pre">longitude</span></code></p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">2024-12-24T01:55:04</span> <span class="pre">51.337</span>&#160; <span class="pre">12.548</span></code></p>
+</section>
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Link to this heading"></a></h2>
+<p>With the created virtual environment activated, TieBeNN follows this syntax:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tiebenn<span class="w"> </span>--event_file<span class="w"> </span>&lt;EventFile&gt;<span class="w"> </span>--max_epic_dist<span class="w"> </span>&lt;MaxEpDist&gt;<span class="w"> </span>--picker<span class="w"> </span>&lt;Picker&gt;<span class="w"> </span>--client<span class="w"> </span>&lt;Client&gt;<span class="w"> </span>--sds_dir<span class="w"> </span>&lt;SDSDir&gt;<span class="w"> </span>--min_detections<span class="w"> </span>&lt;MinDetections&gt;<span class="w"> </span>--plots<span class="w"> </span>&lt;Plots&gt;<span class="w"> </span>--vel_mode<span class="w"> </span>&lt;VelMode&gt;<span class="w"> </span>--velmod<span class="w"> </span>&lt;VelMod&gt;<span class="w"> </span>--ph_assoc<span class="w"> </span>&lt;PhaseAssoc&gt;<span class="w"> </span>--denoise<span class="w"> </span>&lt;Denoise&gt;<span class="w"> </span>--mult_windows<span class="w"> </span>&lt;MultiWindows&gt;<span class="w"> </span>--secs_before<span class="w"> </span>&lt;SecsBef&gt;
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Parameter</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--event_file</span></code></p></td>
+<td><p>Full path to input file with preliminary epicenter (latitude, longitude) and UTC datetime.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--max_epic_dist</span></code></p></td>
+<td><p>Maximum epicentral distance (in km) for stations on which phase picks will be detected.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--picker</span></code></p></td>
+<td><p>Select model for phase picking.
+<strong>EQTransformer</strong>: <code class="docutils literal notranslate"><span class="pre">sb_eqt</span></code>, <code class="docutils literal notranslate"><span class="pre">seisbench_eqt</span></code>, <code class="docutils literal notranslate"><span class="pre">seisbench_eqtransformer</span></code>, <code class="docutils literal notranslate"><span class="pre">sb_eqtransformer</span></code>
+<strong>PhaseNet</strong>: <code class="docutils literal notranslate"><span class="pre">sb_pn</span></code>, <code class="docutils literal notranslate"><span class="pre">seisbench_pn</span></code>, <code class="docutils literal notranslate"><span class="pre">sb_phasenet</span></code>, <code class="docutils literal notranslate"><span class="pre">seisbench_phasenet</span></code>
+<em>(Not case sensitive)</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--client</span></code></p></td>
+<td><p>If set to <code class="docutils literal notranslate"><span class="pre">SDS</span></code>, it accesses a SeisComp3 directory and fetches waveforms for stations within <code class="docutils literal notranslate"><span class="pre">--max_epic_dist</span></code> km.
+Then attempts FDSN query. If set to <code class="docutils literal notranslate"><span class="pre">FDSN</span></code>, it skips SDS lookup.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--sds_dir</span></code></p></td>
+<td><p>Full path to SeisComp3 directory. Required if <code class="docutils literal notranslate"><span class="pre">--client</span></code> is set to <code class="docutils literal notranslate"><span class="pre">SDS</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--min_detections</span></code></p></td>
+<td><p>Minimum number of stations with P- or S- picks required to complete the detection loop.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--plots</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, it plots waveforms with detections, phase picks sorted by distance, station maps,
+and the confidence ellipsoid of the located event.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--vel_mode</span></code></p></td>
+<td><p>Velocity model selection mode:
+<code class="docutils literal notranslate"><span class="pre">automatic</span></code> (or <code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">a</span></code>): Picks model based on epicenter if available, or uses default
+<code class="docutils literal notranslate"><span class="pre">manual</span></code> (or <code class="docutils literal notranslate"><span class="pre">man</span></code>, <code class="docutils literal notranslate"><span class="pre">m</span></code>): You must also define <code class="docutils literal notranslate"><span class="pre">--velmod</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--velmod</span></code></p></td>
+<td><p>Number corresponding to the velocity model used in NonLinLoc.
+<a class="reference internal" href="velocity_models.html"><span class="doc">See the current velocity model list here</span></a>.
+<em>Note</em>: 3D models are supported, but not yet optimal for real-time use.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--ph_assoc</span></code></p></td>
+<td><p>Phase associator: <code class="docutils literal notranslate"><span class="pre">PyOcto</span></code> (<code class="docutils literal notranslate"><span class="pre">pyocto</span></code>, <code class="docutils literal notranslate"><span class="pre">p</span></code>) or <code class="docutils literal notranslate"><span class="pre">GaMMA</span></code> (<code class="docutils literal notranslate"><span class="pre">gamma</span></code>, <code class="docutils literal notranslate"><span class="pre">g</span></code>). <em>(Not case sensitive)</em></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--denoise</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, applies DeepDenoiser to waveforms within 100 km of the epicenter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--mult_windows</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the phase picker searches in multiple time windows to improve ML stability.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--secs_before</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">--mult_windows</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, this sets how many seconds before the event the waveform starts.
+Default is 0 seconds.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Commands related to the use of 3D NonLinLoc velocity models is deactivated, but they are still present in the code in case someone wants to pick its development up.</p>
+</div>
+<p>To locate the event with example UTC datetime and coordinates specified above, we type in the terminal (remember to activate the virtual environment created above):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tiebenn<span class="w"> </span>--event_file<span class="w"> </span>&lt;full_path_to_example_event&gt;<span class="w"> </span>--max_epic_dist<span class="w"> </span><span class="m">150</span><span class="w"> </span>--picker<span class="w"> </span>SeisBench_PhaseNet<span class="w"> </span>--client<span class="w"> </span>FDSN<span class="w"> </span>--min_detections<span class="w"> </span><span class="m">3</span><span class="w"> </span>--plots<span class="w"> </span>True<span class="w"> </span>--vel_mode<span class="w"> </span>auto<span class="w"> </span>--ph_assoc<span class="w"> </span>PyOcto<span class="w"> </span>--denoise<span class="w"> </span>True<span class="w"> </span>--mult_windows<span class="w"> </span>True
+</pre></div>
+</div>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Link to this heading"></a></h2>
+<p>If the location was successful, you’ll see something like:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>##############################################################
+NonLinLoc: Location completed.
+Origin time: 24-12-2024_01:55:4.517789
+             Lat:51.328045 Long:12.543796 Depth: 22.685547 km
+--------------------------------------------------------------
+Location quality:
+RMS:0.285177 Number of phases: 130 Gap: 35.032 Distance from hypocenter to nearest station: 12.077 km
+Ellipsoid semi-major axis: 1.030196e+00
+##############################################################
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">--plots</span> <span class="pre">True</span></code>, the following figures are also generated:</p>
+<ul>
+<li><p>Phase picks on waveforms:</p>
+<a class="reference internal image-reference" href="_images/example_picks.svg"><img alt="Phase picks" class="align-center" src="_images/example_picks.svg" style="width: 500px;" />
+</a>
+</li>
+<li><p>Associated phases:</p>
+<a class="reference internal image-reference" href="_images/example_phassoc.svg"><img alt="Phase association" class="align-center" src="_images/example_phassoc.svg" style="width: 500px;" />
+</a>
+</li>
+<li><p>Map: epicenter and stations:</p>
+<a class="reference internal image-reference" href="_images/example_epicenter_map.png"><img alt="Epicenter map" class="align-center" src="_images/example_epicenter_map.png" style="width: 500px;" />
+</a>
+</li>
+<li><p>Location confidence ellipsoid:</p>
+<a class="reference internal image-reference" href="_images/example_ellipsoid.png"><img alt="Confidence ellipsoid" class="align-center" src="_images/example_ellipsoid.png" style="width: 500px;" />
+</a>
+</li>
+<li><p>Location Quality Score:</p>
+<a class="reference internal image-reference" href="_images/example_LQS.svg"><img alt="LQS" class="align-center" src="_images/example_LQS.svg" style="width: 500px;" />
+</a>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="velocity_models.html" class="btn btn-neutral float-right" title="Velocity models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, C. Ramos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

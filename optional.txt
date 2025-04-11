@@ -1,2 +1,9 @@
+nllgrid
+
+sphinx
+sphinx-rtd-theme
+myst-parser
+autodoc 
+napoleon
+
 git+https://github.com/wayneweiqiang/GaMMA.git
-git+https://github.com/claudiodsf/nllgrid.git

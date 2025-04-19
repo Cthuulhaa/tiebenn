@@ -35,10 +35,10 @@ TieBeNN is distributed under the **GNU General Public License v3.0 (GPLv3)**.
 
    A copy of the full license is available in the LICENSE file.
 
-Links & availability *(coming soon)*
+Links & availability
 ------------------------------------
 
-- 🌐 **GitHub (public mirror)** *(coming soon)*
+- 🌐 **GitHub (public mirror)** https://github.com/Cthuulhaa/tiebenn.git
   The TieBeNN repository publicly available on GitHub for citation, installation, and issue reporting.
 
 - 📦 **Zenodo archive** *(planned)*

@@ -42,7 +42,7 @@ If you are working on a GPU machine, then you can skip this line. Then, you can 
 
 .. code-block:: bash
 
-   git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
+   git clone https://github.com/Cthuulhaa/tiebenn.git
    cd tiebenn
 
    pip install .

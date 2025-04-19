@@ -9,7 +9,7 @@ description = "Automatic focal depth estimation for local seismic events in Germ
 readme = "README.md"
 license = "GPL-3.0-or-later"
 authors = [
-  { name = "C. Ramos", email = "ramosdomke.bgr@gmail.com" }
+  { name = "C. Ramos, S. Donner, K. Stammler", email = "ramosdomke.bgr@gmail.com" }
 ]
 requires-python = ">=3.9"
 dependencies = [
@@ -20,8 +20,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://gitlab.szo.bgr.de/dzreorg/software/tiebenn"
-Documentation = "https://your-docs-url"
+Homepage = "https://github.com/Cthuulhaa/tiebenn.git"
+Documentation = "https://tiebenn.readthedocs.io/en/latest/"
 
 [project.scripts]
 tiebenn = "tiebenn.cli:main_cli"

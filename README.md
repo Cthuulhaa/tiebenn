@@ -79,7 +79,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 If you are working on a GPU machine, then you can skip this line. Then, you can proceed to clone the TieBeNN repository and install it:
 
 ```bash
-git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
+git clone https://github.com/Cthuulhaa/tiebenn.git
 cd tiebenn
 
 pip install .
@@ -154,7 +154,7 @@ tiebenn --event_file <EventFile> --max_epic_dist <MaxEpDist> --picker <Picker> -
 | **`--min_detections`** | Minimum amount of stations on which P- or S- phase picks must be detected for the detection loop to end |
 | **`--plots`** | If set to True, it will plot the waveforms recorded on each stations with at least one phase detection. It will also plot all the phase picks associated to the event sorted by epicentral distance, as well as plots of the locations: epicenter and stations with detections on a map, waveforms with phase picks sorted by epicentral distance, and confidence ellipsoid of event location |
 | **`--vel_mode`** | This parameter decides how to choose a seismic velocity model for the event location. Options are `automatic` (`automatic`, `auto` or `a`) for choosing a local velocity model based on the epicenter (if available, otherwise the layer-over-halfspace model used at EdB is used as default) and `manual` (`manual`, `man`, `m`) for choosing the velocity model manually. In this case, the parameter `VelMod` must be defined |
-| **`--velmod`** | The number corresponding to the model which will be used for hypocenter location with NonLinLoc. [See the full list here](https://192.168.11.188/dzreorg/software/tiebenn/-/blob/main/velocity_models.md) _Note_: 3D velocity models have been tested, although I have still not found a region in Germany where using a 3D velocity model instead of a dedicated, local 1D velocity model results in a dramatic improvement in the event location quality and is worth the extra travel-time calculation time. The implementation of 3D velocity models for real-time event location is, at least momentarily, beyond the scope of this repository |
+| **`--velmod`** | The number corresponding to the model which will be used for hypocenter location with NonLinLoc. [See the full list here](velocity_models.md) Note_: 3D velocity models have been tested, although I have still not found a region in Germany where using a 3D velocity model instead of a dedicated, local 1D velocity model results in a dramatic improvement in the event location quality and is worth the extra travel-time calculation time. The implementation of 3D velocity models for real-time event location is, at least momentarily, beyond the scope of this repository |
 | **`--ph_assoc`** | Phase associator. Options are `PyOcto` (`pyocto` or `p`) and `GaMMA` (`gamma` or `g`). Not case sensitive |
 | **`--denoise`** | Boolean parameter. If true, the DeepDenoiser model will be applied on the waveforms of stations within 100 km in epicentral distance |
 | **`--mult_windows`** | Boolean parameter. If true, it makes the phase picker to look for P- or S-waves in moving windows, which helps to address the prediction inconsistency inherent to machine-learning-based models |

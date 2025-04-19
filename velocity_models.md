@@ -46,10 +46,10 @@ LAYER   DepthKm   VelP   GradVelP   VelS   GradVelS   Dens   GradDens
 
 To add a new 1D velocity model in TieBeNN, follow these steps:
 
-1. Go to the `data` directory within the cloned TieBeNN repository `<directory_of_cloned_repository>/data/velocity_models` and create a new text file. This file must be named `v_<number_assigned>` (e.g. `v20`). Each layer in the file must be described using the NonLinLoc syntax (`LAYER` command) mentioned above.
+1. Go to the `data` directory within the cloned TieBeNN repository `<directory_of_cloned_repository>/data/velocity_models` and create a new text file. This file must be named `v_<number_assigned>` (e.g. `v20`). Each layer in the file must be described using the NonLinLoc syntax (`LAYER` command, see above).
 
 1. _Optional_ (recommended): list the velocity model in `<tiebenn_directory>/tools/velocity_models.py` (`"number = description, reference, etc"`) in the `velmods` function description.
 
 1. Update the TieBeNN installation: go to the TieBeNN repository main directory `pip install .`
 
-1. _Optional/recommended/requested_: Don't forget to let the mantainer(s) know about new, useful velocity models (via new issue or merge request) so that new models can be available in the official repository! :)
+1. _Optional/recommended/requested_: Don't forget to let the mantainer(s) know about new, useful velocity models (via new issue or merge request) so that new models can be available in the official repository! ;)

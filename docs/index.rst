@@ -14,7 +14,7 @@ TieBeNN documentation
    </p>
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
    :caption: Getting started:
 
    workflow

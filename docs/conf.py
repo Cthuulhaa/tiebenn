@@ -26,8 +26,28 @@ extensions = [
 
 autosummary_generate = True
 
+autodoc_mock_imports = [
+    "gamma",         # GaMMA
+    "nllgrid",       # NonLinLoc grid tools
+    "joblib",        # parallelization
+    "matplotlib",    # visualization
+    "cartopy",       # optional in some visual modules
+    "obspy",         # waveform handling
+    "pyrocko",       # optional dependency
+    "pyocto",        # for PyOcto-based associator
+    "torch",         # needed for seisbench-based modules
+    "seisbench",
+]
+
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+    'show-inheritance': True,
+    'imported-members': True,
+}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

@@ -79,7 +79,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 If you are working on a GPU machine, then you can skip this line. Then, you can proceed to clone the TieBeNN repository and install it:
 
 ```bash
-git clone https://github.com/Cthuulhaa/tiebenn.git
+git clone https://gitlab.szo.bgr.de/dzreorg/software/tiebenn
 cd tiebenn
 
 pip install .

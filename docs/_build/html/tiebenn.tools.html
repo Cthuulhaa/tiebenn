@@ -103,6 +103,39 @@
 <section id="module-tiebenn.tools.gammaasoc">
 <span id="tiebenn-tools-gammaasoc-module"></span><h2>tiebenn.tools.gammaasoc module<a class="headerlink" href="#module-tiebenn.tools.gammaasoc" title="Link to this heading"></a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.gammaasoc.from_latlon">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.gammaasoc.</span></span><span class="sig-name descname"><span class="pre">from_latlon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_zone_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_zone_letter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.gammaasoc.from_latlon" title="Link to this definition"></a></dt>
+<dd><p>This function converts Latitude and Longitude to UTM coordinate</p>
+<blockquote>
+<div><dl class="simple">
+<dt>latitude: float or NumPy array</dt><dd><p>Latitude between 80 deg S and 84 deg N, e.g. (-80.0 to 84.0)</p>
+</dd>
+<dt>longitude: float or NumPy array</dt><dd><p>Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).</p>
+</dd>
+<dt>force_zone_number: int</dt><dd><p>Zone number is represented by global map numbers of an UTM zone
+numbers map. You may force conversion to be included within one
+UTM zone number.  For more information <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">see utmzones</a></p>
+</dd>
+<dt>force_zone_letter: str</dt><dd><p>You may force conversion to be included within one UTM zone
+letter.  For more information <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">see utmzones</a></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>easting: float or NumPy array</dt><dd><p>Easting value of UTM coordinates</p>
+</dd>
+<dt>northing: float or NumPy array</dt><dd><p>Northing value of UTM coordinates</p>
+</dd>
+<dt>zone_number: int</dt><dd><p>Zone number is represented by global map numbers of a UTM zone
+numbers map. More information <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">see utmzones</a></p>
+</dd>
+<dt>zone_letter: str</dt><dd><p>Zone letter is represented by a string value. UTM zone designators
+can be accessed <a class="reference external" href="http://www.jaworski.ca/utmzones.htm">here</a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tiebenn.tools.gammaasoc.phase_association">
 <span class="sig-prename descclassname"><span class="pre">tiebenn.tools.gammaasoc.</span></span><span class="sig-name descname"><span class="pre">phase_association</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velmod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.gammaasoc.phase_association" title="Link to this definition"></a></dt>
 <dd><p>Phase association using GaMMA (<a class="reference external" href="https://github.com/AI4EPS/GaMMA">https://github.com/AI4EPS/GaMMA</a>). The function receives as input the predicted phase picks obtained from SeisBench (PhaseNet/EQTransformer) and uses a machine-learning model to predict which of them correspond to a certain event.</p>
@@ -127,6 +160,50 @@ PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>events_assoc (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.gammaasoc.plot_assoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.gammaasoc.</span></span><span class="sig-name descname"><span class="pre">plot_assoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merged</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.gammaasoc.plot_assoc" title="Link to this definition"></a></dt>
+<dd><p>The visualization of the associated picks using PyOcto</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_time</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with information about the stations with predicted picks</p></li>
+<li><p><strong>stations</strong> (<em>pandas dataframe</em>) – A dataframe with the coordinates and elevation for each station</p></li>
+<li><p><strong>picks</strong> (<em>pandas dataframe</em>) – Information for each predicted pick: station, phase (P or S), time and probability</p></li>
+<li><p><strong>events</strong> (<em>pandas dataframe</em>) – The event(s) to which PyOcto associated the picks</p></li>
+<li><p><strong>merged</strong> (<em>pandas dataframe</em>) – A single dataframe containing all the information for the associated picks</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If picks were predicted in the multiple-windows-mode, then the code will name the output plots accordingly</p></li>
+<li><p><strong>secs_before</strong> (<em>int</em>) – Seconds before the event time to start retrieving waveforms, among other uses</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figure in PDF format, stored in the saved_locations/&lt;ev_time&gt;_tiebenn_loc directory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PhAssoc_event&lt;event_number&gt;.pdf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.gammaasoc.tt_theo_before_assoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.gammaasoc.</span></span><span class="sig-name descname"><span class="pre">tt_theo_before_assoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teo_p_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teo_s_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.gammaasoc.tt_theo_before_assoc" title="Link to this definition"></a></dt>
+<dd><p>This function decides if a predicted pick is close enough to the theoretical pick (for example, obtained using Taup)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_time</strong> (<em>str</em>) – yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>teo_p_time</strong> (<em>float</em>) – Arrival time of the P-wave, in seconds after the event</p></li>
+<li><p><strong>teo_s_time</strong> (<em>float</em>) – Arrival time of the S-wave, in seconds after the event</p></li>
+<li><p><strong>pick</strong> (<em>SeisBench pick</em>) – The pick as predicted by the models in SeisBench</p></li>
+<li><p><strong>tol_p</strong> (<em>int</em><em> or </em><em>float</em>) – Seconds (in absolute value) in which a predicted P-pick is allowed to differ from the theoretical P-pick</p></li>
+<li><p><strong>tol_s</strong> (<em>int</em><em> or </em><em>float</em>) – Seconds (in absolute value) in which a predicted S-pick is allowed to differ from the theoretical S-pick</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -388,6 +465,287 @@ PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</
 </section>
 <section id="module-tiebenn.tools.nonlinloc">
 <span id="tiebenn-tools-nonlinloc-module"></span><h2>tiebenn.tools.nonlinloc module<a class="headerlink" href="#module-tiebenn.tools.nonlinloc" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">Path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PurePath</span></code></p>
+<p>PurePath subclass that can make system calls.</p>
+<p>Path represents a filesystem path but unlike PurePath, also offers
+methods to do system calls on path objects. Depending on your system,
+instantiating a Path will return either a PosixPath or a WindowsPath
+object. You can also instantiate a PosixPath or WindowsPath directly,
+but cannot instantiate a WindowsPath on a POSIX system or vice versa.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.absolute">
+<span class="sig-name descname"><span class="pre">absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.absolute" title="Link to this definition"></a></dt>
+<dd><p>Return an absolute version of this path by prepending the current
+working directory. No normalization or symlink resolution is performed.</p>
+<p>Use resolve() to get the canonical path to a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.chmod">
+<span class="sig-name descname"><span class="pre">chmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">follow_symlinks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.chmod" title="Link to this definition"></a></dt>
+<dd><p>Change the permissions of the path, like os.chmod().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.cwd">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cwd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.cwd" title="Link to this definition"></a></dt>
+<dd><p>Return a new path pointing to the current working directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.exists">
+<span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">follow_symlinks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.exists" title="Link to this definition"></a></dt>
+<dd><p>Whether this path exists.</p>
+<p>This method normally follows symlinks; to check whether a symlink exists,
+add the argument follow_symlinks=False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.expanduser">
+<span class="sig-name descname"><span class="pre">expanduser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.expanduser" title="Link to this definition"></a></dt>
+<dd><p>Return a new path with expanded ~ and ~user constructs
+(as returned by os.path.expanduser)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.glob">
+<span class="sig-name descname"><span class="pre">glob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.glob" title="Link to this definition"></a></dt>
+<dd><p>Iterate over this subtree and yield all existing files (of any
+kind, including directories) matching the given relative pattern.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.group">
+<span class="sig-name descname"><span class="pre">group</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.group" title="Link to this definition"></a></dt>
+<dd><p>Return the group name of the file gid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.hardlink_to">
+<span class="sig-name descname"><span class="pre">hardlink_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.hardlink_to" title="Link to this definition"></a></dt>
+<dd><p>Make this path a hard link pointing to the same file as <em>target</em>.</p>
+<p>Note the order of arguments (self, target) is the reverse of os.link’s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.home">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.home" title="Link to this definition"></a></dt>
+<dd><p>Return a new path pointing to the user’s home directory (as
+returned by os.path.expanduser(‘~’)).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_block_device">
+<span class="sig-name descname"><span class="pre">is_block_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_block_device" title="Link to this definition"></a></dt>
+<dd><p>Whether this path is a block device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_char_device">
+<span class="sig-name descname"><span class="pre">is_char_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_char_device" title="Link to this definition"></a></dt>
+<dd><p>Whether this path is a character device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_dir">
+<span class="sig-name descname"><span class="pre">is_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_dir" title="Link to this definition"></a></dt>
+<dd><p>Whether this path is a directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_fifo">
+<span class="sig-name descname"><span class="pre">is_fifo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_fifo" title="Link to this definition"></a></dt>
+<dd><p>Whether this path is a FIFO.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_file">
+<span class="sig-name descname"><span class="pre">is_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_file" title="Link to this definition"></a></dt>
+<dd><p>Whether this path is a regular file (also True for symlinks pointing
+to regular files).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_junction">
+<span class="sig-name descname"><span class="pre">is_junction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_junction" title="Link to this definition"></a></dt>
+<dd><p>Whether this path is a junction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_mount">
+<span class="sig-name descname"><span class="pre">is_mount</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_mount" title="Link to this definition"></a></dt>
+<dd><p>Check if this path is a mount point</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_socket">
+<span class="sig-name descname"><span class="pre">is_socket</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_socket" title="Link to this definition"></a></dt>
+<dd><p>Whether this path is a socket.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.is_symlink">
+<span class="sig-name descname"><span class="pre">is_symlink</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.is_symlink" title="Link to this definition"></a></dt>
+<dd><p>Whether this path is a symbolic link.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.iterdir">
+<span class="sig-name descname"><span class="pre">iterdir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.iterdir" title="Link to this definition"></a></dt>
+<dd><p>Yield path objects of the directory contents.</p>
+<p>The children are yielded in arbitrary order, and the
+special entries ‘.’ and ‘..’ are not included.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.lchmod">
+<span class="sig-name descname"><span class="pre">lchmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.lchmod" title="Link to this definition"></a></dt>
+<dd><p>Like chmod(), except if the path points to a symlink, the symlink’s
+permissions are changed, rather than its target’s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.lstat">
+<span class="sig-name descname"><span class="pre">lstat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.lstat" title="Link to this definition"></a></dt>
+<dd><p>Like stat(), except if the path points to a symlink, the symlink’s
+status information is returned, rather than its target’s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.mkdir">
+<span class="sig-name descname"><span class="pre">mkdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">511</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exist_ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.mkdir" title="Link to this definition"></a></dt>
+<dd><p>Create a new directory at this given path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.open" title="Link to this definition"></a></dt>
+<dd><p>Open the file pointed by this path and return a file object, as
+the built-in open() function does.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.owner">
+<span class="sig-name descname"><span class="pre">owner</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.owner" title="Link to this definition"></a></dt>
+<dd><p>Return the login name of the file owner.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.read_bytes">
+<span class="sig-name descname"><span class="pre">read_bytes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.read_bytes" title="Link to this definition"></a></dt>
+<dd><p>Open the file in bytes mode, read it, and close the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.read_text">
+<span class="sig-name descname"><span class="pre">read_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.read_text" title="Link to this definition"></a></dt>
+<dd><p>Open the file in text mode, read it, and close the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.readlink">
+<span class="sig-name descname"><span class="pre">readlink</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.readlink" title="Link to this definition"></a></dt>
+<dd><p>Return the path to which the symbolic link points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.rename" title="Link to this definition"></a></dt>
+<dd><p>Rename this path to the target path.</p>
+<p>The target path may be absolute or relative. Relative paths are
+interpreted relative to the current working directory, <em>not</em> the
+directory of the Path object.</p>
+<p>Returns the new Path instance pointing to the target path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.replace" title="Link to this definition"></a></dt>
+<dd><p>Rename this path to the target path, overwriting if that path exists.</p>
+<p>The target path may be absolute or relative. Relative paths are
+interpreted relative to the current working directory, <em>not</em> the
+directory of the Path object.</p>
+<p>Returns the new Path instance pointing to the target path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.resolve">
+<span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.resolve" title="Link to this definition"></a></dt>
+<dd><p>Make the path absolute, resolving all symlinks on the way and also
+normalizing it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.rglob">
+<span class="sig-name descname"><span class="pre">rglob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.rglob" title="Link to this definition"></a></dt>
+<dd><p>Recursively yield all existing files (of any kind, including
+directories) matching the given relative pattern, anywhere in
+this subtree.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.rmdir">
+<span class="sig-name descname"><span class="pre">rmdir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.rmdir" title="Link to this definition"></a></dt>
+<dd><p>Remove this directory.  The directory must be empty.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.samefile">
+<span class="sig-name descname"><span class="pre">samefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.samefile" title="Link to this definition"></a></dt>
+<dd><p>Return whether other_path is the same or not as this file
+(as returned by os.path.samefile()).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.stat">
+<span class="sig-name descname"><span class="pre">stat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">follow_symlinks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.stat" title="Link to this definition"></a></dt>
+<dd><p>Return the result of the stat() system call on this path, like
+os.stat() does.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.symlink_to">
+<span class="sig-name descname"><span class="pre">symlink_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_is_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.symlink_to" title="Link to this definition"></a></dt>
+<dd><p>Make this path a symlink pointing to the target path.
+Note the order of arguments (link, target) is the reverse of os.symlink.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.touch">
+<span class="sig-name descname"><span class="pre">touch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">438</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exist_ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.touch" title="Link to this definition"></a></dt>
+<dd><p>Create this file with the given access mode, if it doesn’t exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.unlink">
+<span class="sig-name descname"><span class="pre">unlink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.unlink" title="Link to this definition"></a></dt>
+<dd><p>Remove this file or link.
+If the path is a directory, use rmdir() instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.walk">
+<span class="sig-name descname"><span class="pre">walk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_down</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">follow_symlinks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.walk" title="Link to this definition"></a></dt>
+<dd><p>Walk the directory tree from this directory, similar to os.walk().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.write_bytes">
+<span class="sig-name descname"><span class="pre">write_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.write_bytes" title="Link to this definition"></a></dt>
+<dd><p>Open the file in bytes mode, write to it, and close the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.Path.write_text">
+<span class="sig-name descname"><span class="pre">write_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.Path.write_text" title="Link to this definition"></a></dt>
+<dd><p>Open the file in text mode, write to it, and close the file.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.create3dgrid">
 <span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">create3dgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velmod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.create3dgrid" title="Link to this definition"></a></dt>
@@ -410,14 +768,20 @@ PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.epic_sta_plot">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">epic_sta_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.epic_sta_plot" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot of the event’s epicenter and the stations with picks used for depth estimation with NonLinLoc.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.extract_3d_velmod">
-<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">extract_3d_velmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.extract_3d_velmod" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">extract_3d_velmod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tiebenn.tools.nonlinloc.Path" title="pathlib.Path"><span class="pre">Path</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.extract_3d_velmod" title="Link to this definition"></a></dt>
 <dd><p>Creates a temporary directory with 3D velocity models copied from Tiebenn’s resources.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model_name</strong> (<em>str</em>) – Name of velocity model (e.g.: ‘diehl’, ‘lengline’, ‘weg’)</p></li>
-<li><p><strong>workdir</strong> (<em>pathlib.Path</em>)</p></li>
+<li><p><strong>workdir</strong> (<a class="reference internal" href="#tiebenn.tools.nonlinloc.Path" title="pathlib.Path"><em>pathlib.Path</em></a>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -427,6 +791,12 @@ PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</
 <dd class="field-odd"><p>dest (path)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.files">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ModuleType</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Traversable</span></span></span><a class="headerlink" href="#tiebenn.tools.nonlinloc.files" title="Link to this definition"></a></dt>
+<dd><p>Get a Traversable resource for an anchor.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -483,6 +853,56 @@ epicenter_stations.pdf: map depicting the epicenter location on the map, alongsi
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.nonlinloc.velmods">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.nonlinloc.</span></span><span class="sig-name descname"><span class="pre">velmods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.nonlinloc.velmods" title="Link to this definition"></a></dt>
+<dd><p>Produces a seismic velocity model to be included in the NonLinLoc control file for hypocenter location.</p>
+<p>When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm³. The density is, however, a carryover in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.</p>
+<p>IMPORTANT: This function is programmed so that each column will be separated by 3 blank spaces from the next one. This becomes relevant during the phase association and must not be modified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>int</em>) – <p>The P- and S-wave velocity models to be exported. Velocity models are read from files in the directory <cite>data/velocity_models/</cite>. New models can be added following the NLL structure.</p>
+<p>The following model numbers are currently supported:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 0  = IASP91
+ 1  = AK135 (for continental structure)
+ 2  = BGR velocity model (by J. Schlittenhardt)
+ 3  = WET: Germany and adjacent regions
+ 4  = WB2012: Vogtland/West Bohemia 1D (P+S)
+ 5  = DEU: 3-layer Germany model (Moho at 28.5 km, vp/vs = 1.68)
+ 6  = Crust1.0: up to 9 layers per lat/lon point
+ 7  = Crust1.0 + AK135 hybrid model
+ 8  = Küperkoch et al. (2018) for Insheim (1D, P+S)
+ 9  = Regional model for LI (J. Borns)
+10  = Landau model (1D, P+S) for northern Upper Rhine Graben
+11  = Central Alps 1D (Diehl et al. 2021)
+12  = Not fully integrated! 3D Central Alps (Diehl, ETH Zürich)
+13  = 3D WEG: high-res P model (not functional included in TieBeNN)
+14  = AlpsLocPS (Brazsus et al., 2024) — Greater Alpine Region
+15  = BENS (Reamer &amp; Hinzen 2004): Northern Rhine Area
+16  = ASZmod1 (Mader et al. 2021): Albstadt Shear Zone
+17  = 3D URG (Lengline et al. 2023): Upper Rhine Graben (currently not functional)
+18  = (Malek et al. 2023): Novy-Kostel swarm
+19  = PO1 + WB2012 from 11 km depth
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Event longitude. Used when model = 6 or 7.</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Event latitude. Used when model = 6 or 7.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>velmod</strong> – List of 1D velocity/density layers in NonLinLoc format. Each element is a string representing one layer:
+LAYER depth[km] vp vp_grad vs vs_grad density density_grad</p>
+<p>Note: density values are placeholders and not used in NLL itself.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-tiebenn.tools.pyoctools">
 <span id="tiebenn-tools-pyoctools-module"></span><h2>tiebenn.tools.pyoctools module<a class="headerlink" href="#module-tiebenn.tools.pyoctools" title="Link to this heading"></a></h2>
@@ -511,6 +931,100 @@ PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>events_assoc (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.pyoctools.plot_assoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.pyoctools.</span></span><span class="sig-name descname"><span class="pre">plot_assoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merged</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.pyoctools.plot_assoc" title="Link to this definition"></a></dt>
+<dd><p>The visualization of the associated picks using PyOcto</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_time</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with information about the stations with predicted picks</p></li>
+<li><p><strong>stations</strong> (<em>pandas dataframe</em>) – A dataframe with the coordinates and elevation for each station</p></li>
+<li><p><strong>picks</strong> (<em>pandas dataframe</em>) – Information for each predicted pick: station, phase (P or S), time and probability</p></li>
+<li><p><strong>events</strong> (<em>pandas dataframe</em>) – The event(s) to which PyOcto associated the picks</p></li>
+<li><p><strong>merged</strong> (<em>pandas dataframe</em>) – A single dataframe containing all the information for the associated picks</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If picks were predicted in the multiple-windows-mode, then the code will name the output plots accordingly</p></li>
+<li><p><strong>secs_before</strong> (<em>int</em>) – Seconds before the event time to start retrieving waveforms, among other uses</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figure in PDF format, stored in the saved_locations/&lt;ev_time&gt;_tiebenn_loc directory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PhAssoc_event&lt;event_number&gt;.pdf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.pyoctools.tt_theo_before_assoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.pyoctools.</span></span><span class="sig-name descname"><span class="pre">tt_theo_before_assoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teo_p_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teo_s_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.pyoctools.tt_theo_before_assoc" title="Link to this definition"></a></dt>
+<dd><p>This function decides if a predicted pick is close enough to the theoretical pick (for example, obtained using Taup)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_time</strong> (<em>str</em>) – yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>teo_p_time</strong> (<em>float</em>) – Arrival time of the P-wave, in seconds after the event</p></li>
+<li><p><strong>teo_s_time</strong> (<em>float</em>) – Arrival time of the S-wave, in seconds after the event</p></li>
+<li><p><strong>pick</strong> (<em>SeisBench pick</em>) – The pick as predicted by the models in SeisBench</p></li>
+<li><p><strong>tol_p</strong> (<em>int</em><em> or </em><em>float</em>) – Seconds (in absolute value) in which a predicted P-pick is allowed to differ from the theoretical P-pick</p></li>
+<li><p><strong>tol_s</strong> (<em>int</em><em> or </em><em>float</em>) – Seconds (in absolute value) in which a predicted S-pick is allowed to differ from the theoretical S-pick</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.pyoctools.velmods">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.pyoctools.</span></span><span class="sig-name descname"><span class="pre">velmods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_lat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.pyoctools.velmods" title="Link to this definition"></a></dt>
+<dd><p>Produces a seismic velocity model to be included in the NonLinLoc control file for hypocenter location.</p>
+<p>When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm³. The density is, however, a carryover in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.</p>
+<p>IMPORTANT: This function is programmed so that each column will be separated by 3 blank spaces from the next one. This becomes relevant during the phase association and must not be modified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>int</em>) – <p>The P- and S-wave velocity models to be exported. Velocity models are read from files in the directory <cite>data/velocity_models/</cite>. New models can be added following the NLL structure.</p>
+<p>The following model numbers are currently supported:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> 0  = IASP91
+ 1  = AK135 (for continental structure)
+ 2  = BGR velocity model (by J. Schlittenhardt)
+ 3  = WET: Germany and adjacent regions
+ 4  = WB2012: Vogtland/West Bohemia 1D (P+S)
+ 5  = DEU: 3-layer Germany model (Moho at 28.5 km, vp/vs = 1.68)
+ 6  = Crust1.0: up to 9 layers per lat/lon point
+ 7  = Crust1.0 + AK135 hybrid model
+ 8  = Küperkoch et al. (2018) for Insheim (1D, P+S)
+ 9  = Regional model for LI (J. Borns)
+10  = Landau model (1D, P+S) for northern Upper Rhine Graben
+11  = Central Alps 1D (Diehl et al. 2021)
+12  = Not fully integrated! 3D Central Alps (Diehl, ETH Zürich)
+13  = 3D WEG: high-res P model (not functional included in TieBeNN)
+14  = AlpsLocPS (Brazsus et al., 2024) — Greater Alpine Region
+15  = BENS (Reamer &amp; Hinzen 2004): Northern Rhine Area
+16  = ASZmod1 (Mader et al. 2021): Albstadt Shear Zone
+17  = 3D URG (Lengline et al. 2023): Upper Rhine Graben (currently not functional)
+18  = (Malek et al. 2023): Novy-Kostel swarm
+19  = PO1 + WB2012 from 11 km depth
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>ev_lon</strong> (<em>float</em>) – Event longitude. Used when model = 6 or 7.</p></li>
+<li><p><strong>ev_lat</strong> (<em>float</em>) – Event latitude. Used when model = 6 or 7.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>velmod</strong> – List of 1D velocity/density layers in NonLinLoc format. Each element is a string representing one layer:
+LAYER depth[km] vp vp_grad vs vs_grad density density_grad</p>
+<p>Note: density values are placeholders and not used in NLL itself.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -585,6 +1099,43 @@ PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.chan_comma">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">chan_comma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chanlist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.chan_comma" title="Link to this definition"></a></dt>
+<dd><p>Transforms the channel list for a given station in a string of channels, each separated by a comma. This is the multiple channel format for a FDSN waveform request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chanlist</strong> (<em>list</em>) – List of channels from which waveforms will be downloaded</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String of channels separated by a comma</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.create_input_for_phassoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">create_input_for_phassoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.create_input_for_phassoc" title="Link to this definition"></a></dt>
+<dd><p>Slight modification of the outputs with phase picks, as necessary for the phase association</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> (<em>dict</em>) – The predicted phases/arrival times obtained from SeisBench for each station</p></li>
+<li><p><strong>seconds_before</strong> (<em>list</em>) – List of the seconds before the event</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modfied structure of the outputs dictionary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>outputs_for_phassoc (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tiebenn.tools.sb_tools.deepdenoiser">
 <span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">deepdenoiser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.deepdenoiser" title="Link to this definition"></a></dt>
 <dd><p>DeepDenoiser (Zhu et al. 2019) as implemented on Seisbench.</p>
@@ -597,6 +1148,47 @@ PhAssoc_event&lt;event_number&gt;.pdf: A visualization of the associated picks</
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>stream_denoise (stream)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.generate_csv">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">generate_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.generate_csv" title="Link to this definition"></a></dt>
+<dd><p>Generates CSV files with pick detections</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>streams</strong> (<em>obspy.stream.Stream</em>) – The retrieved ObsPy streams for each station</p></li>
+<li><p><strong>outputs</strong> (<em>dict</em>) – The predicted phases/arrival times obtained from SeisBench for each station</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with the nearest stations (ObsPy streams) to the event which contain useful channels for phase-picking</p></li>
+<li><p><strong>snr_data</strong> (<em>dict</em>) – Dictionary with the signal-to-noise ratio for each pick at each station</p></li>
+<li><p><strong>ev_time</strong> (<em>str</em>) – ev_time (str): Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>prediction result files in CSV format for each station</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.get_snr">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">get_snr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wlen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.get_snr" title="Link to this definition"></a></dt>
+<dd><p>Estimates the signal to noise ratio (SNR) of a seismogram. Adapted from the EQTransformer repository (<a class="reference external" href="https://github.com/smousavi05/EQTransformer">https://github.com/smousavi05/EQTransformer</a>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>ObsPy Stream</em>) – Stream with waveforms and metadata for a given station</p></li>
+<li><p><strong>picks</strong> (<em>dict</em>) – Sample point where a specific phase arrives</p></li>
+<li><p><strong>wlen</strong> (<em>int</em><em>, </em><em>positive</em>) – The length of the window in seconds for calculating the SNR</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with the estimated SNR in db for each pick</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>snr (dict)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -745,6 +1337,73 @@ outputs (SeisBench Outputs): Pick information. Time stamp, maximum probability, 
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>predictions (SeisBench Predictions)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.plot">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.plot" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot which includes time windows showing the waveforms on the different channels of a station used for wave detection. The identified P- and/or S-picks are shown as thicks. The probability function of the detected event and P- or S-picks is also plotted. This function is adapted to the outputs produced by the pickers in SeisBench.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with station information</p></li>
+<li><p><strong>streams</strong> (<em>ObsPy Stream</em>) – An ObsPy strea with waveforms</p></li>
+<li><p><strong>starttime</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>predictions</strong> (<em>dict</em>) – A dictionary with the probability function for a detection, P- or S-wave on a given station, as obtained from the Annotate method implemented on SeisBench</p></li>
+<li><p><strong>picks</strong> (<em>dict</em>) – A dictionary with information and classification of P- or S-picks on each station, as obtained from the Classify method implemented on SeisBench</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figures in PDF format, which are stored in the saved_locations/&lt;ev_time&gt;_tiebenn_loc directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.plot_assoc">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">plot_assoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merged</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mult_windows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secs_before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.plot_assoc" title="Link to this definition"></a></dt>
+<dd><p>The visualization of the associated picks using PyOcto</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ev_time</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with information about the stations with predicted picks</p></li>
+<li><p><strong>stations</strong> (<em>pandas dataframe</em>) – A dataframe with the coordinates and elevation for each station</p></li>
+<li><p><strong>picks</strong> (<em>pandas dataframe</em>) – Information for each predicted pick: station, phase (P or S), time and probability</p></li>
+<li><p><strong>events</strong> (<em>pandas dataframe</em>) – The event(s) to which PyOcto associated the picks</p></li>
+<li><p><strong>merged</strong> (<em>pandas dataframe</em>) – A single dataframe containing all the information for the associated picks</p></li>
+<li><p><strong>mult_windows</strong> (<em>bool</em>) – If picks were predicted in the multiple-windows-mode, then the code will name the output plots accordingly</p></li>
+<li><p><strong>secs_before</strong> (<em>int</em>) – Seconds before the event time to start retrieving waveforms, among other uses</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figure in PDF format, stored in the saved_locations/&lt;ev_time&gt;_tiebenn_loc directory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PhAssoc_event&lt;event_number&gt;.pdf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.sb_tools.plot_mw">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.sb_tools.</span></span><span class="sig-name descname"><span class="pre">plot_mw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picks_final</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.sb_tools.plot_mw" title="Link to this definition"></a></dt>
+<dd><p>Generates a plot which includes time windows showing the waveforms on the different channels on a given station used for wave detection under the multiple time-window approach. The predicted P- and/or S-picks are shown as thicks: the ones used for the depth estimation are colored and the rest–obtained from predictions with other time offsets (and/or not associated to the event)– are shown thinner and in grey. The probability function of the P- or S-picks is also plotted in colored lines, while that obtained from predictions with other time offsets are in grey. This function is adapted to the outputs produced by the pickers in SeisBench.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – A dictionary with station information</p></li>
+<li><p><strong>streams</strong> (<em>ObsPy Stream</em>) – The ObsPy streams for the station</p></li>
+<li><p><strong>starttime</strong> (<em>str</em>) – Origin time of the event. Format: yyyy-mm-dd hh:mm:ss.ss</p></li>
+<li><p><strong>predictions</strong> (<em>dict</em>) – A dictionary with the probability function for a detection, P- or S-wave on a given station, as obtained from the Annotate method implemented on SeisBench</p></li>
+<li><p><strong>picks</strong> (<em>dict</em>) – A dictionary with information and classification of P- or S-picks on each station, as obtained from the Classify method implemented on SeisBench</p></li>
+<li><p><strong>picks_final</strong> (<em>dict</em>) – picks after selecting for each station the time window with the best phase pick</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Figures in PDF format, which are stored in the saved_locations/&lt;ev_time&gt;_tiebenn_loc directory</p>
 </dd>
 </dl>
 </dd></dl>
@@ -976,6 +1635,19 @@ lon (float) Longitude of interest</p>
 model_layers (dict): Dictionary of layers with the keys as layer names and the values as a list of vp, vs, density, layer thickness, and the top of the layer with respect to sea level</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.velocity_models.files">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.velocity_models.</span></span><span class="sig-name descname"><span class="pre">files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ModuleType</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Traversable</span></span></span><a class="headerlink" href="#tiebenn.tools.velocity_models.files" title="Link to this definition"></a></dt>
+<dd><p>Get a Traversable resource for an anchor.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tiebenn.tools.velocity_models.floor">
+<span class="sig-prename descclassname"><span class="pre">tiebenn.tools.velocity_models.</span></span><span class="sig-name descname"><span class="pre">floor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tiebenn.tools.velocity_models.floor" title="Link to this definition"></a></dt>
+<dd><p>Return the floor of x as an Integral.</p>
+<p>This is the largest integer &lt;= x.</p>
 </dd></dl>
 
 <dl class="py function">

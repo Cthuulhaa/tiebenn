@@ -19,6 +19,14 @@ dependencies = [
   "pyrocko",
 ]
 
+[project.optional-dependencies]
+docs = [
+    "sphinx",
+    "sphinx_rtd_theme",
+    "joblib",
+    "nllgrid",
+]
+
 [project.urls]
 Homepage = "https://github.com/Cthuulhaa/tiebenn.git"
 Documentation = "https://tiebenn.readthedocs.io/en/latest/"

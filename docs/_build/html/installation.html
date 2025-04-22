@@ -116,7 +116,7 @@
 </pre></div>
 </div>
 <p>If you are working on a GPU machine, then you can skip this line. Then, you can proceed to clone the TieBeNN repository and install it:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://gitlab.szo.bgr.de/dzreorg/software/tiebenn.git
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Cthuulhaa/tiebenn.git
 <span class="nb">cd</span><span class="w"> </span>tiebenn
 
 pip<span class="w"> </span>install<span class="w"> </span>.
@@ -125,14 +125,14 @@ pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </s
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Of course you can modify and comment out those packages you will not need.</p>
+<p>You are free to modify or comment-out those packages you will not need.</p>
 </div>
 </section>
 <section id="installing-nonlinloc-and-setting-paths">
 <h2>Installing NonLinLoc and setting paths<a class="headerlink" href="#installing-nonlinloc-and-setting-paths" title="Link to this heading"></a></h2>
-<p>NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create the directory <code class="docutils literal notranslate"><span class="pre">&lt;tiebenn_directory&gt;/utils/nonlinloc</span></code> and within it, we clone the NonLinLoc repository:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>&lt;some_convenient_directory&gt;/nonlinloc
-<span class="nb">cd</span><span class="w"> </span>&lt;some_convenient_directory&gt;/nonlinloc
+<p><em>(Follow these steps in case NonLinLoc is not installed)</em> NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create a convenient directory to install NonLinLoc and within it, we clone the NonLinLoc repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>&lt;some_convenient_directory&gt;
+<span class="nb">cd</span><span class="w"> </span>&lt;some_convenient_directory&gt;
 
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ut-beg-texnet/NonLinLoc.git
 
@@ -149,7 +149,7 @@ cp<span class="w"> </span>Vel2Grid*<span class="w"> </span>Grid2*<span class="w"
 <p>Do not use NonLinLoc’s latest release directly, as it might contain unresolved bugs, whose fix are still unreleased.</p>
 </div>
 <p>Set NonLinLoc in your <code class="docutils literal notranslate"><span class="pre">PATH</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=${PATH}:&lt;some_convenient_directory&gt;/nonlinloc/&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=${PATH}:&lt;some_convenient_directory&gt;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
 <span class="nb">exec</span><span class="w"> </span>bash
 </pre></div>
 </div>

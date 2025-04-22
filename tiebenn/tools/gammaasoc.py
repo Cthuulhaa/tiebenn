@@ -1,3 +1,5 @@
+__all__ = ["phase_association"]
+
 import pandas as pd
 
 from obspy import taup

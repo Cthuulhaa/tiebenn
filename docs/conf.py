@@ -23,21 +23,16 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.coverage",
-    "sphinx_rtd_theme",
     "sphinx.ext.viewcode",
+    "sphinx_rtd_theme",
     "sphinx_autodoc_typehints",
-    "sphinx.ext.todo",
 ]
+
+autodoc_typehints = "description"
+autodoc_typehints_description_target = "documented"
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
-autodoc_default_options = {
-    'members': True,
-    'undoc-members': True,
-    'show-inheritance': True,
-    'imported-members': True,
-}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -47,5 +42,3 @@ html_static_path = ['_static']
 html_logo = '_static/tiebenn_logo.svg'
 html_css_files = ['css/custom.css']
 html_favicon = '_static/tiebenn_favicon.png'
-
-todo_include_todos = False

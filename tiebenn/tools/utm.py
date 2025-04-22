@@ -8,7 +8,7 @@ except ImportError:
     import math as mathlib
     use_numpy = False
 
-#__all__ = ['to_latlon', 'from_latlon']
+__all__ = ['to_latlon', 'from_latlon']
 
 K0 = 0.9996
 
@@ -80,35 +80,35 @@ def to_latlon(easting, northing, zone_number, zone_letter=None, northern=None, s
     """
     This function converts UTM coordinates to Latitude and Longitude
 
-        Parameters
-        ----------
-        easting: int or NumPy array
-            Easting value of UTM coordinates
+    Parameters
+    ----------
+    easting: int or NumPy array
+        Easting value of UTM coordinates
 
-        northing: int or NumPy array
-            Northing value of UTM coordinates
+    northing: int or NumPy array
+        Northing value of UTM coordinates
 
-        zone_number: int
-            Zone number is represented with global map numbers of a UTM zone
-            numbers map. For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
+    zone_number: int
+        Zone number is represented with global map numbers of a UTM zone
+        numbers map. For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
 
-        zone_letter: str
-            Zone letter can be represented as string values.  UTM zone
-            designators can be seen in `this reference <http://www.jaworski.ca/utmzones.htm>`_
+    zone_letter: str
+        Zone letter can be represented as string values.  UTM zone
+        designators can be seen in `this reference <http://www.jaworski.ca/utmzones.htm>`_
 
-        northern: bool
-            You can set True or False to set this parameter. Default is None
+    northern: bool
+        You can set True or False to set this parameter. Default is None
 
-        strict: bool
-            Raise an OutOfRangeError if outside of bounds
+    strict: bool
+        Raise an OutOfRangeError if outside of bounds
 
-        Returns
-        -------
-        latitude: float or NumPy array
-            Latitude between 80 deg S and 84 deg N, e.g. (-80.0 to 84.0)
+    Returns
+    -------
+    latitude: float or NumPy array
+        Latitude between 80 deg S and 84 deg N, e.g. (-80.0 to 84.0)
 
-        longitude: float or NumPy array
-            Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).
+    longitude: float or NumPy array
+        Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).
 
     """
     if not zone_letter and northern is None:
@@ -188,38 +188,38 @@ def from_latlon(latitude, longitude, force_zone_number=None, force_zone_letter=N
     """
     This function converts Latitude and Longitude to UTM coordinate
 
-        Parameters
-        ----------
-        latitude: float or NumPy array
-            Latitude between 80 deg S and 84 deg N, e.g. (-80.0 to 84.0)
+    Parameters
+    ----------
+    latitude: float or NumPy array
+        Latitude between 80 deg S and 84 deg N, e.g. (-80.0 to 84.0)
 
-        longitude: float or NumPy array
-            Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).
+    longitude: float or NumPy array
+        Longitude between 180 deg W and 180 deg E, e.g. (-180.0 to 180.0).
 
-        force_zone_number: int
-            Zone number is represented by global map numbers of an UTM zone
-            numbers map. You may force conversion to be included within one
-            UTM zone number.  For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
+    force_zone_number: int
+        Zone number is represented by global map numbers of an UTM zone
+        numbers map. You may force conversion to be included within one
+        UTM zone number.  For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
 
-        force_zone_letter: str
-            You may force conversion to be included within one UTM zone
-            letter.  For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
+    force_zone_letter: str
+        You may force conversion to be included within one UTM zone
+        letter.  For more information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
 
-        Returns
-        -------
-        easting: float or NumPy array
-            Easting value of UTM coordinates
+    Returns
+    -------
+    easting: float or NumPy array
+        Easting value of UTM coordinates
 
-        northing: float or NumPy array
-            Northing value of UTM coordinates
+    northing: float or NumPy array
+        Northing value of UTM coordinates
 
-        zone_number: int
-            Zone number is represented by global map numbers of a UTM zone
-            numbers map. More information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
+    zone_number: int
+        Zone number is represented by global map numbers of a UTM zone
+        numbers map. More information `see utmzones <http://www.jaworski.ca/utmzones.htm>`_
 
-        zone_letter: str
-            Zone letter is represented by a string value. UTM zone designators
-            can be accessed `here <http://www.jaworski.ca/utmzones.htm>`_
+    zone_letter: str
+        Zone letter is represented by a string value. UTM zone designators
+        can be accessed `here <http://www.jaworski.ca/utmzones.htm>`_
 
     """
     if not in_bounds(latitude, -80.0, 84.0):

@@ -4,11 +4,19 @@
 
 version: 2
 
+# Include all submodules
+submodules:
+  include: all
+
 # Required
 build:
   os: ubuntu-22.04
   tools:
     python: "3.12"
+
+# Build documentation in the "docs/" directory with Sphinx
+sphinx:
+  configuration: docs/conf.py
 
 # Install with pip using pyproject.toml
 python:
@@ -16,6 +24,3 @@ python:
     - method: pip
       path: .
     - requirements: docs/requirements.txt
-
-sphinx:
-  configuration: docs/conf.py

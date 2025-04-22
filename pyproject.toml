@@ -17,8 +17,6 @@ dependencies = [
   "pygmt",
   "pyocto",
   "pyrocko",
-  "joblib",
-  "nllgrid",
 ]
 
 [project.urls]

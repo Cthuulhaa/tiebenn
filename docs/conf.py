@@ -5,13 +5,14 @@
 
 import os
 import sys
+from datetime import datetime
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'TieBeNN'
-copyright = '2025, C. Ramos'
+copyright = f'{datetime.now().year}, C. Ramos'
 author = 'C. Ramos'
 release = '0.1.0'
 
@@ -21,22 +22,11 @@ release = '0.1.0'
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
-    "sphinx.ext.autosummary",
-]
-
-autosummary_generate = True
-
-autodoc_mock_imports = [
-    "gamma",         # GaMMA
-    "nllgrid",       # NonLinLoc grid tools
-    "joblib",        # parallelization
-    "matplotlib",    # visualization
-    "cartopy",       # optional in some visual modules
-    "obspy",         # waveform handling
-    "pyrocko",       # optional dependency
-    "pyocto",        # for PyOcto-based associator
-    "torch",         # needed for seisbench-based modules
-    "seisbench",
+    "sphinx.ext.coverage",
+    "sphinx_rtd_theme",
+    "sphinx.ext.viewcode",
+    "sphinx_autodoc_typehints",
+    "sphinx.ext.todo",
 ]
 
 templates_path = ['_templates']
@@ -57,3 +47,5 @@ html_static_path = ['_static']
 html_logo = '_static/tiebenn_logo.svg'
 html_css_files = ['css/custom.css']
 html_favicon = '_static/tiebenn_favicon.png'
+
+todo_include_todos = False

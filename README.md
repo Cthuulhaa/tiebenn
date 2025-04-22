@@ -88,15 +88,15 @@ pip install -r optional.txt
 
 > :point_right: **Note**
 >
-> Of course you can modify and comment out those packages you will not need.
+> Your are free to modify or comment-out those packages you will not need.
 
 ### :hammer_and_wrench: Installing NonLinLoc and setting paths
 
-NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create the directory `<tiebenn_directory>/utils/nonlinloc` and within it, we clone the NonLinLoc repository:
+_(Follow these steps in case NonLinLoc is not installed)_ NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create a convenient directory to install NonLinLoc and within it, we clone the NonLinLoc repository:
 
 ```bash
-mkdir -p <some_convenient_directory>/nonlinloc
-cd <some_convenient_directory>/nonlinloc
+mkdir -p <some_convenient_directory>
+cd <some_convenient_directory>
 git clone https://github.com/ut-beg-texnet/NonLinLoc.git
 cd NonLinLoc/src
 mkdir bin
@@ -113,7 +113,7 @@ cp Vel2Grid* Grid2* NLLoc ../../../
 Set NonLinLoc in your `PATH`:
 
 ```bash
-echo 'export PATH=${PATH}:<some_convenient_directory>/nonlinloc/' >> ~/.bashrc
+echo 'export PATH=${PATH}:<some_convenient_directory>' >> ~/.bashrc
 exec bash
 ```
 

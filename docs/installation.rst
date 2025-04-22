@@ -50,17 +50,17 @@ If you are working on a GPU machine, then you can skip this line. Then, you can 
 
 .. note::
 
-   Of course you can modify and comment out those packages you will not need.
+   You are free to modify or comment-out those packages you will not need.
 
 Installing NonLinLoc and setting paths
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create the directory ``<tiebenn_directory>/utils/nonlinloc`` and within it, we clone the NonLinLoc repository:
+*(Follow these steps in case NonLinLoc is not installed)* NonLinLoc must be individually compiled to make sure it is compatible with the machine where TieBeNN will be running. First we will create a convenient directory to install NonLinLoc and within it, we clone the NonLinLoc repository:
 
 .. code-block:: bash
 
-   mkdir -p <some_convenient_directory>/nonlinloc
-   cd <some_convenient_directory>/nonlinloc
+   mkdir -p <some_convenient_directory>
+   cd <some_convenient_directory>
 
    git clone https://github.com/ut-beg-texnet/NonLinLoc.git
 
@@ -79,7 +79,7 @@ Set NonLinLoc in your ``PATH``:
 
 .. code-block:: bash
 
-   echo 'export PATH=${PATH}:<some_convenient_directory>/nonlinloc/' >> ~/.bashrc
+   echo 'export PATH=${PATH}:<some_convenient_directory>' >> ~/.bashrc
    exec bash
 
 Install GMT

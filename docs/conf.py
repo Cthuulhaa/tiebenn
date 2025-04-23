@@ -36,6 +36,8 @@ extensions = [
     "sphinx_autodoc_typehints",
 ]
 
+autodoc_mock_imports = ["pygmt"]
+
 autodoc_typehints = "description"
 autodoc_typehints_description_target = "documented"
 

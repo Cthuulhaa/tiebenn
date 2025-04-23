@@ -12,8 +12,9 @@ import logging # Temporal!
 logging.basicConfig(level=logging.DEBUG) # Temporal!
 
 import tiebenn.tools.utm # Temporal!!!
+print("utm imported:", dir(tiebenn.tools.utm)) # Temporal!
 import tiebenn.tools.sb_tools # Ttemporal
-print("✔ sb_tools imported:", dir(tiebenn.tools.sb_tools)) # Temporal!
+print("sb_tools imported:", dir(tiebenn.tools.sb_tools)) # Temporal!
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information

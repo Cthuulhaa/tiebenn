@@ -1,9 +1,8 @@
+# Core optional tools
 nllgrid
+git+https://github.com/wayneweiqiang/GaMMA.git
 
+# Documentation tools
 sphinx
 sphinx-rtd-theme
 myst-parser
-autodoc 
-napoleon
-
-git+https://github.com/wayneweiqiang/GaMMA.git

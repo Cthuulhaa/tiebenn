@@ -17,7 +17,7 @@ dependencies = [
   "pygmt",
   "pyocto",
   "pyrocko",
-  "joblib"
+  "joblib",
 ]
 
 [project.urls]

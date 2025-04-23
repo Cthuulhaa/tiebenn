@@ -1,4 +1,5 @@
 sphinx
 sphinx_rtd_theme
 sphinx-autodoc-typehints
+nllgrid
 git+https://github.com/wayneweiqiang/GaMMA.git

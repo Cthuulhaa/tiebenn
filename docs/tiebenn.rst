@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 3
 
    tools/gammaasoc.rst
+   tools/nicetools.rst
    tools/nonlinloc.rst
    tools/pyoctools.rst
    tools/retrieve_data.rst

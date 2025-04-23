@@ -1,5 +1,5 @@
 Usage
-========
+=====
 
 This section shows an example which should make TieBeNN's usage clear.
 
@@ -93,35 +93,35 @@ With ``--plots True``, the following figures are also generated:
 
 * Phase picks on waveforms:
 
-  .. image:: _static/example_picks.svg
+  .. image:: ../_static/example_picks.svg
      :alt: Phase picks
      :width: 500px
      :align: center
 
 * Associated phases:
 
-  .. image:: _static/example_phassoc.svg
+  .. image:: ../_static/example_phassoc.svg
      :alt: Phase association
      :width: 500px
      :align: center
 
 * Map: epicenter and stations:
 
-  .. image:: _static/example_epicenter_map.png
+  .. image:: ../_static/example_epicenter_map.png
      :alt: Epicenter map
      :width: 500px
      :align: center
 
 * Location confidence ellipsoid:
 
-  .. image:: _static/example_ellipsoid.png
+  .. image:: ../_static/example_ellipsoid.png
      :alt: Confidence ellipsoid
      :width: 500px
      :align: center
 
 * Location Quality Score:
 
-  .. image:: _static/example_LQS.svg
+  .. image:: ../_static/example_LQS.svg
      :alt: LQS
      :width: 500px
      :align: center

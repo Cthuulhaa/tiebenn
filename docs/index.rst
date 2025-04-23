@@ -17,13 +17,13 @@ TieBeNN documentation
    :maxdepth: 3
    :caption: Getting started:
 
-   workflow
-   requirements
-   installation
-   usage
-   velocity_models
-   modules
-   about
+   pages/workflow.rst
+   pages/requirements.rst
+   pages/installation.rst
+   pages/usage.rst
+   pages/velocity_models.rst
+   tiebenn
+   pages/about.rst
 
 Indices and tables
 ==================

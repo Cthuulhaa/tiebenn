@@ -1,4 +1,4 @@
-tiebenn package
+TieBeNN package
 ===============
 
 Subpackages
@@ -7,23 +7,11 @@ Subpackages
 .. toctree::
    :maxdepth: 3
 
-   tiebenn.tools
-
-Submodules
-----------
-
-tiebenn.cli module
-------------------
-
-.. automodule:: tiebenn.cli
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-Module contents
----------------
-
-.. automodule:: tiebenn
-   :members:
-   :show-inheritance:
-   :undoc-members:
+   tools/gammaasoc.rst
+   tools/nonlinloc.rst
+   tools/pyoctools.rst
+   tools/retrieve_data.rst
+   tools/sb_tools.rst
+   tools/utm.rst
+   tools/velocity_models.rst
+   tools/visualization.rst

@@ -41,5 +41,5 @@ Links & availability
 - 🌐 **GitHub (public mirror)** https://github.com/Cthuulhaa/tiebenn.git
   The TieBeNN repository publicly available on GitHub for citation, installation, and issue reporting.
 
-- 📦 **Zenodo archive** *(planned)*
-  TieBeNN will be archived on Zenodo and a DOI will be provided for reproducible citation.
+- 📦 **Zenodo archive** https://doi.org/10.5281/zenodo.15272349
+  TieBeNN: A neural network-based tool for automatic focal depth estimation. Now archived on Zenodo for reproducible citation.

@@ -571,13 +571,7 @@ def process_client_waveforms(client, data, start_t, end_t):
     stream = Stream()
     if bulk:
         try:
-            if client == 'BGR':
-               try:
-                   stream = client_fdsn('http://192.168.11.220:8080').get_waveforms_bulk(bulk)
-               except:
-                      stream = client_fdsn(client).get_waveforms_bulk(bulk)
-            else:
-                stream = client_fdsn(client).get_waveforms_bulk(bulk)
+            stream = client_fdsn(client).get_waveforms_bulk(bulk)
         except Exception as e:
             print(f'No waveforms retrieved from client {client}')
 

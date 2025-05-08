@@ -80,9 +80,9 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
 
     depth = []; vp = []; vs = []
     for layer in layers_from_velmod:
-        depth.append(float(layer.split('   ')[1]))
-        vp.append(float(layer.split('   ')[2]))
-        vs.append(float(layer.split('   ')[4]))
+        depth.append(float(layer.split()[1]))
+        vp.append(float(layer.split()[2]))
+        vs.append(float(layer.split()[4]))
 
     layers = pd.DataFrame(data={'depth': depth, 'vp': vp, 'vs': vs}).sort_values('depth')
     velmod_path = f"velocity_model{str(secs_before)}"

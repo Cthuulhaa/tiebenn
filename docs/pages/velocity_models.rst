@@ -52,6 +52,8 @@ List of available velocity models
      - PO1 (1D P+S) for Novy-Kostel swarm region, constrained (`Málek et al. 2023 <https://doi.org/10.1007/s00024-023-03250-w>`_)
    * - ``19``
      - PO1 + WB2012 (from 11 km depth)
+   * - ``20``
+     - KIT6 (1D P+S) for the Eastern Eifel Volcanic Field (`Ritter et al. 2024 <https://​doi.​org/​10.​1007/​s10950-​024-​10257-w>`_)
 
 When using ``--vel_mode manual``, the parameter ``--velmod`` must be set to one of the model numbers above.
 
@@ -80,7 +82,7 @@ How to add a new 1D velocity model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Navigate to the folder: ``<repo>/tiebenn/data/velocity_models/``
-   Create a new file named ``v_<number>`` (e.g. ``v20``), with one `LAYER` line per layer.
+   Create a new file named ``v_<number>`` (e.g. ``v21``), with one `LAYER` line per layer.
 
 2. *(Optional)* List your model in the function docstring of ``velmods()`` in ``tools/velocity_models.py``.
 
@@ -90,4 +92,4 @@ How to add a new 1D velocity model
 
       pip install .
 
-4. *(Optional / recommended)* Let the maintainer know via an issue or merge request so the model can be added to the official repo 🌍
+4. *(Optional / recommended)* Spread the love! Let the maintainer know via an issue or merge request so the model can be added to the official repo 🌍

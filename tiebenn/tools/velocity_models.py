@@ -35,9 +35,7 @@ def velmods(model, ev_lon, ev_lat):
     """
     Produces a seismic velocity model to be included in the NonLinLoc control file for hypocenter location.
 
-    When no density model is associated to each model, density is calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm³. The density is, however, a carryover in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.
-
-    IMPORTANT: This function is programmed so that each column will be separated by 3 blank spaces from the next one. This becomes relevant during the phase association and must not be modified.
+    When no density model is associated to each model, density can be calculated as a function of the P-wave velocity after Gardner et al. (1974) in g/cm^3. The density is, however, a carryover in the layer format from its original use in a waveform modelling code. It is not used in the NLL programs, so any convenient numerical value can be used.
 
     Parameters
     ----------
@@ -58,14 +56,15 @@ def velmods(model, ev_lon, ev_lat):
             9  = Regional model for LI (J. Borns)
            10  = Landau model (1D, P+S) for northern Upper Rhine Graben
            11  = Central Alps 1D (Diehl et al. 2021)
-           12  = Not fully integrated! 3D Central Alps (Diehl, ETH Zürich)
-           13  = 3D WEG: high-res P model (not functional included in TieBeNN)
+           12  = Not fully integrated and tested! 3D Central Alps (Diehl, ETH Zürich)
+           13  = 3D WEG: high-res P model (not functional)
            14  = AlpsLocPS (Brazsus et al., 2024) — Greater Alpine Region
            15  = BENS (Reamer & Hinzen 2004): Northern Rhine Area
            16  = ASZmod1 (Mader et al. 2021): Albstadt Shear Zone
            17  = 3D URG (Lengline et al. 2023): Upper Rhine Graben (currently not functional)
            18  = (Malek et al. 2023): Novy-Kostel swarm
            19  = PO1 + WB2012 from 11 km depth
+           20  = KIT6 (Ritter et al. 2024): 1D, P+S for East Eifel Volcanic Field
 
     ev_lon : float
         Event longitude. Used when model = 6 or 7.
@@ -210,6 +209,8 @@ def select_velmod(ev_lat, ev_lon):
          velmod = 16
     elif ev_lon >= 6 and ev_lon <= 9.7 and ev_lat >= 47 and ev_lat <= 48:
          velmod = 11
+    elif ev_lon >= 6.75 and ev_lon <= 8.2 and ev_lat >= 50 and ev_lat <= 50.75:
+         velmod = 20
     else:
          velmod = 2
 

@@ -24,6 +24,7 @@ This is a list of the velocity models currently implemented in TieBeNN. As furth
 |17 | (_Deactivated_) 3D P+S velocity models for the Upper Rhine Graben after [Lengliné et al. (2023)](https://doi.org/10.1093/gji/ggad255) |
 |18 | PO1, 1D P- and S-velocity model for the Novy-Kostel earthquake swarm region, constrained models [(Málek et al. 2023)](https://doi.org/10.1007/s00024-023-03250-w). Model defined down to 11 km depth |
 |19 | PO1 + WB2012 from 11 km depth |
+|20 | KIT6, P- and S-wave velocity model for the Eastern Eifel Volcanic Field [(Ritter et al. 2024)](https://doi.org/10.1007/s10950-024-10257-w)|
 
 When using `--vel_mode manual` the parameter `velmod` will be defined as the number assigned to the desired model. When the **Crust1.0** model is selected, the velocities in the layers at the epicenter are utilized to create a 1D velocity structure.
 

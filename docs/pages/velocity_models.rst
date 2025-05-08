@@ -53,7 +53,7 @@ List of available velocity models
    * - ``19``
      - PO1 + WB2012 (from 11 km depth)
    * - ``20``
-     - KIT6 (1D P+S) for the Eastern Eifel Volcanic Field (`Ritter et al. 2024 <https://​doi.​org/​10.​1007/​s10950-​024-​10257-w>`_)
+     - KIT6 (1D P+S) for the Eastern Eifel Volcanic Field (`Ritter et al. 2024 <https://doi.org/10.1007/s10950-024-10257-w>`_)
 
 When using ``--vel_mode manual``, the parameter ``--velmod`` must be set to one of the model numbers above.
 

@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.DEBUG)
 project = 'TieBeNN'
 copyright = f'{datetime.now().year}, C. Ramos'
 author = 'C. Ramos'
-release = '0.1.0'
+release = '0.2.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -30,8 +30,6 @@ extensions = [
     "sphinx_rtd_theme",
     "sphinx_autodoc_typehints",
 ]
-
-autodoc_mock_imports = ["pygmt"]
 
 autodoc_typehints = "description"
 autodoc_typehints_description_target = "documented"

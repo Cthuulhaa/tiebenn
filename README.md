@@ -33,10 +33,10 @@ Using the coordinates (latitude and longitude) and the UTC time of a local event
 * **Python 3.9** or later (successfully tested with Python 3.10 and 3.12).
 * **SeisBench**, the ML model toolbox used for phase picking and denoising.
 * **NonLinLoc**, a suite of C programs for probabilistic hypocenter estimation.
-* **GMT** and **PyGMT**, for map generation.
 * **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130).
 * **Pyrocko**, open-source seismology toolbox and library.
 * **GaMMA**, phase associator after [Zhu et al. (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249).
+* **Cartopy**, for map generation.
 
 ### Optional
 
@@ -116,10 +116,6 @@ Set NonLinLoc in your `PATH`:
 echo 'export PATH=${PATH}:<some_convenient_directory>' >> ~/.bashrc
 exec bash
 ```
-
-### :hammer_and_wrench: Install GMT
-
-GMT version 6.0+ is recommended (officially 6.4+ for PyGMT). [The official GMT documentation](https://docs.generic-mapping-tools.org/dev/install.html) has installation instructions, including instructions to migrate from earlier versions, and of course, a bunch of tutorials.
 
 ## :test_tube: Usage
 
@@ -240,7 +236,6 @@ Clearly under development.
 
 - [DeepDenoiser example](https://colab.research.google.com/github/seisbench/seisbench/blob/main/examples/02b_deep_denoiser.ipynb)
 - [NonLinLoc GitHub](https://github.com/ut-beg-texnet/NonLinLoc)
-- [PyGMT guide and MANY examples](https://www.pygmt.org/dev/index.html)
 - [Pyrocko applications](https://pyrocko.org/)
 
 ## :balance_scale: License

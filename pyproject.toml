@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tiebenn"
-version = "0.1.0"
+version = "0.2.0"
 description = "Automatic focal depth estimation for local seismic events in Germany using ML tools and NonLinLoc"
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -14,10 +14,10 @@ authors = [
 requires-python = ">=3.9"
 dependencies = [
   "seisbench",
-  "pygmt",
   "pyocto",
   "pyrocko",
   "joblib",
+  "cartopy",
 ]
 
 [project.urls]

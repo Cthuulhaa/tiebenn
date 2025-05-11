@@ -81,8 +81,3 @@ Set NonLinLoc in your ``PATH``:
 
    echo 'export PATH=${PATH}:<some_convenient_directory>' >> ~/.bashrc
    exec bash
-
-Install GMT
-~~~~~~~~~~~
-
-GMT version 6.0+ is recommended (officially 6.4+ for PyGMT). `The official GMT documentation <https://docs.generic-mapping-tools.org/dev/install.html>`_ has installation instructions, including instructions to migrate from earlier versions, and of course, a bunch of tutorials.

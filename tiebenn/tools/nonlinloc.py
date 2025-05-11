@@ -385,7 +385,7 @@ def pynlloc(control_file, control_file_s, data, velmod, nll3d, plots):
     def Grid2GMT(control_file, gridloc, gmt_dir, plot_type1, plot_type2):
         """
 
-        Subprocess to call and execute Grid2GMT, which converts NonLinLoc Grids to be read for location plots with PyGMT (GMT). More information and examples of using Grid2GMT in http://alomax.free.fr/nlloc/
+        Subprocess to call and execute Grid2GMT, which converts NonLinLoc Grids to be read for location plots. More information and examples of using Grid2GMT in http://alomax.free.fr/nlloc/
 
         Args:
              control_file (str): the control file to execute Grid2GMT
@@ -514,7 +514,6 @@ def pynlloc(control_file, control_file_s, data, velmod, nll3d, plots):
                 try:
                     epic_sta_plot()
                 except:
-                       print('Something went wrong with the GMT plot. Was the installation of GMT and/or PyGMT correct?')
                        pass
 
                 gridloc = glob.glob('*_tiebenn_loc/loc_eqdatetime.*.*.grid0.loc.hyp')[0][:-4]

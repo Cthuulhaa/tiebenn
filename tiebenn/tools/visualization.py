@@ -1,8 +1,13 @@
 import glob
 import os
 
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+
 import matplotlib
 matplotlib.use('Agg')
+from matplotlib import gridspec
 from matplotlib.patches import RegularPolygon
 from matplotlib.path import Path
 from matplotlib.projections import register_projection
@@ -10,11 +15,10 @@ from matplotlib.projections.polar import PolarAxes
 from matplotlib.spines import Spine
 from matplotlib.transforms import Affine2D
 import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import pygmt
 
+import numpy as np
 from obspy import UTCDateTime, read
+import pandas as pd
 
 
 def plotpicks_sb_mw(data, streams, starttime, predictions, picks, picks_final):
@@ -236,40 +240,71 @@ def plot_assoc(ev_time, data, stations, picks, events, merged, mult_windows, sec
 
 def epic_sta_plot():
     """
-
     Generates a plot of the event's epicenter and the stations with picks used for depth estimation with NonLinLoc.
     """
-    stations_file = f"{glob.glob('*_tiebenn_loc/')[0]}station_coordinates.txt"
-
-    locfile = glob.glob('*_tiebenn_loc/loc_eqdatetime.*.*.grid0.loc.hyp')[0]
+    stations_dir = glob.glob('*_tiebenn_loc/')[0]
+    stations_file = f"{stations_dir}station_coordinates.txt"
 
     sta_list = {}
     with open(stations_file) as stats:
-         for line in stats:
-             sta_list[line.split()[1]] = [float(line.split()[3]), float(line.split()[4])]
+        for line in stats:
+            parts = line.split()
+            sta_list[parts[1]] = [float(parts[3]), float(parts[4])]
 
-    station = []; latitude = []; longitude = []
+    locfile = glob.glob('*_tiebenn_loc/loc_eqdatetime.*.*.grid0.loc.hyp')[0]
+
+    stations, lats, lons = [], [], []
+    ev_lon = ev_lat = None
     with open(locfile) as locf:
-         for line in locf:
-             if len(line.split()) != 0:
-                if line.split()[0] == 'GEOGRAPHIC':
-                   ev_longitude = float(line.split()[11])
-                   ev_latitude = float(line.split()[9])
-                if line.split()[0] in sta_list and float(line.split()[16]) != 0.0:
-                   station.append(line.split()[0])
-                   latitude.append(sta_list[line.split()[0]][0])
-                   longitude.append(sta_list[line.split()[0]][1])
+        for line in locf:
+            parts = line.split()
+            if not parts:
+                continue
+            if parts[0] == 'GEOGRAPHIC':
+                ev_lat = float(parts[9])
+                ev_lon = float(parts[11])
+            elif parts[0] in sta_list and float(parts[16]) != 0.0:
+                stations.append(parts[0])
+                lats.append(sta_list[parts[0]][0])
+                lons.append(sta_list[parts[0]][1])
 
-    df = {'station': station, 'latitude': latitude, 'longitude': longitude}
-    stations = pd.DataFrame(data=df)
+    df = pd.DataFrame({'station': stations, 'latitude': lats, 'longitude': lons})
 
-    fig = pygmt.Figure()
-    fig.coast(region=[ev_longitude - 1.3, ev_longitude + 1.3, ev_latitude - 1.3, ev_latitude + 1.3], land='lightgray', water='white', borders='1/1p', frame='ag')
-    fig.plot(x=ev_longitude, y=ev_latitude, style='s0.3c', fill='darkred', pen='black', label='Epicenter')
-    fig.text(x=stations.longitude, y=stations.latitude, text=stations.station, font='12p,Courier-Bold,black', justify='LT')
-    fig.legend()
+    fig = plt.figure(figsize=(8, 8))
+    ax = plt.axes(projection=ccrs.PlateCarree())
 
-    fig.savefig(f"{glob.glob('*_tiebenn_loc/')[0]}epicenter_stations.pdf")
+    buffer = 1.3
+    min_lon, max_lon = ev_lon - buffer, ev_lon + buffer
+    min_lat, max_lat = ev_lat - buffer, ev_lat + buffer
+    ax.set_extent([min_lon, max_lon, min_lat, max_lat], crs=ccrs.PlateCarree())
+
+    ax.add_feature(cfeature.LAND, facecolor='lightgray')
+    ax.add_feature(cfeature.OCEAN, facecolor='white')
+    ax.add_feature(cfeature.LAKES, facecolor='white')
+    ax.coastlines(resolution='10m', linewidth=0.8)
+    ax.add_feature(cfeature.BORDERS, linestyle='-', linewidth=1.0)
+
+    gl = ax.gridlines(draw_labels=True, x_inline=False, y_inline=False)
+    gl.xformatter = LongitudeFormatter(dms=False, number_format='.2f')
+    gl.yformatter = LatitudeFormatter(dms=False, number_format='.2f')
+    gl.xlabel_style = {'size': 12}
+    gl.ylabel_style = {'size': 12}
+    gl.top_labels = False
+    gl.right_labels = False
+
+    ax.plot(ev_lon, ev_lat, marker='s', markersize=8, markeredgecolor='black', markerfacecolor='darkred', transform=ccrs.PlateCarree(), label='Epicenter')
+
+    ax.scatter(df['longitude'], df['latitude'], marker='^', edgecolor='black', s=50, color='deepskyblue', transform=ccrs.PlateCarree())
+
+    for _, row in df.iterrows():
+        if row['longitude'] > min_lon and row['longitude'] < max_lon and row['latitude'] > min_lat and row['latitude'] < max_lat:
+           ax.text(row['longitude'], row['latitude'], row['station'], fontsize=10, fontfamily='monospace', fontweight='bold', transform=ccrs.PlateCarree(), horizontalalignment='left', verticalalignment='top')
+
+    ax.legend(loc='upper right')
+
+    out_pdf = f"{glob.glob('*_tiebenn_loc/')[0]}epicenter_stations.pdf"
+    plt.savefig(out_pdf, dpi=300, bbox_inches='tight')
+    plt.close(fig)
 
     return
 
@@ -407,20 +442,26 @@ def plot_hypoc_confidence_ellipsoid():
               ellipsoid3['e2'] = e21, e22
               ellipsoid3['e3'] = e31, e32
 
-    pygmt.config(FONT='14p', FONT_ANNOT='12p')
-    fig = pygmt.Figure()
-    fig.basemap(region=region_xy, projection='X10c', frame=['xafg+lEast (km)', 'yafg+lNorth (km)', 'Wsen+tLocation: confidence ellipsoid'])
-    fig.plot(x=X, y=Y, style='c1.25p', fill='black')
+    fig = plt.figure(figsize=[12, 10], tight_layout=True)
+    gs = gridspec.GridSpec(3, 3)
+
+    axes = fig.add_subplot(gs[0:2, 0:2])
+    axes.tick_params(labelsize=14, bottom=False, labelbottom=False)
+    axes.plot(X, Y, 'k.', zorder=0)
+    axes.set_xlim(region_xy[0], region_xy[1])
+    axes.set_ylim(region_xy[2], region_xy[3])
+    axes.set_ylabel('North (km)', fontsize=14)
+    axes.set_title(r'Location confidence ellipsoid', fontsize=16, weight='bold')
+    axes.grid(True, ls='--')
 
     for i in ellipsoid2:
-        fig.plot(x=ellipsoid2[i][0], y=ellipsoid2[i][1], pen='1p,cyan')
+        axes.plot(ellipsoid2[i][0], ellipsoid2[i][1], 'c', zorder=1)
 
-    fig.plot(x=max_x, y=max_y, style='a6p', fill='red')
+    axes.scatter(max_x, max_y, c='red', marker='*', s=30, zorder=2)
 
-    for i in range(len(stations)):
-        fig.text(x=stations[i][0], y=stations[i][1], text=stations[i][2])
-
-    fig.shift_origin(xshift='w+0.5c')
+    for lon, lat, name in stations:
+        if float(lon) > region_xy[0] and float(lon) < region_xy[1] and float(lat) > region_xy[2] and float(lat) < region_xy[3]:
+           axes.text(float(lon), float(lat), name, fontsize=10, ha='center', va='center')
 
     Z = []; Y = []
     with open(glob.glob('*_tiebenn_loc/*scat.ZY')[0], 'r') as f:
@@ -428,16 +469,18 @@ def plot_hypoc_confidence_ellipsoid():
              Z.append(float(line.split()[0]))
              Y.append(float(line.split()[1]))
 
-    fig.basemap(region=region_zy, projection='X5c/10c', frame=['xafg+lDepth (km)', 'yafg+lNorth (km)', 'wSEn'])
-    fig.plot(x=Z, y=Y, style='c1.25p', fill='black')
+    axes = fig.add_subplot(gs[0:2, 2:3])
+    axes.plot(Z, Y, 'k.', zorder=0)
+    axes.set_xlim(region_zy[0], region_zy[1])
+    axes.set_ylim(region_zy[2], region_zy[3])
+    axes.set_xlabel('Depth (km)', fontsize=14)
+    axes.tick_params(left=False, right=True , labelleft=False, labelright=True, labelsize=14)
+    axes.grid(True, ls='--')
 
     for i in ellipsoid3:
-        fig.plot(x=ellipsoid3[i][0], y=ellipsoid3[i][1], pen='1p,cyan')
+        axes.plot(ellipsoid3[i][0], ellipsoid3[i][1], 'c', zorder=1)
 
-    fig.plot(x=max_z, y=max_y, style='a6p', fill='red')
-    fig.shift_origin(xshift='w-15.5c', yshift='h-15.5c')
-
-    fig.basemap(region=region_xz, projection='X10c/-5c', frame=['xafg+lEast (km)', 'yafg+lDepth (km)', 'WSen'])
+    axes.scatter(max_z, max_y, c='red', marker='*', s=30, zorder=2)
 
     X = []; Z = []
     with open(glob.glob('*_tiebenn_loc/*scat.XZ')[0], 'r') as f:
@@ -445,12 +488,20 @@ def plot_hypoc_confidence_ellipsoid():
              X.append(float(line.split()[0]))
              Z.append(float(line.split()[1]))
 
-    fig.plot(x=X, y=Z, style='c1.25p', fill='black')
+    axes = fig.add_subplot(gs[2:3, 0:2])
+    axes.plot(X, Z, 'k.', zorder=0)
+    axes.set_xlim(region_xz[0], region_xz[1])
+    axes.set_ylim(region_xz[2], region_xz[3])
+    axes.set_xlabel('East (km)', fontsize=14)
+    axes.set_ylabel('Depth (km)', fontsize=14)
+    axes.tick_params(labelsize=14)
+    axes.grid(True, ls='--')
+    axes.invert_yaxis()
 
     for i in ellipsoid1:
-        fig.plot(x=ellipsoid1[i][0], y=ellipsoid1[i][1], pen='1p,cyan')
+        axes.plot(ellipsoid1[i][0], ellipsoid1[i][1], 'c', zorder=1)
 
-    fig.plot(x=max_x, y=max_z, style='a6p', fill='red')
+    axes.scatter(max_x, max_z, c='red', marker='*', s=30, zorder=2)
 
     with open(glob.glob('*_tiebenn_loc/loc_eqdatetime*.hyp')[0], 'r') as f:
          for line in f:
@@ -463,14 +514,20 @@ def plot_hypoc_confidence_ellipsoid():
                 if lin_[0] == 'QUALITY':
                    rms_nphs = f"RMS: {lin_[8]}s {lin_[9]}:{lin_[10]}"
                    gap_dist = f"Az_gap: {lin_[12]} Ne_sta: {lin_[14]} km"
-                if lin_[0] == 'QML_ConfidenceEllipsoid':
-                   ell_axes = f"semiMaj: {lin_[2]} semiInt: {lin_[6]}"
-                   semi_min = f"semiMin: {lin_[4]}"
+                if lin_[0] == 'STATISTICS':
+                   uncx_uncy = f"UncX: {lin_[24]} UncY: {lin_[30]}"
+                   uncz = f"UncZ: {lin_[-1]}"
 
-    fig.text(x=11, y=10, text=datetime, font='11p,Courier-Bold,black', justify='LM', no_clip=True)
-    fig.text(x=[11, 11], y=[12, 14], text=[geo_epi, depth], font='10p,Courier,black', justify='LT', no_clip=True)
-    fig.text(x=[11, 11], y=[16, 18], text=[rms_nphs, gap_dist], font='10p,Courier,black', justify='LT', no_clip=True)
-    fig.text(x=[11, 11, 11], y=[20, 22, 24], text=['NLL Confidence ellipsoid axes (km):', ell_axes, semi_min], font='10p,Courier,black', justify='LT', no_clip=True)
+    axes = fig.add_subplot(gs[2:3, 2:3])
+    axes.axis('off')
+    axes.text(0.01, 0.9, datetime, fontsize=14, family='monospace', weight='bold', ha='left', va='center')
+    axes.text(0.01, 0.8, geo_epi, fontsize=14, family='monospace', ha='left', va='center')
+    axes.text(0.01, 0.7, depth, fontsize=14, family='monospace', ha='left', va='center')
+    axes.text(0.01, 0.6, rms_nphs, fontsize=14, family='monospace', ha='left', va='center')
+    axes.text(0.01, 0.5, gap_dist, fontsize=14, family='monospace', ha='left', va='center')
+    axes.text(0.01, 0.4, 'NLL Confidence ellipsoid axes (km):', fontsize=14, family='monospace', ha='left', va='center')
+    axes.text(0.01, 0.3, uncx_uncy, fontsize=14, family='monospace', ha='left', va='center')
+    axes.text(0.01, 0.2, uncz, fontsize=14, family='monospace', ha='left', va='center')
 
     fig.savefig(f"{glob.glob('*_tiebenn_loc/')[0]}NLL_confidence_ellipsoid.pdf")
 

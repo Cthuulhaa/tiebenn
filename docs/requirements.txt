@@ -3,4 +3,5 @@ sphinx_rtd_theme
 sphinx-autodoc-typehints
 nllgrid
 git+https://github.com/wayneweiqiang/GaMMA.git
+cartopy
 snowballstemmer==2.2.0

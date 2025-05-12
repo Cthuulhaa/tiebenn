@@ -220,7 +220,7 @@ If you use TieBeNN in your research, please cite:
 
 > TieBeNN: A neural network-based tool for automatic focal depth estimation
 >
-> Ramos, C. (2025) _TieBeNN v0.1.0_ [Software]. Zenodo. [https://doi.org/10.5281/zenodo.15272349](https://doi.org/10.5281/zenodo.15272349)
+> Ramos, C. (2025) _TieBeNN v0.2.0_ [Software]. Zenodo. [https://doi.org/10.5281/zenodo.15272349](https://doi.org/10.5281/zenodo.15384316)
 
 A detailed paper/software report on TieBeNN is currently in preparation.
 

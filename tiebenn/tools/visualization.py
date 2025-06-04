@@ -622,18 +622,30 @@ def radarplot(event):
 
     parameters = [1 - event['norm.det.cov'].tolist()[0], event['norm.sta.den'].tolist()[0], 1 - event['norm.aui'].tolist()[0], 1 - event['norm.azgap'].tolist()[0], 1 - event['norm.sec.azgap'].tolist()[0], 1 - event['norm.near.sta'].tolist()[0], 1 - event['norm.rms'].tolist()[0], event['norm.npicks'].tolist()[0]]
 
-    color = plt.get_cmap('inferno')(event['LQS'].tolist()[0])
+    if event['LQS'].tolist()[0] < 1:
+       color = plt.get_cmap('inferno')(event['LQS'].tolist()[0])
+    else:
+         color = plt.get_cmap('inferno')(0.999999)
 
     fig, ax = plt.subplots(figsize=(7, 7), nrows=1, ncols=1, tight_layout=True, subplot_kw=dict(projection='radar'))
 
     ax.set_rgrids([0.2, 0.4, 0.6, 0.8, 1.0])
     ax.set_rlim(0, 1)
     ax.tick_params(labelsize=14)
-    ax.set_title(f"{event['datetime'].tolist()[0]}, LQS = {'%.4f'%(event['LQS'].tolist()[0])}", weight='bold', size='medium', position=(0.5, 1.1), horizontalalignment='center', verticalalignment='center')
+    ax.text(0.5, -0.12, f"LQS = {event['LQS'].tolist()[0]:.2f}", size=20, transform=ax.transAxes, ha='center', va='center', color='black', weight='bold')
     ax.plot(theta, parameters, color=color)
     ax.set_facecolor((0.91, 0.91, 0.91))
-    ax.fill(theta, parameters, facecolor=color, alpha=0.25, label='_nolegend_')
-    ax.set_varlabels([r'1 - det(Cov[$\bf{X}$])', 'Sta.Dens.', '1 - Az.Unif.', '1 - Az.Gap', '1 - Sec.Az.Gap', '1 - Near.Sta', '1 - RMS', 'N.Picks'])
+    ax.fill(theta, parameters, facecolor=color, alpha=0.25)
+    ax.tick_params(right=False, bottom=False, labelbottom=False)
+
+    labels = [r'1 - det(Cov[$\bf{X}$])', 'Sta.Dens.', '1 - Az.Unif.', '1 - Az.Gap', '1 - Sec.Az.Gap', '1 - Near.Sta', '1 - RMS', 'N.Picks']
+    rotations = [0, 45, 90, -45, 0, 45, -90, -45]
+    for angle, label, value, rotation in zip(theta, labels, parameters, rotations):
+        r_label = 1.12
+        r_value = 1.04
+
+        ax.text(angle, r_label, label, size=14, rotation=rotation, rotation_mode='anchor', ha='center', va='center')
+        ax.text(angle, r_value, f"{value:.2f}", size=14, rotation=rotation, rotation_mode='anchor', ha='center', va='center', color='black')
 
     fig.savefig(f"{event['datetime_orig'].tolist()[0]}_tiebenn_loc/LQS.pdf")
     plt.close(fig)

@@ -11,7 +11,7 @@ license = "GPL-3.0-or-later"
 authors = [
   { name = "C. Ramos, S. Donner, K. Stammler", email = "ramosdomke.bgr@gmail.com" }
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
   "seisbench",
   "pyocto",

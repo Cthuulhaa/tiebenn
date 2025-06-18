@@ -12,7 +12,7 @@ from obspy.clients.fdsn import Client as client_fdsn
 from obspy.clients.filesystem.sds import Client as client_sds
 from obspy.geodetics.base import gps2dist_azimuth
 
-from .nicetools import chan_comma, create_input_for_phassoc, generate_csv, get_snr
+from .nicetools import chan_comma, decimate, create_input_for_phassoc, generate_csv, get_snr
 from .visualization import plot_assoc
 from .visualization import plotpicks_sb as plot
 from .visualization import plotpicks_sb_mw as plot_mw
@@ -312,6 +312,8 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
          if not mult_windows:
             phasepicks = Parallel(n_jobs=n_jobs, backend='threading')(delayed(picks_singwin)(stream=streams[sta_], picker=picker, model=model) for sta_ in streams)
 
+            phasepicks = decimate(phasepicks=phasepicks, data=data, ev_lon=ev_lon, ev_lat=ev_lat, az_bin=20, dist_bin=10, max_bin=4)
+
             for picks_ in phasepicks:
                 s_station = picks_[0]
                 predictions[s_station] = picks_[1]
@@ -323,6 +325,8 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
          else:
               phasepicks = parallel_phase_picking(station_streams=streams, starttime=starttime, picker=picker, model=model, start_list=secs_before)
+
+              phasepicks = decimate(phasepicks=phasepicks, data=data, ev_lon=ev_lon, ev_lat=ev_lat, az_bin=20, dist_bin=10, max_bin=4)
 
               for picks_ in phasepicks:
                   s_station = picks_[0]
@@ -481,10 +485,10 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
     os.mkdir(str(starttime) + '_tiebenn_loc')
 
-    generate_csv(streams=streams, outputs=outputs_assoc, data=data, snr_data=phases_snr, ev_time=ev_time)
+    generate_csv(outputs=outputs_assoc, data=data, snr_data=phases_snr, ev_time=ev_time)
 
     if plotpicks:
-       n_jobs = calculate_njobs(streams)
+       n_jobs = calculate_njobs(outputs_assoc)
 
        try:
            os.mkdir(f'{starttime}_tiebenn_loc/plot_phase_association')

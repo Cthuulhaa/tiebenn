@@ -1,3 +1,4 @@
+from collections import defaultdict
 import math
 import os
 
@@ -6,6 +7,72 @@ import pandas as pd
 
 from obspy import UTCDateTime
 from obspy.geodetics import gps2dist_azimuth
+
+
+def decimate(phasepicks, data, ev_lon, ev_lat, az_bin, dist_bin, max_bin):
+    """
+
+    Detect regions covered by clusters of stations within specific bins and set a maximum amount of stations within each bin, removing the excess.
+
+    Args:
+         phasepicks (list): list of phase picks
+         data (dict): dictionary that contains---among others---the station coordinates for each station
+         ev_lon (float): event's longitude
+         ev_lat (float): event's latitude
+         az_bin (float): azimuthal bins
+         dist_bin (float): epicentral distance bins
+         max_bin (int): maximum amount of stations allowed per bin
+    Returns:
+         filtered_phasepicks (list): list of stations with picks, where there's a maximum of stations per bin
+    """
+    original_phasepicks = phasepicks.copy()
+
+    if len(original_phasepicks[0]) > 3:
+       new_phasepicks, stations_considered = [], []
+       for pick in phasepicks:
+           if pick[0] not in stations_considered:
+              new_phasepicks.append((pick[0], pick[2], pick[3]))
+              stations_considered.append(pick[0])
+
+       phasepicks = new_phasepicks
+
+    stations_with_picks = []
+    for pick in phasepicks:
+        stations_with_picks.append(pick[0])
+
+    distances, azimuths = [], []
+    for station in stations_with_picks:
+        sta_lat, sta_lon = data[station]['coords'][0], data[station]['coords'][1]
+        epic_dist, azimuth, _ = gps2dist_azimuth(ev_lat, ev_lon, sta_lat, sta_lon)
+
+        distances.append(epic_dist * 0.001)
+        azimuths.append(azimuth)
+
+    distances = np.array(distances)
+    azimuths = np.array(azimuths)
+
+    az_bins = (azimuths // az_bin).astype(int)
+    dist_bins = (distances // dist_bin).astype(int)
+
+    bin_keys = list(zip(az_bins, dist_bins))
+
+    binned_stations = defaultdict(list)
+    for idx, key in enumerate(bin_keys):
+        binned_stations[key].append(idx)
+
+    stations_to_remove = []
+
+    for station_list in binned_stations.values():
+        if len(station_list) > max_bin:
+           sorted_by_dist = sorted(station_list, key=lambda i: distances[i])
+           to_remove = sorted_by_dist[max_bin:]
+           stations_to_remove.extend(to_remove)
+
+    stations_to_remove_names = [stations_with_picks[i] for i in stations_to_remove]
+
+    filtered_phasepicks = [pick for pick in original_phasepicks if pick[0] not in stations_to_remove_names]
+
+    return filtered_phasepicks
 
 
 def tt_theo_before_assoc(ev_time, teo_p_time, teo_s_time, pick, tol_p, tol_s):
@@ -61,13 +128,12 @@ def create_input_for_phassoc(outputs, seconds_before):
     return outputs_for_phassoc
 
 
-def generate_csv(streams, outputs, data, snr_data, ev_time):
+def generate_csv(outputs, data, snr_data, ev_time):
     """
 
     Generates CSV files with pick detections
 
     Args:
-         streams (obspy.stream.Stream): The retrieved ObsPy streams for each station
          outputs (dict): The predicted phases/arrival times obtained from SeisBench for each station
          data (dict): A dictionary with the nearest stations (ObsPy streams) to the event which contain useful channels for phase-picking
          snr_data (dict): Dictionary with the signal-to-noise ratio for each pick at each station
@@ -245,8 +311,6 @@ def station_density(epicenter, stations):
 
     Calculates station density within a circular area around the epicenter.
 
-    Consideration: If only one station is further away, this might skew the resulting density calculation.
-
     Args:
          epicenter (tuple): (latitude, longitude) for the event
          stations (list): list of tuples [(latitude, longitude), ...] for station locations
@@ -258,8 +322,12 @@ def station_density(epicenter, stations):
         for st in stations
     ])
 
-    max_distance = distances.max()
-    area = np.pi * (max_distance ** 2)
+    if len(stations) < 5:
+       distance = max(distances)
+    else:
+         distance = np.percentile(distances, 80)
+
+    area = np.pi * (distance ** 2)
     density = len(stations) / area if area > 0 else 0
 
     return density

@@ -302,12 +302,23 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
          streams_preproc = Parallel(n_jobs=n_jobs, backend='threading')(delayed(waveform_preprocessing)(stream=streams[raw_stream], denoise=denoise, distance=distances_dict[raw_stream]) for raw_stream in streams)
 
+         preprocessed = []
          for s in streams_preproc:
-             s_station = s[0].stats.station
-             streams[s_station] = s
+             if len(s) > 0:
+                s_station = s[0].stats.station
+                streams[s_station] = s
+                preprocessed.append(s_station)
 
-             if mult_windows:
-                streams_for_plot[s_station] = s
+                if mult_windows:
+                   streams_for_plot[s_station] = s
+
+         del_keys = []
+         for key_ in streams:
+             if key_ not in preprocessed:
+                del_keys.append(key_)
+
+         for del_ in del_keys:
+             streams.pop(del_)
 
          if not mult_windows:
             phasepicks = Parallel(n_jobs=n_jobs, backend='threading')(delayed(picks_singwin)(stream=streams[sta_], picker=picker, model=model) for sta_ in streams)
@@ -656,6 +667,7 @@ def process_station_sds(st, station_info, start_t, end_t, sds_dir):
 
     for ch in station_info['channels']:
         trace = sds.get_waveforms(station_info['network'], st, '*', channel=ch, starttime=start_t, endtime=end_t)
+
         if len(trace) != 0:
            if len(trace[0].data) > 0:
               stream += trace

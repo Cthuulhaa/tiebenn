@@ -337,7 +337,7 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
          else:
               phasepicks = parallel_phase_picking(station_streams=streams, starttime=starttime, picker=picker, model=model, start_list=secs_before)
 
-              phasepicks = decimate(phasepicks=phasepicks, data=data, ev_lon=ev_lon, ev_lat=ev_lat, az_bin=20, dist_bin=10, max_bin=4)
+              phasepicks = decimate(phasepicks=phasepicks, data=data, ev_lon=ev_lon, ev_lat=ev_lat, az_bin=10, dist_bin=10, max_bin=4)
 
               for picks_ in phasepicks:
                   s_station = picks_[0]
@@ -447,14 +447,20 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
 
               associations = Parallel(n_jobs=n_jobs, backend='threading')(delayed(phase_association)(outputs=outputs_for_phassoc[s_bef], data=data, velmod=velmod, ev_lon=ev_lon, ev_lat=ev_lat, ev_time=starttime, plot=plotpicks, max_dist=max_dist,mult_windows=mult_windows, secs_before=s_bef) for s_bef in secs_bef_)
 
+              if associations[0] == None:
+                 if max_dist >= 200:
+                    print('STOP: Picks not associated on the minimum requested stations...')
+                    return None
+                 else:
+                      print('P-/S-wave picks associated on less than', min_detections, 'stations. Increasing radius...')
+                      count = count + 1
+                      max_dist = max_dist + 100
+                      continue
+
               outputs_assoc = {}
               for sbef in associations:
                   if sbef != None:
                      outputs_assoc[sbef[1]] = sbef[0]
-
-              if len(outputs_assoc) == 0:
-                 print('The predicted P- and S- picks for all the time windows were associated to no event. Skipping to next event in file...')
-                 break
 
               for assocs in outputs_assoc:
                   if len(outputs_assoc[assocs]) > 1: # XXX NOTE: See comment above
@@ -478,8 +484,7 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
          else:
               if max_dist >= 200:
                  print('STOP: Picks not associated on the minimum requested stations...')
-                 break
-                 return
+                 return None
               else:
                    print('P-/S-wave picks associated on less than', min_detections, 'stations. Increasing radius...')
                    count = count + 1

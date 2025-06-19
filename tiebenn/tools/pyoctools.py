@@ -99,9 +99,9 @@ def phase_association(outputs, data, velmod, ev_lon, ev_lat, ev_time, max_dist, 
                  outputs_s = outputs_s + 1
 
     if outputs_s <= 3:
-       associator = pyocto.OctoAssociator.from_area(lat=(ev_lat - 1.3, ev_lat + 1.3), lon=(ev_lon - 1.3, ev_lon + 1.3), zlim=(0, 100), time_before=300, velocity_model=velocity_model, n_p_picks=2, n_s_picks=2, n_picks=4, n_p_and_s_picks=1, pick_match_tolerance=2.5)
+       associator = pyocto.OctoAssociator.from_area(lat=(ev_lat - 1.3, ev_lat + 1.3), lon=(ev_lon - 1.3, ev_lon + 1.3), zlim=(0, 100), time_before=300, velocity_model=velocity_model, n_p_picks=2, n_s_picks=2, n_picks=3, n_p_and_s_picks=1, pick_match_tolerance=2.5)
     elif outputs_s > 3 and outputs_s < 6:
-       associator = pyocto.OctoAssociator.from_area(lat=(ev_lat - 1.3, ev_lat + 1.3), lon=(ev_lon - 1.3, ev_lon + 1.3), zlim=(0, 100), time_before=400, velocity_model=velocity_model, n_p_picks=2, n_s_picks=2, n_picks=6, n_p_and_s_picks=2, pick_match_tolerance=2.5)
+       associator = pyocto.OctoAssociator.from_area(lat=(ev_lat - 1.3, ev_lat + 1.3), lon=(ev_lon - 1.3, ev_lon + 1.3), zlim=(0, 100), time_before=400, velocity_model=velocity_model, n_p_picks=2, n_s_picks=2, n_picks=5, n_p_and_s_picks=2, pick_match_tolerance=2.5)
     else:
          associator = pyocto.OctoAssociator.from_area(lat=(ev_lat - 1.3, ev_lat + 1.3), lon=(ev_lon - 1.3, ev_lon + 1.3), zlim=(0, 100), time_before=400, velocity_model=velocity_model, n_p_picks=3, n_s_picks=3, n_picks=6, n_p_and_s_picks=3, pick_match_tolerance=2.5)
 

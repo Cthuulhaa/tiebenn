@@ -503,19 +503,19 @@ def calculate_lqs(loc_file, sta_file):
     azgap = azgaps[0]
     sec_azgap = azgaps[1]
 
-    norm_detcov = normalize(detcov, 'log', lb=-3.4713284073615576, ub=0.036130328213886044)
-    norm_dens = normalize(density, 'log', lb=-3.3078381334234708, ub=-2.4335738944657455)
-    norm_azgap = normalize(azgap, 'simple', lb=28.13900043228351, ub=140)
-    norm_sazgap = normalize(sec_azgap, 'simple', lb=40.41388529165775, ub=160)
-    norm_aui = normalize(aui, 'simple', lb=6.301451360922264, ub=17.577533605788116)
+    norm_detcov = normalize(detcov, 'log', lb=-3.5168346269163018, ub=-0.11086218013379719)
+    norm_dens = normalize(density, 'log', lb=-3.1661675982662865, ub=-2.4270297099010847)
+    norm_azgap = normalize(azgap, 'simple', lb=23.246041073223335, ub=140)
+    norm_sazgap = normalize(sec_azgap, 'simple', lb=33.52630353367535, ub=160)
+    norm_aui = normalize(aui, 'simple', lb=4.927710011230288, ub=14.332695430500562)
     norm_nsta = normalize(near_sta, 'log', lb=1.000000043429446, ub=1.4771212691961448)
 
-    if rms < 0.128578 and density < 0.0006:
+    if rms < 0.2 and density < 0.0006:
        norm_rms = 1.0
     else:
-        norm_rms = normalize(rms, 'log', lb=-0.8781005892308125, ub=-0.2998885611545161)
+        norm_rms = normalize(rms, 'log', lb=-0.849381390423459, ub=-0.2505623242671882)
 
-    norm_npicks = normalize(npicks, 'log', lb=1.6433404945528949, ub=2.0773641073544047)
+    norm_npicks = normalize(npicks, 'log', lb=1.7454491666816259, ub=2.1986570897031217)
 
     weights = {'sta_den': 0.125, 'azgap': 0.05, 'sec_azgap': 0.1, 'rms': 0.1, 'near_sta': 0.1, 'det_cov': 0.35, 'aui': 0.125, 'npicks': 0.05}
 

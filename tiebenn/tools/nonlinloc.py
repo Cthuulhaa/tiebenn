@@ -461,6 +461,7 @@ def pynlloc(control_file, control_file_s, data, velmod, nll3d, plots):
              for line in lines:
                  if line.find(reject) != -1:
                     print('NonLinLoc: location was', reject)
+                    return None, None
                  else:
                       if line.find(location) != -1:
                          location_check = True

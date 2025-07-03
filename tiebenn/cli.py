@@ -215,7 +215,6 @@ def main(args):
            print('No NLL-control file was produced. Skipping event.')
            try:
                shutil.rmtree(glob.glob('*_tiebenn_loc/')[0])
-               pass
            except:
                   pass
            continue
@@ -229,6 +228,9 @@ def main(args):
                    create3dgrid(ev_lon=ev_lon, ev_lat=ev_lat, velmod=velmod)
 
              sta_gap, sta_nearest = pynlloc(control_file, control_file_s, velmod=velmod, data=data, nll3d=nll3d, plots=plots)
+
+             if sta_gap == None:
+                continue
 
 #             if not nll3d:
 #                if sta_nearest > 150. or sta_gap > 2000.:

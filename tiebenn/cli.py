@@ -55,6 +55,8 @@ def main(args):
                pass
           raise TiebennSDSDirError('Parameter sds_dir must be set')
           return
+       else:
+            print('SDS directory set to: %s' % sds_dir)
 
     if min_detections < 3:
        print('WARNING! Minimal detections too small. Set to be 3.')

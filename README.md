@@ -220,9 +220,11 @@ If you use TieBeNN in your research, please cite:
 
 > TieBeNN: A neural network-based tool for automatic focal depth estimation
 >
-> Ramos, C. (2025) _TieBeNN v0.2.0_ [Software]. Zenodo. [https://doi.org/10.5281/zenodo.15384316](https://doi.org/10.5281/zenodo.15384316)
+> Ramos, C. (2025) _TieBeNN v0.2.1_ [Software]. Zenodo. [https://doi.org/10.5281/zenodo.15825093](https://doi.org/10.5281/zenodo.15825093)
 
-A detailed paper/software report on TieBeNN is currently in preparation.
+A pre-print of the scientific paper describing TieBeNN is now available on EarthArXiv:
+ 
+> Ramos et al. (2025). A quasi-real-time system for automatic local event monitoring in Germany. _EarthArXiv_. [https://doi.org/10.31223/X5774H](https://doi.org/10.31223/X5774H)
 
 ## :brain: Authors and Acknowledgment
 

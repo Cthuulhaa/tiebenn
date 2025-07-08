@@ -4,11 +4,13 @@ About
 Citing TieBeNN
 --------------
 
-The scientific paper describing **TieBeNN** is currently in preparation. Once published, citation instructions and DOI will be added here.
+A pre-print of the scientific paper describing **TieBeNN** is now available on EarthArXiv:
 
-.. note::
+> [**A quasi-real-time system for automatic local event monitoring in Germany**](https://doi.org/10.31223/X5774H)  
 
-   If you're using TieBeNN for research, please mention the name and link to the official GitHub repository so others can find and use it too.
+Please cite this pre-print as:
+
+> Ramos et al. (2025). *A quasi-real-time system for automatic local event monitoring in Germany*. EarthArXiv. https://doi.org/10.31223/X5774H
 
 Acknowledgements
 ----------------
@@ -41,5 +43,5 @@ Links & availability
 - 🌐 **GitHub (public mirror)** https://github.com/Cthuulhaa/tiebenn.git
   The TieBeNN repository publicly available on GitHub for citation, installation, and issue reporting.
 
-- 📦 **Zenodo archive** https://doi.org/10.5281/zenodo.15384316
+- 📦 **Zenodo archive** https://doi.org/10.5281/zenodo.15825093
   TieBeNN: A neural network-based tool for automatic focal depth estimation. Now archived on Zenodo for reproducible citation.

@@ -4,11 +4,7 @@ About
 Citing TieBeNN
 --------------
 
-A pre-print of the scientific paper describing **TieBeNN** is now available on EarthArXiv:
-
-> [**A quasi-real-time system for automatic local event monitoring in Germany**](https://doi.org/10.31223/X5774H)  
-
-Please cite this pre-print as:
+A pre-print of the scientific paper describing **TieBeNN** is now available on EarthArXiv. Please cite this pre-print as:
 
 > Ramos et al. (2025). *A quasi-real-time system for automatic local event monitoring in Germany*. EarthArXiv. https://doi.org/10.31223/X5774H
 

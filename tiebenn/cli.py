@@ -10,6 +10,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 from tiebenn.tools.nicetools import calculate_lqs, str2bool, strmonth2num
 from tiebenn.tools.nonlinloc import create3dgrid, inp_files_nlloc_sb, pynlloc
 from tiebenn.tools.retrieve_data import make_station_list
+from tiebenn.tools.sb_tools import picks_sb
 from tiebenn.tools.velocity_models import select_velmod
 from tiebenn.tools.visualization import plot_hypoc_confidence_ellipsoid, plot_picks4loc, radarplot
 
@@ -37,7 +38,7 @@ def main(args):
                  pass
            raise TiebennInputError('Please check the input arguments')
 
-    if picker.lower() not in ['sb_eqt', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_eqtransformer', 'sb_pn', 'seisbench_pn', 'sb_phasenet', 'seisbench_phasenet']:
+    if picker.lower() not in ['eqtransformer', 'eqt', 'sb_eqt', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_eqtransformer', 'phasenet', 'pn', 'sb_pn', 'seisbench_pn', 'sb_phasenet', 'seisbench_phasenet']:
        class TiebennPickerError(Exception):
              pass
        raise TiebennPickerError('Incorrect phase-picking model. Accepted inputs are: sb_eqt, sb_eqtransformer, seisbench_eqt, seisbench_eqtransformer, sb_pn, sb_phasenet, seisbench_pn, seisbench_phasenet (not case-sensitive)')
@@ -144,7 +145,7 @@ def main(args):
         starttime = UTCDateTime(ev_time)
 
         if mult_windows == False:
-           start_t = UTCDateTime(ev_time) - secs_before
+           start_t = ev_time - secs_before
            end_t = start_t + 60.
         else:
              if denoise == False:
@@ -198,13 +199,10 @@ def main(args):
             distances_dict[et] = "{:.2f}".format(gps2dist_azimuth(data[et]['coords'][0], data[et]['coords'][1], ev_lat, ev_lon)[0] * 0.001)
             data[et]['epic_distance'] = "{:.2f}".format(gps2dist_azimuth(data[et]['coords'][0], data[et]['coords'][1], ev_lat, ev_lon)[0] * 0.001)
 
-        if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
-           from tiebenn.tools.sb_tools import picks_sb
-
-           if not sds_dir:
-              streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
-           else:
-                streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise, sds_dir=sds_dir)
+        if not sds_dir:
+           streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise)
+        else:
+             streams = picks_sb(ev_time=ev_time, ev_lon=ev_lon, ev_lat=ev_lat, data=data, max_dist=max_dist, client=client, picker=picker, velmod=velmod, plotpicks=plots, phase_assoc=ph_assoc, pick_sel='max_prob', secs_before=secs_before, mult_windows=mult_windows, min_detections=min_detections, denoise=denoise, sds_dir=sds_dir)
 
         if not glob.glob('*_tiebenn_loc/csv_picks/*.csv'):
            print('Skipping to next event in readfile...')
@@ -217,6 +215,7 @@ def main(args):
            print('No NLL-control file was produced. Skipping event.')
            try:
                shutil.rmtree(glob.glob('*_tiebenn_loc/')[0])
+               pass
            except:
                   pass
            continue

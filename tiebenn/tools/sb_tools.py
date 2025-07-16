@@ -284,10 +284,10 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
          print('-#-#-#- Trying detections within', max_dist, 'km from epicenter... -#-#-#-')
          print('**********************************************************************************************************')
 
-         if picker.lower() in ['sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer']:
+         if picker.lower() in ['eqtransformer', 'eqt', 'sb_eqt', 'sb_eqtransformer', 'seisbench_eqt', 'seisbench_eqtransformer']:
             print('SeisBench: Creating EQTransformer picker from pre-trained model...')
             model = sbm.EQTransformer.from_pretrained('original') #XXX NOTE: Benchmark datasets which were used to train the EQT and PhaseNet models include: original, ethz, instance, scedc, stead, geofon, neic
-         elif picker.lower() in ['sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
+         elif picker.lower() in ['phasenet', 'pn', 'sb_pn', 'sb_phasenet', 'seisbench_pn', 'seisbench_phasenet']:
               print('SeisBench: Creating PhaseNet picker from pre-trained model...')
               model = sbm.PhaseNet.from_pretrained('instance')
 
@@ -461,6 +461,10 @@ def picks_sb(ev_time, ev_lon, ev_lat, data, max_dist, client, picker, velmod, se
               for sbef in associations:
                   if sbef != None:
                      outputs_assoc[sbef[1]] = sbef[0]
+
+              if len(outputs_assoc) == 0:
+                 print('The predicted P- and S- picks for all the time windows were associated to no event. Skipping to next event...')
+                 break
 
               for assocs in outputs_assoc:
                   if len(outputs_assoc[assocs]) > 1: # XXX NOTE: See comment above

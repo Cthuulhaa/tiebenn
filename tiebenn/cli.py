@@ -33,78 +33,48 @@ def main(args):
         mult_windows = args.mult_windows
         secs_before = int(args.secs_before)
 
-    except:
-           class TiebennInputError(Exception):
-                 pass
-           raise TiebennInputError('Please check the input arguments')
+    except Exception as e:
+           raise Exception(f'Invalid input arguments: {e}')
 
-    if picker.lower() not in ['eqtransformer', 'eqt', 'sb_eqt', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_eqtransformer', 'phasenet', 'pn', 'sb_pn', 'seisbench_pn', 'sb_phasenet', 'seisbench_phasenet']:
-       class TiebennPickerError(Exception):
-             pass
-       raise TiebennPickerError('Incorrect phase-picking model. Accepted inputs are: sb_eqt, sb_eqtransformer, seisbench_eqt, seisbench_eqtransformer, sb_pn, sb_phasenet, seisbench_pn, seisbench_phasenet (not case-sensitive)')
-       return
+    valid_pickers = ['eqtransformer', 'eqt', 'sb_eqt', 'seisbench_eqt', 'seisbench_eqtransformer', 'sb_eqtransformer', 'phasenet', 'pn', 'sb_pn', 'seisbench_pn', 'sb_phasenet', 'seisbench_phasenet']
+
+    if picker.lower() not in valid_pickers:
+       raise ValueError('Incorrect phase-picking model. Accepted inputs are: ' + ', '.join(valid_pickers))
 
     if client.lower() not in ['sds', 'fdsn']:
-       class TiebennClientError(Exception):
-             pass
-       raise TiebennClientError('Client must be either SDS or FDSN!')
-       return
+       raise ValueError('Client must be either SDS or FDSN')
 
-    if client.lower() == 'sds':
-       if not sds_dir:
-          class TiebennSDSDirError(Exception):
-               pass
-          raise TiebennSDSDirError('Parameter sds_dir must be set')
-          return
-       else:
-            print('SDS directory set to: %s' % sds_dir)
+    if client.lower() == 'sds' and not sds_dir:
+        raise ValueError('Parameter sds_dir must be set for SDS client')
+    elif client.lower() == 'sds':
+        print(f'SDS directory set to: {sds_dir}')
 
     if min_detections < 3:
-       print('WARNING! Minimal detections too small. Set to be 3.')
+       print('WARNING! Minimal detections too small. Set to 3')
        min_detections = 3
 
     if vel_mode.lower() in ['manual', 'man', 'm']:
        if velmod is None:
-          class TiebennVelocityModeError(Exception):
-                pass
-          raise TiebennVelocityModeError('Velocity model must be selected when manual velocity mode in use.')
-          return
+          raise ValueError('Velocity model must be selected in manual mode')
 
        if velmod not in [6, 7, 12, 13, 17]:
-          velmod_name = f"v{str(velmod)}"
-
-          model_path = files('tiebenn.data.velocity_models').joinpath(velmod_name)
-
-          if model_path.is_file():
-             print(f"Velocity model {str(velmod)} selected")
-          else:
-               class VelModLoadError(Exception):
-                     pass
-               raise VelModLoadError(f"Velocity model {str(velmod)} does not exist.")
+          model_path = files('tiebenn.data.velocity_models').joinpath(f"v{velmod}")
+          if not model_path.is_file():
+             raise FileNotFoundError(f"Velocity model v{velmod} does not exist")
+          print(f"Velocity model {velmod} selected.")
        elif velmod in [6, 7]:
-            print('Crust1.0 model will be used for seismic location.')
+            print('Crust1.0 model will be used for seismic location')
        else:
-            class TiebennNLL3DUnavailable(Exception):
-                  pass
-            raise TiebennNLL3DUnavailable('Depth estimation option using 3D grids is momentarily disabled!')
-            return
-    elif vel_mode.lower() not in ['manual', 'man', 'm', 'automatic', 'auto', 'a']:
-         class TiebennVelocityModeError(Exception):
-               pass
-         raise TiebennVelocityModeError('vel_mode must be set to either manual (m) or automatic (a).')
-         return
+            raise RuntimeError('Depth estimation with 3D grids currently disabled')
+
+    elif vel_mode.lower() not in ['automatic', 'auto', 'a']:
+         raise ValueError('vel_mode must be manual (m) or automatic (a).')
 
     if ph_assoc.lower() not in ['gamma', 'g', 'pyocto', 'p']:
-       class PhaseAssociationError(Exception):
-             pass
-       raise PhaseAssociationError('Unknown phase associator. Options are Gamma (g) and PyOcto (p)')
-       return
+       raise ValueError('Unknown phase associator. Options are Gamma (g) and PyOcto (p)')
 
     if nll3d == True:
-       class TiebennNLL3DUnavailable(Exception):
-             pass
-       raise TiebennNLL3DUnavailable('Depth estimation option using 3D grids is momentarily disabled! Please turn nll3d parameter to False')
-       return
+       raise RuntimeError('3D grid depth estimation is temporarily disabled. Set nll3d=False')
 
     f = open(event_file, 'r')
     for x in f:
@@ -120,9 +90,7 @@ def main(args):
                try:
                    ev_time = f"{y.split()[0]} {y.split()[1]}"
                except:
-                      class TiebennDatetimeFormatError(Exception):
-                            pass
-                      raise TiebennDatetimeFormatError('Accepted Datetime formats for the events are: "dd-Mon-yyyy hh:mm:ss", "yyyy-mm-ddThh:mm:ss", or "yyyy-mm-dd hh:mm:ss"')
+                      raise ValueError('Accepted Datetime formats for the events are: "dd-Mon-yyyy hh:mm:ss", "yyyy-mm-ddThh:mm:ss", or "yyyy-mm-dd hh:mm:ss"')
 
         ev_lon = float(x.split()[5])
         ev_lat = float(x.split()[4])
@@ -136,16 +104,12 @@ def main(args):
         if len(glob.glob('saved_locations')) == 0:
            os.mkdir('saved_locations')
 
-        print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-        print('-----------------------------------------------------------------------')
         print('Detecting and picking P- and S-wave arrival times...')
-        print('-----------------------------------------------------------------------')
-        print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
 
         starttime = UTCDateTime(ev_time)
 
         if mult_windows == False:
-           start_t = ev_time - secs_before
+           start_t = starttime - secs_before
            end_t = start_t + 60.
         else:
              if denoise == False:
@@ -265,8 +229,8 @@ def main(args):
 
              shutil.move(glob.glob('*_tiebenn_loc/')[0], 'saved_locations')
 
-
     return
+
 
 def read_args():
 

@@ -515,8 +515,8 @@ def plot_hypoc_confidence_ellipsoid():
                    rms_nphs = f"RMS: {lin_[8]}s {lin_[9]}:{lin_[10]}"
                    gap_dist = f"Az_gap: {lin_[12]} Ne_sta: {lin_[14]} km"
                 if lin_[0] == 'STATISTICS':
-                   uncx_uncy = f"UncX: {lin_[24]} UncY: {lin_[30]}"
-                   uncz = f"UncZ: {lin_[-1]}"
+                   uncx_uncy = f"UncX: {np.sqrt(float(lin_[8])):.2f} UncY: {np.sqrt(float(lin_[14])):.2f}"
+                   uncz = f"UncZ: {np.sqrt(float(lin_[18])):.2f}"
 
     axes = fig.add_subplot(gs[2:3, 2:3])
     axes.axis('off')

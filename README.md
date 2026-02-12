@@ -12,7 +12,7 @@ Using the coordinates (latitude and longitude) and the UTC time of a local event
 
 1. **Waveform data fetching**: A catalog of stations around the epicenter is produced. Then, waveform data in miniSEED format are retrieved using an ObsPy client on FDSN servers or from a SDS directory structure.
 
-1. **Waveform data preprocessing**: Empty channels are removed, masked channels are split, and data are detrended and bandpass filtered. Optionally, stations within 100 km from the epicenter are denoised using the DeepDenoiser model [(Zhu et al. 2019)](https://arxiv.org/abs/1811.02695).
+1. **Waveform data preprocessing**: Empty channels are removed, masked channels are split, and data are detrended and bandpass filtered. Optionally, stations within 100 km from the epicenter are denoised using the DeepDenoiser model [(Zhu _et al._ 2019)](https://arxiv.org/abs/1811.02695).
 
 1. **Phase picking**: P- and S-phases (first arrivals) are detected using phase-picking models (either EQTransformer or PhaseNet, available in the [SeisBench](https://github.com/seisbench/seisbench) toolbox).
 
@@ -35,7 +35,7 @@ Using the coordinates (latitude and longitude) and the UTC time of a local event
 * **NonLinLoc**, a suite of C programs for probabilistic hypocenter estimation.
 * **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130).
 * **Pyrocko**, open-source seismology toolbox and library.
-* **GaMMA**, phase associator after [Zhu et al. (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249).
+* **GaMMA**, phase associator after [Zhu _et al._ (2022)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JB023249).
 * **Cartopy**, for map generation.
 
 ### Optional
@@ -220,11 +220,9 @@ If you use TieBeNN in your research, please cite:
 
 > TieBeNN: A neural network-based tool for automatic focal depth estimation
 >
+> Ramos _et al._ (2026). A quasi-real-time system for automatic local event monitoring in Germany. _Seismica_, **5**(1). [https://doi.org/10.26443/seismica.v5i1.1815][https://doi.org/10.26443/seismica.v5i1.1815]
+>
 > Ramos, C. (2025) _TieBeNN v0.2.1_ [Software]. Zenodo. [https://doi.org/10.5281/zenodo.15825093](https://doi.org/10.5281/zenodo.15825093)
-
-A pre-print of the scientific paper describing TieBeNN is now available on EarthArXiv:
- 
-> Ramos et al. (2025). A quasi-real-time system for automatic local event monitoring in Germany. _EarthArXiv_. [https://doi.org/10.31223/X5774H](https://doi.org/10.31223/X5774H)
 
 ## :brain: Authors and Acknowledgment
 

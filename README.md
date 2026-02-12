@@ -220,7 +220,7 @@ If you use TieBeNN in your research, please cite:
 
 > TieBeNN: A neural network-based tool for automatic focal depth estimation
 >
-> Ramos _et al._ (2026). A quasi-real-time system for automatic local event monitoring in Germany. _Seismica_, **5**(1). [https://doi.org/10.26443/seismica.v5i1.1815][https://doi.org/10.26443/seismica.v5i1.1815]
+> Ramos _et al._ (2026). A quasi-real-time system for automatic local event monitoring in Germany. _Seismica_, **5**(1). [https://doi.org/10.26443/seismica.v5i1.1815](https://doi.org/10.26443/seismica.v5i1.1815)
 >
 > Ramos, C. (2025) _TieBeNN v0.2.1_ [Software]. Zenodo. [https://doi.org/10.5281/zenodo.15825093](https://doi.org/10.5281/zenodo.15825093)
 

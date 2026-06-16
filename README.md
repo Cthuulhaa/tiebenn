@@ -233,9 +233,9 @@ C. Ramos (maintainer)
 Clearly under development.
 
 ### :construction: ToDo
-[] (TEST) Replace LQS's *primary azimuthal gap* parameter with the *Cyclic Polygon Quotient (CPQ)* by [Gallacher *et al* (2025)(https://seismica.library.mcgill.ca/article/view/1536)
-[] (TEST) Replace LQS's *nearest station* parameter with the *nearest station with P- and S-pick*
-[] Check for improvements in structure, performance, runtime, etc.
+[ ] (TEST) Replace LQS's *primary azimuthal gap* parameter with the *Cyclic Polygon Quotient (CPQ)* by [Gallacher *et al* (2025)(https://seismica.library.mcgill.ca/article/view/1536)
+[ ] (TEST) Replace LQS's *nearest station* parameter with the *nearest station with P- and S-pick*
+[ ] Check for improvements in structure, performance, runtime, etc.
 
 ## :link: Useful Links
 

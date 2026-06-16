@@ -117,7 +117,7 @@ def main(args):
              else:
                   secs_before = [10, 5, 2, 0]
 
-        client_list=['BGR', 'LMU', 'GFZ', 'ODC', 'RASPISHAKE', 'RESIF', 'ETH', 'INGV', 'IPGP', 'NIEP', 'ORFEUS']
+        client_list=['BGR', 'LMU', 'GFZ', 'ODC', 'RASPISHAKE', 'EPOSFR', 'ETH', 'INGV', 'IPGP', 'NIEP', 'ORFEUS']
 
         try:
            shutil.rmtree(glob.glob(f"saved_locations/{str(starttime)}_tiebenn_loc/")[0])

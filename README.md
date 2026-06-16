@@ -30,7 +30,7 @@ Using the coordinates (latitude and longitude) and the UTC time of a local event
 
 ## :white_check_mark: Requirements
 
-* **Python 3.9** or later (successfully tested with Python 3.10 and 3.12).
+* **Python 3.10** or later (successfully tested with Python 3.10 and 3.12).
 * **SeisBench**, the ML model toolbox used for phase picking and denoising.
 * **NonLinLoc**, a suite of C programs for probabilistic hypocenter estimation.
 * **PyOcto**, phase associator after [Münchmeyer (2024)](https://seismica.library.mcgill.ca/article/view/1130).
@@ -232,6 +232,11 @@ C. Ramos (maintainer)
 
 Clearly under development.
 
+### :construction: ToDo
+[] (TEST) Replace LQS's *primary azimuthal gap* parameter with the *Cyclic Polygon Quotient (CPQ)* by [Gallacher *et al* (2025)(https://seismica.library.mcgill.ca/article/view/1536)
+[] (TEST) Replace LQS's *nearest station* parameter with the *nearest station with P- and S-pick*
+[] Check for improvements in structure, performance, runtime, etc.
+
 ## :link: Useful Links
 
 - [DeepDenoiser example](https://colab.research.google.com/github/seisbench/seisbench/blob/main/examples/02b_deep_denoiser.ipynb)
@@ -245,7 +250,7 @@ In short, it's open-source and free to use, modify, and redistribute — but any
 
 See the full [LICENSE](LICENSE) file for legal details.
 
-### :mag: TL;DR (not legally binding!)
+### :mag: License summary (not legally binding!)
 
 - :white_check_mark: You can use, modify, and share this code freely.
 - :scroll: If you share a modified version, you **must** also share the source code.

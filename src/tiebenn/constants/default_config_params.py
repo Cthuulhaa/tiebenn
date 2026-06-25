@@ -1,0 +1,17 @@
+from typing import Literal
+
+DEFAULT_EVENT_FILE = None
+DEFAULT_CLIENT = Literal["fdsn"]
+DEFAULT_SDS_DIR = None
+DEFAULT_PICKER = Literal["seisbench_phasenet"]
+DEFAULT_PH_ASSOC = Literal["pyocto"]
+DEFAULT_VEL_MODE = Literal["auto"]
+DEFAULT_VELMOD = None
+DEFAULT_EPIC_DIST = 100.0
+DEFAULT_SECS_BEFORE = 0
+DEFAULT_PLOTS = False
+DEFAULT_DENOISE = True
+DEFAULT_MULT_WINDOWS = False
+DEFAULT_NLL3D = False
+
+MIN_DETECTIONS = 3

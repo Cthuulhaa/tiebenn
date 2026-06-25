@@ -1,23 +1,26 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "tiebenn"
-version = "0.2.1"
+version = "1.0.2"
 description = "Automatic focal depth estimation for local seismic events in Germany using ML tools and NonLinLoc"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 authors = [
-  { name = "C. Ramos, S. Donner, K. Stammler", email = "ramosdomke.bgr@gmail.com" }
+    { name = "C. Ramos, S. Donner, K. Stammler", email = "ramosdomke.bgr@gmail.com" }
 ]
 requires-python = ">=3.10"
 dependencies = [
-  "seisbench",
-  "pyocto",
-  "pyrocko",
-  "joblib",
-  "cartopy",
+    "seisbench==0.8.2",
+    "pyocto",
+    "pyrocko",
+    "joblib",
+    "cartopy",
+    "nllgrid",
+    "pydantic==2.12.5",
+    "setuptools==68.2.2"
 ]
 
 [project.urls]
@@ -27,16 +30,19 @@ Documentation = "https://tiebenn.readthedocs.io/en/latest/"
 [project.scripts]
 tiebenn = "tiebenn.cli:main_cli"
 
+[tool.pip-tools]
+pip-compile-args = ["--generate-hashes"]
+
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 
 [tool.setuptools.package-data]
 "tiebenn" = [
-  "data/velocity_models/**/*",
-  "data/crust1/*"
+    "data/velocity_models/**/*",
+    "data/crust1/*"
 ]
 
 [tool.pytest.ini_options]

@@ -1,0 +1,306 @@
+2026-05-19 16:32:44 | tiebenn | input_params.py:63 | WARNING | Minimum detections cannot be lower than 3.
+2026-05-19 16:32:44 | tiebenn | input_params.py:64 | WARNING | min_detections is set to 3.
+2026-05-19 16:32:44 | tiebenn | input_params.py:55 | WARNING | 3D grid depth estimation is temporarily disabled. Set nll3d=False
+2026-05-19 16:32:44 | tiebenn | velocity_models.py:225 | INFO | Selected velocity model for the input latitude and longitude: 2
+2026-05-19 16:32:44 | tiebenn | algorithm.py:29 | INFO | Detecting and picking P- and S-wave arrival times...
+2026-05-19 16:32:44 | tiebenn | algorithm.py:44 | INFO | Location existent in saved_locations directory: the current location will replace the existent one.
+2026-05-19 16:32:44 | tiebenn | algorithm.py:52 | INFO | Making station list...
+2026-05-19 16:32:46 | tiebenn | algorithm.py:62 | INFO | Removing undesired channels...
+2026-05-19 16:32:46 | tiebenn | algorithm.py:83 | INFO | Calculating epicentral distances...
+2026-05-19 16:32:46 | tiebenn | algorithm.py:92 | INFO | Reading data using FDSN client.
+2026-05-19 16:32:46 | tiebenn | sb_tools.py:90 | INFO | ObsPy: Fetching station waveforms...
+2026-05-19 16:32:46 | tiebenn | sb_tools.py:652 | INFO | Station duplicate detected for client RASPISHAKE. Skipping station RA5D4...
+2026-05-19 16:32:46 | tiebenn | sb_tools.py:652 | INFO | Station duplicate detected for client RASPISHAKE. Skipping station RD537...
+2026-05-19 16:32:53 | tiebenn | sb_tools.py:314 | INFO | *************************************************************************************************
+2026-05-19 16:32:53 | tiebenn | sb_tools.py:315 | INFO | -#-#-#- Trying detections within 150.0 km from epicenter... -#-#-#-
+2026-05-19 16:32:53 | tiebenn | sb_tools.py:316 | INFO | *************************************************************************************************
+2026-05-19 16:32:53 | tiebenn | sb_tools.py:324 | INFO | SeisBench: Creating PhaseNet picker from pre-trained model...
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station CLL
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOX
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station BRG
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station A807
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station BURZL
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station GUNZ
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station LANDS
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station LEUT
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MUHB
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MULD
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station NEUB
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ROHR
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SCHF
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station TANN
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station TRIB
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WERD
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WERN
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WIMM
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station FROHN
+2026-05-19 16:32:57 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MEINS
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ABG1
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ANNA
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station PLN
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station POSS
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ZEU
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station BONN
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station FRAU
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station GERA
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station GEIDO
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station GRZ1
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station HKWD
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station KAMM
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station LEIB1
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MLFH
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MODW
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MORAS
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station NEUST
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RANIS
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station TAUT
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ZEITZ
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station TIER
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station BARBA
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOB2
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOB7
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOB9
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOB10
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station LAEN
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MROB
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MKON
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station FALKS
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station FLT1
+2026-05-19 16:32:58 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WANN
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SKAC
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station HSKC
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SYRAU
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WBERG
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R0045
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R3384
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station S0B07
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R2B46
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R2584
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RB563
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R0F05
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R7388
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SEACE
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R8219
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RCEFF
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R368D
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RDDC8
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R4238
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R7B53
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R6E5F
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RD336
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R8FEE
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R30E6
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R64A7
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R038C
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RD42B
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RC9BC
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R24E9
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R3215
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RA211
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RE2BC
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RC342
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R511A
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R7EA7
+2026-05-19 16:32:59 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SAA91
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RFB5D
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R4961
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RE5BD
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R5966
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RA6B1
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R92D1
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R0602
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R0B73
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RB07F
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R9671
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:404 | INFO | SeisBench: Automatic picks were obtained on 78 stations
+2026-05-19 16:33:00 | tiebenn | sb_tools.py:442 | INFO | Phase association of picks...
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:150 | INFO | &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:151 | INFO | PyOcto: Phase association with waveforms starting 0 seconds before event time
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:152 | INFO | ------------------------------------------------------------------------------
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:153 | INFO | For a total of 92 predicted picks which are comparable to theoretical picks
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:154 | INFO | of which 58 are P-picks and 34 are S-picks:
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:155 | INFO | % 1 event(s) was/were detected
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:158 | INFO | % for event 1 :
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:163 | INFO | % 33 picks were associated
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:164 | INFO | % of which 57 are P-picks and 33 are S-picks
+2026-05-19 16:33:11 | tiebenn | pyoctools.py:165 | INFO | &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2026-05-19 16:33:11 | tiebenn | sb_tools.py:541 | INFO | Picks on 58 stations were associated to the event
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:68 | INFO | &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:69 | INFO | ---------------------------------------------------------------
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:70 | INFO | Preparing input files for hypocentre location with NonLinLoc...
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:71 | INFO | ---------------------------------------------------------------
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:72 | INFO | &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:306 | INFO | Files prepared.
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:428 | INFO | NonLinLoc: Locating event...
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:432 | INFO | NLL: Producing velocity/slowness model from velocity description...
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:440 | INFO | NLL: Calculating P-wave travel times...
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:456 | INFO | NLL: Calculating S-wave travel times...
+2026-05-19 16:33:12 | tiebenn | nonlinloc.py:467 | INFO | NLL: Depth estimation...
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:531 | INFO | ##############################################################
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:533 | INFO | NonLinLoc: Location completed.
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:550 | INFO | Origin time:
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:551 | INFO |            24-12-2024_01:55:4.509418
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:552 | INFO |            Lat: 51.328221
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:553 | INFO |            Long: 12.541835
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:554 | INFO |            Depth: 22.792969 km
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:556 | INFO | --------------------------------------------------------------
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:557 | INFO | Location quality:
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:563 | INFO |            RMS: 0.250151
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:564 | INFO |            Number of phases: 90
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:565 | INFO |            Gap: 55.5814
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:566 | INFO |            Distance from hypocenter to nearest station: 11.9515 km
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:560 | INFO |            Ellipsoid semi-major axis: 1.128859e+00
+2026-05-19 16:33:14 | tiebenn | nonlinloc.py:575 | INFO | ##############################################################
+2026-05-19 16:33:14 | tiebenn | nicetools.py:500 | INFO | Generating radarplot from LQS value...
+2026-05-19 16:33:15 | tiebenn | dict_client.py:47 | INFO | DictClient is used for input data.
+2026-05-19 16:33:15 | tiebenn | velocity_models.py:225 | INFO | Selected velocity model for the input latitude and longitude: 2
+2026-05-19 16:33:15 | tiebenn | algorithm.py:29 | INFO | Detecting and picking P- and S-wave arrival times...
+2026-05-19 16:33:15 | tiebenn | algorithm.py:44 | INFO | Location existent in saved_locations directory: the current location will replace the existent one.
+2026-05-19 16:33:15 | tiebenn | algorithm.py:52 | INFO | Making station list...
+2026-05-19 16:33:16 | tiebenn | algorithm.py:62 | INFO | Removing undesired channels...
+2026-05-19 16:33:16 | tiebenn | algorithm.py:83 | INFO | Calculating epicentral distances...
+2026-05-19 16:33:16 | tiebenn | algorithm.py:92 | INFO | Reading data using FDSN client.
+2026-05-19 16:33:16 | tiebenn | sb_tools.py:90 | INFO | ObsPy: Fetching station waveforms...
+2026-05-19 16:33:16 | tiebenn | sb_tools.py:652 | INFO | Station duplicate detected for client RASPISHAKE. Skipping station RA5D4...
+2026-05-19 16:33:16 | tiebenn | sb_tools.py:652 | INFO | Station duplicate detected for client RASPISHAKE. Skipping station RD537...
+2026-05-19 16:33:23 | tiebenn | sb_tools.py:314 | INFO | *************************************************************************************************
+2026-05-19 16:33:23 | tiebenn | sb_tools.py:315 | INFO | -#-#-#- Trying detections within 150.0 km from epicenter... -#-#-#-
+2026-05-19 16:33:23 | tiebenn | sb_tools.py:316 | INFO | *************************************************************************************************
+2026-05-19 16:33:23 | tiebenn | sb_tools.py:324 | INFO | SeisBench: Creating PhaseNet picker from pre-trained model...
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station CLL
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOX
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station BRG
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station A807
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station BURZL
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station GUNZ
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station LANDS
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station LEUT
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MUHB
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MULD
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station NEUB
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ROHR
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SCHF
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station TANN
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station TRIB
+2026-05-19 16:33:27 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WERD
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WERN
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WIMM
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station FROHN
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MEINS
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ABG1
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ANNA
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station PLN
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station POSS
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ZEU
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station BONN
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station FRAU
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station GERA
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station GEIDO
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station GRZ1
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station HKWD
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station KAMM
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station LEIB1
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MLFH
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MODW
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MORAS
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station NEUST
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RANIS
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station TAUT
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station ZEITZ
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station TIER
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station BARBA
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOB2
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOB7
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOB9
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MOB10
+2026-05-19 16:33:28 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station LAEN
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MROB
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station MKON
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station FALKS
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station FLT1
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WANN
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SKAC
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station HSKC
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SYRAU
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station WBERG
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R0045
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R3384
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station S0B07
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R2B46
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R2584
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RB563
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R0F05
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R7388
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SEACE
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R8219
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RCEFF
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R368D
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RDDC8
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R4238
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R7B53
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R6E5F
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RD336
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R8FEE
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R30E6
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R64A7
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R038C
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RD42B
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RC9BC
+2026-05-19 16:33:29 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R24E9
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R3215
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RA211
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RE2BC
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RC342
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R511A
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R7EA7
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station SAA91
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RFB5D
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R4961
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RE5BD
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R5966
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RA6B1
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R92D1
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R0602
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R0B73
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station RB07F
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:848 | INFO | Phase picking for station R9671
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:404 | INFO | SeisBench: Automatic picks were obtained on 83 stations
+2026-05-19 16:33:30 | tiebenn | sb_tools.py:442 | INFO | Phase association of picks...
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:150 | INFO | &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:151 | INFO | PyOcto: Phase association with waveforms starting 0 seconds before event time
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:152 | INFO | ------------------------------------------------------------------------------
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:153 | INFO | For a total of 104 predicted picks which are comparable to theoretical picks
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:154 | INFO | of which 50 are P-picks and 54 are S-picks:
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:155 | INFO | % 1 event(s) was/were detected
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:158 | INFO | % for event 1 :
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:163 | INFO | % 54 picks were associated
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:164 | INFO | % of which 48 are P-picks and 54 are S-picks
+2026-05-19 16:33:41 | tiebenn | pyoctools.py:165 | INFO | &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2026-05-19 16:33:41 | tiebenn | sb_tools.py:541 | INFO | Picks on 58 stations were associated to the event
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:68 | INFO | &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:69 | INFO | ---------------------------------------------------------------
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:70 | INFO | Preparing input files for hypocentre location with NonLinLoc...
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:71 | INFO | ---------------------------------------------------------------
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:72 | INFO | &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:306 | INFO | Files prepared.
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:428 | INFO | NonLinLoc: Locating event...
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:432 | INFO | NLL: Producing velocity/slowness model from velocity description...
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:440 | INFO | NLL: Calculating P-wave travel times...
+2026-05-19 16:33:42 | tiebenn | nonlinloc.py:456 | INFO | NLL: Calculating S-wave travel times...
+2026-05-19 16:33:43 | tiebenn | nonlinloc.py:467 | INFO | NLL: Depth estimation...
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:531 | INFO | ##############################################################
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:533 | INFO | NonLinLoc: Location completed.
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:550 | INFO | Origin time:
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:551 | INFO |            24-12-2024_01:55:4.547616
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:552 | INFO |            Lat: 51.326816
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:553 | INFO |            Long: 12.542956
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:554 | INFO |            Depth: 22.636719 km
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:556 | INFO | --------------------------------------------------------------
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:557 | INFO | Location quality:
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:563 | INFO |            RMS: 0.279684
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:564 | INFO |            Number of phases: 102
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:565 | INFO |            Gap: 55.5239
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:566 | INFO |            Distance from hypocenter to nearest station: 11.9828 km
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:560 | INFO |            Ellipsoid semi-major axis: 1.052760e+00
+2026-05-19 16:33:45 | tiebenn | nonlinloc.py:575 | INFO | ##############################################################
+2026-05-19 16:33:45 | tiebenn | nicetools.py:500 | INFO | Generating radarplot from LQS value...
